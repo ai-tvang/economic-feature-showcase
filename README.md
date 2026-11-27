@@ -18,7 +18,7 @@ The brief was *"Managing a client portfolio in an AI world"*:
 
 > 67 % of entries from bank transactions and documents are automated *to some degree*, yet hours per client are unchanged after three months. (from the case brief)
 
-**Everything in here is synthetic.** The accounting office "Nordkyst Regnskab", its 180 clients, 6 bookkeepers and every posting are generated with a fixed seed. Nothing is measured from a real office or from e-conomic's product. This is independent work for an interview. Visma e-conomic has not made, reviewed or endorsed it. The prototype's menu mirrors how e-conomic presents its Praksis module publicly, so that the demo would feel familiar to the panel.
+**Everything in here is synthetic.** The accounting office "Nordkyst Regnskab", its 180 clients, 6 bookkeepers and every posting are generated with a fixed seed. Nothing is measured from a real office or from e-conomic's product. This is independent work. Visma e-conomic has not made, reviewed or endorsed it. The prototype's menu mirrors how e-conomic presents its Praksis module publicly, so that it feels familiar to people who know the product.
 
 ![The nudge in Praksis](docs/screenshots/1-nudge-in-praksis.png)
 
@@ -50,7 +50,7 @@ Managing a portfolio moves from client by client to **pattern by pattern**. The 
 
 ## The prototype
 
-`prototype/index.html` is a single self-contained file, so you can open it in any browser. You are Jonas Krogh, a fictional bookkeeper with 30 clients. The demo path in the interview took about 3.5 minutes:
+`prototype/index.html` is a single self-contained file, so you can open it in any browser. You are Jonas Krogh, a fictional bookkeeper with 30 clients. The demo path takes about 3.5 minutes:
 
 1. **Opgaver:** the nudge says three suggestions would save about 1 hour 15 minutes a month. Click *Se de 3 forslag*.
 2. **Workflow-forslag:** the safest suggestions come first. Nets card fees show 18 clients (2 of them Jonas'), with 1,456 of 1,489 correct in the backtest.
