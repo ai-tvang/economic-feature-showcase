@@ -1,0 +1,4 @@
+__pycache__/
+data/postings.csv
+output/backtest_postings.csv
+output/patterns.json

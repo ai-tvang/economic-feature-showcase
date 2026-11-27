@@ -1,0 +1,1149 @@
+{
+ "approval_month": "2026-05",
+ "approved_patterns": [
+  {
+   "pattern_id": "PT001",
+   "group": "CLEARHAUS",
+   "risk": "low",
+   "clients": 14
+  },
+  {
+   "pattern_id": "PT002",
+   "group": "TEYA FEES",
+   "risk": "low",
+   "clients": 10
+  },
+  {
+   "pattern_id": "PT003",
+   "group": "CIRCLE K",
+   "risk": "low",
+   "clients": 8
+  },
+  {
+   "pattern_id": "PT039",
+   "group": "RENT",
+   "risk": "medium",
+   "clients": 1
+  }
+ ],
+ "exception": {
+  "pattern_id": "PT039",
+  "client": "C087",
+  "bank_text": "BS HUSLEJE HAVNEGADE",
+  "date": "2026-10-27",
+  "usual_amount": 6427.0,
+  "held_amount": 19300.0,
+  "ratio": 3.0,
+  "rent_postings": 12,
+  "account": 7000,
+  "note": "Simulated overlay: not in postings.csv and not counted in any series."
+ },
+ "open_suggestions_oct": {
+  "count": 90,
+  "by_risk": {
+   "medium": 74,
+   "low": 16
+  },
+  "items": [
+   {
+    "pattern_id": "PT004",
+    "group": "NETS FEES",
+    "risk": "low",
+    "n_clients": 18,
+    "saved_per_month": 242.6667,
+    "hit_rate": 0.9778,
+    "avg_abs_amount": 99.1152
+   },
+   {
+    "pattern_id": "PT005",
+    "group": "TEYA",
+    "risk": "low",
+    "n_clients": 11,
+    "saved_per_month": 96.1667,
+    "hit_rate": 0.9796,
+    "avg_abs_amount": 92.0545
+   },
+   {
+    "pattern_id": "PT006",
+    "group": "OK",
+    "risk": "low",
+    "n_clients": 7,
+    "saved_per_month": 40.5,
+    "hit_rate": 0.9853,
+    "avg_abs_amount": 552.5156
+   },
+   {
+    "pattern_id": "PT007",
+    "group": "STRIPE",
+    "risk": "low",
+    "n_clients": 10,
+    "saved_per_month": 107.1667,
+    "hit_rate": 0.9757,
+    "avg_abs_amount": 74.8571
+   },
+   {
+    "pattern_id": "PT008",
+    "group": "NORDEA",
+    "risk": "low",
+    "n_clients": 51,
+    "saved_per_month": 70.8333,
+    "hit_rate": 0.9748,
+    "avg_abs_amount": 170.2277
+   },
+   {
+    "pattern_id": "PT009",
+    "group": "SHELL",
+    "risk": "low",
+    "n_clients": 9,
+    "saved_per_month": 41.5,
+    "hit_rate": 0.9803,
+    "avg_abs_amount": 556.0132
+   },
+   {
+    "pattern_id": "PT010",
+    "group": "POSTNORD",
+    "risk": "low",
+    "n_clients": 27,
+    "saved_per_month": 41.5,
+    "hit_rate": 0.9757,
+    "avg_abs_amount": 268.9564
+   },
+   {
+    "pattern_id": "PT011",
+    "group": "DANSKE BANK",
+    "risk": "low",
+    "n_clients": 30,
+    "saved_per_month": 42.0,
+    "hit_rate": 0.9767,
+    "avg_abs_amount": 195.1297
+   },
+   {
+    "pattern_id": "PT012",
+    "group": "Q8",
+    "risk": "low",
+    "n_clients": 10,
+    "saved_per_month": 53.6667,
+    "hit_rate": 0.9728,
+    "avg_abs_amount": 538.9441
+   },
+   {
+    "pattern_id": "PT013",
+    "group": "TDC",
+    "risk": "low",
+    "n_clients": 11,
+    "saved_per_month": 10.6667,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 721.4605
+   },
+   {
+    "pattern_id": "PT014",
+    "group": "JYSKE BANK",
+    "risk": "low",
+    "n_clients": 39,
+    "saved_per_month": 53.8333,
+    "hit_rate": 0.9671,
+    "avg_abs_amount": 160.244
+   },
+   {
+    "pattern_id": "PT015",
+    "group": "TELENOR",
+    "risk": "low",
+    "n_clients": 13,
+    "saved_per_month": 12.8333,
+    "hit_rate": 0.9872,
+    "avg_abs_amount": 556.2527
+   },
+   {
+    "pattern_id": "PT016",
+    "group": "SYDBANK",
+    "risk": "low",
+    "n_clients": 40,
+    "saved_per_month": 52.5,
+    "hit_rate": 0.9517,
+    "avg_abs_amount": 148.7673
+   },
+   {
+    "pattern_id": "PT017",
+    "group": "STRIPE FEES",
+    "risk": "low",
+    "n_clients": 9,
+    "saved_per_month": 29.6667,
+    "hit_rate": 0.957,
+    "avg_abs_amount": 74.732
+   },
+   {
+    "pattern_id": "PT018",
+    "group": "TELIA",
+    "risk": "low",
+    "n_clients": 17,
+    "saved_per_month": 16.5,
+    "hit_rate": 0.9706,
+    "avg_abs_amount": 523.3045
+   },
+   {
+    "pattern_id": "PT019",
+    "group": "HI3G",
+    "risk": "low",
+    "n_clients": 3,
+    "saved_per_month": 2.6667,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 393.7731
+   },
+   {
+    "pattern_id": "PT020",
+    "group": "NETS SETTLEMENT",
+    "risk": "medium",
+    "n_clients": 27,
+    "saved_per_month": 1361.5,
+    "hit_rate": 0.9824,
+    "avg_abs_amount": 2285.8136
+   },
+   {
+    "pattern_id": "PT021",
+    "group": "TEYA SETTLEMENT",
+    "risk": "medium",
+    "n_clients": 27,
+    "saved_per_month": 332.0,
+    "hit_rate": 0.9832,
+    "avg_abs_amount": 2306.031
+   },
+   {
+    "pattern_id": "PT022",
+    "group": "LEMVIGH-MULLER",
+    "risk": "medium",
+    "n_clients": 22,
+    "saved_per_month": 132.8333,
+    "hit_rate": 0.9779,
+    "avg_abs_amount": 3280.8154
+   },
+   {
+    "pattern_id": "PT023",
+    "group": "TRYG",
+    "risk": "medium",
+    "n_clients": 31,
+    "saved_per_month": 29.3333,
+    "hit_rate": 0.957,
+    "avg_abs_amount": 1520.9164
+   },
+   {
+    "pattern_id": "PT024",
+    "group": "CODAN",
+    "risk": "medium",
+    "n_clients": 28,
+    "saved_per_month": 25.3333,
+    "hit_rate": 0.9583,
+    "avg_abs_amount": 1388.3091
+   },
+   {
+    "pattern_id": "PT025",
+    "group": "LEASEPLAN",
+    "risk": "medium",
+    "n_clients": 12,
+    "saved_per_month": 11.1667,
+    "hit_rate": 0.9722,
+    "avg_abs_amount": 4134.695
+   },
+   {
+    "pattern_id": "PT026",
+    "group": "SANTANDER",
+    "risk": "medium",
+    "n_clients": 7,
+    "saved_per_month": 6.6667,
+    "hit_rate": 0.9762,
+    "avg_abs_amount": 3875.04
+   },
+   {
+    "pattern_id": "PT027",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 18628.0
+   },
+   {
+    "pattern_id": "PT028",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 21327.0
+   },
+   {
+    "pattern_id": "PT029",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15406.0
+   },
+   {
+    "pattern_id": "PT030",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 16209.0
+   },
+   {
+    "pattern_id": "PT031",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 14150.0
+   },
+   {
+    "pattern_id": "PT032",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 11867.0
+   },
+   {
+    "pattern_id": "PT033",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15005.0
+   },
+   {
+    "pattern_id": "PT034",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 4075.0
+   },
+   {
+    "pattern_id": "PT035",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 20783.0
+   },
+   {
+    "pattern_id": "PT036",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 20382.0
+   },
+   {
+    "pattern_id": "PT037",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 12193.0
+   },
+   {
+    "pattern_id": "PT038",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 16963.0
+   },
+   {
+    "pattern_id": "PT040",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 16889.0
+   },
+   {
+    "pattern_id": "PT041",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 4294.0
+   },
+   {
+    "pattern_id": "PT042",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 13060.0
+   },
+   {
+    "pattern_id": "PT043",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 14673.0
+   },
+   {
+    "pattern_id": "PT044",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 14685.0
+   },
+   {
+    "pattern_id": "PT045",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15283.0
+   },
+   {
+    "pattern_id": "PT046",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 11526.0
+   },
+   {
+    "pattern_id": "PT047",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 8805.0
+   },
+   {
+    "pattern_id": "PT048",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 5361.0
+   },
+   {
+    "pattern_id": "PT049",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 12268.0
+   },
+   {
+    "pattern_id": "PT050",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15476.0
+   },
+   {
+    "pattern_id": "PT051",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 18072.0
+   },
+   {
+    "pattern_id": "PT052",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 18483.0
+   },
+   {
+    "pattern_id": "PT053",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 18490.0
+   },
+   {
+    "pattern_id": "PT054",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 14083.0
+   },
+   {
+    "pattern_id": "PT055",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 12966.0
+   },
+   {
+    "pattern_id": "PT056",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 7741.0
+   },
+   {
+    "pattern_id": "PT057",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15892.0
+   },
+   {
+    "pattern_id": "PT058",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 6057.0
+   },
+   {
+    "pattern_id": "PT059",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 6279.0
+   },
+   {
+    "pattern_id": "PT060",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 16441.0
+   },
+   {
+    "pattern_id": "PT061",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 12479.0
+   },
+   {
+    "pattern_id": "PT062",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 9020.0
+   },
+   {
+    "pattern_id": "PT063",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 7417.0
+   },
+   {
+    "pattern_id": "PT064",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15593.0
+   },
+   {
+    "pattern_id": "PT065",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 13418.0
+   },
+   {
+    "pattern_id": "PT066",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 21022.0
+   },
+   {
+    "pattern_id": "PT067",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 12631.0
+   },
+   {
+    "pattern_id": "PT068",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 15596.0
+   },
+   {
+    "pattern_id": "PT069",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 8077.0
+   },
+   {
+    "pattern_id": "PT070",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 4897.0
+   },
+   {
+    "pattern_id": "PT071",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 10792.0
+   },
+   {
+    "pattern_id": "PT072",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 18343.0
+   },
+   {
+    "pattern_id": "PT073",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 12782.0
+   },
+   {
+    "pattern_id": "PT074",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 10526.0
+   },
+   {
+    "pattern_id": "PT075",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 7958.0
+   },
+   {
+    "pattern_id": "PT076",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 7012.0
+   },
+   {
+    "pattern_id": "PT077",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 7901.0
+   },
+   {
+    "pattern_id": "PT078",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 8830.0
+   },
+   {
+    "pattern_id": "PT079",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 16063.0
+   },
+   {
+    "pattern_id": "PT080",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 20580.0
+   },
+   {
+    "pattern_id": "PT081",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 16432.0
+   },
+   {
+    "pattern_id": "PT082",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 4695.0
+   },
+   {
+    "pattern_id": "PT083",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 17099.0
+   },
+   {
+    "pattern_id": "PT084",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 19748.0
+   },
+   {
+    "pattern_id": "PT085",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 21282.0
+   },
+   {
+    "pattern_id": "PT086",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 17361.0
+   },
+   {
+    "pattern_id": "PT087",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 21441.0
+   },
+   {
+    "pattern_id": "PT088",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 4544.0
+   },
+   {
+    "pattern_id": "PT089",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 18229.0
+   },
+   {
+    "pattern_id": "PT090",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 5830.0
+   },
+   {
+    "pattern_id": "PT091",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 11678.0
+   },
+   {
+    "pattern_id": "PT092",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 9053.0
+   },
+   {
+    "pattern_id": "PT093",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 19894.0
+   },
+   {
+    "pattern_id": "PT094",
+    "group": "RENT",
+    "risk": "medium",
+    "n_clients": 1,
+    "saved_per_month": 1.0,
+    "hit_rate": 1.0,
+    "avg_abs_amount": 4723.0
+   }
+  ]
+ },
+ "months": [
+  {
+   "month": "2025-11",
+   "postings": 8263,
+   "auto_before": 804,
+   "auto_from_suggestions": 0,
+   "auto_total": 804,
+   "pct_auto_posted": 9.730122231634999,
+   "touches": 7459,
+   "touches_per_client": 41.43888888888889,
+   "corrections": 0.0
+  },
+  {
+   "month": "2025-12",
+   "postings": 8699,
+   "auto_before": 903,
+   "auto_from_suggestions": 0,
+   "auto_total": 903,
+   "pct_auto_posted": 10.380503506150133,
+   "touches": 7796,
+   "touches_per_client": 43.31111111111111,
+   "corrections": 0.0
+  },
+  {
+   "month": "2026-01",
+   "postings": 8166,
+   "auto_before": 782,
+   "auto_from_suggestions": 0,
+   "auto_total": 782,
+   "pct_auto_posted": 9.576291942199363,
+   "touches": 7384,
+   "touches_per_client": 41.022222222222226,
+   "corrections": 0.0
+  },
+  {
+   "month": "2026-02",
+   "postings": 8169,
+   "auto_before": 825,
+   "auto_from_suggestions": 0,
+   "auto_total": 825,
+   "pct_auto_posted": 10.099155343371281,
+   "touches": 7344,
+   "touches_per_client": 40.8,
+   "corrections": 0.0
+  },
+  {
+   "month": "2026-03",
+   "postings": 8250,
+   "auto_before": 832,
+   "auto_from_suggestions": 0,
+   "auto_total": 832,
+   "pct_auto_posted": 10.084848484848486,
+   "touches": 7418,
+   "touches_per_client": 41.21111111111111,
+   "corrections": 0.0
+  },
+  {
+   "month": "2026-04",
+   "postings": 8331,
+   "auto_before": 837,
+   "auto_from_suggestions": 0,
+   "auto_total": 837,
+   "pct_auto_posted": 10.046813107670149,
+   "touches": 7494,
+   "touches_per_client": 41.63333333333333,
+   "corrections": 0.0
+  },
+  {
+   "month": "2026-05",
+   "postings": 8298,
+   "auto_before": 833,
+   "auto_from_suggestions": 293,
+   "auto_total": 1126,
+   "pct_auto_posted": 13.569534827669319,
+   "touches": 7172,
+   "touches_per_client": 39.84444444444444,
+   "corrections": 3.0
+  },
+  {
+   "month": "2026-06",
+   "postings": 8287,
+   "auto_before": 817,
+   "auto_from_suggestions": 273,
+   "auto_total": 1090,
+   "pct_auto_posted": 13.153131410643176,
+   "touches": 7197,
+   "touches_per_client": 39.983333333333334,
+   "corrections": 2.0
+  },
+  {
+   "month": "2026-07",
+   "postings": 8290,
+   "auto_before": 847,
+   "auto_from_suggestions": 293,
+   "auto_total": 1140,
+   "pct_auto_posted": 13.751507840772014,
+   "touches": 7150,
+   "touches_per_client": 39.72222222222222,
+   "corrections": 2.0
+  },
+  {
+   "month": "2026-08",
+   "postings": 8297,
+   "auto_before": 838,
+   "auto_from_suggestions": 312,
+   "auto_total": 1150,
+   "pct_auto_posted": 13.860431481258287,
+   "touches": 7147,
+   "touches_per_client": 39.705555555555556,
+   "corrections": 4.0
+  },
+  {
+   "month": "2026-09",
+   "postings": 8246,
+   "auto_before": 826,
+   "auto_from_suggestions": 299,
+   "auto_total": 1125,
+   "pct_auto_posted": 13.642978413776378,
+   "touches": 7121,
+   "touches_per_client": 39.56111111111111,
+   "corrections": 0.0
+  },
+  {
+   "month": "2026-10",
+   "postings": 8355,
+   "auto_before": 823,
+   "auto_from_suggestions": 304,
+   "auto_total": 1127,
+   "pct_auto_posted": 13.488928785158588,
+   "touches": 7228,
+   "touches_per_client": 40.15555555555556,
+   "corrections": 4.0
+  }
+ ],
+ "corrections_by_pattern": {
+  "PT001": {
+   "2026-05": {
+    "auto_posted": 194,
+    "corrections": 2.0,
+    "correction_rate": 0.0103,
+    "status": "active"
+   },
+   "2026-06": {
+    "auto_posted": 179,
+    "corrections": 2.0,
+    "correction_rate": 0.0112,
+    "status": "active"
+   },
+   "2026-07": {
+    "auto_posted": 190,
+    "corrections": 2.0,
+    "correction_rate": 0.0105,
+    "status": "active"
+   },
+   "2026-08": {
+    "auto_posted": 198,
+    "corrections": 2.0,
+    "correction_rate": 0.0101,
+    "status": "active"
+   },
+   "2026-09": {
+    "auto_posted": 204,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-10": {
+    "auto_posted": 209,
+    "corrections": 3.0,
+    "correction_rate": 0.0144,
+    "status": "active"
+   }
+  },
+  "PT002": {
+   "2026-05": {
+    "auto_posted": 47,
+    "corrections": 1.0,
+    "correction_rate": 0.0213,
+    "status": "active"
+   },
+   "2026-06": {
+    "auto_posted": 47,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-07": {
+    "auto_posted": 60,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-08": {
+    "auto_posted": 60,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-09": {
+    "auto_posted": 49,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-10": {
+    "auto_posted": 49,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   }
+  },
+  "PT003": {
+   "2026-05": {
+    "auto_posted": 51,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-06": {
+    "auto_posted": 46,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-07": {
+    "auto_posted": 42,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-08": {
+    "auto_posted": 53,
+    "corrections": 2.0,
+    "correction_rate": 0.0377,
+    "status": "active"
+   },
+   "2026-09": {
+    "auto_posted": 45,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-10": {
+    "auto_posted": 45,
+    "corrections": 1.0,
+    "correction_rate": 0.0222,
+    "status": "active"
+   }
+  },
+  "PT039": {
+   "2026-05": {
+    "auto_posted": 1,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-06": {
+    "auto_posted": 1,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-07": {
+    "auto_posted": 1,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-08": {
+    "auto_posted": 1,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-09": {
+    "auto_posted": 1,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   },
+   "2026-10": {
+    "auto_posted": 1,
+    "corrections": 0.0,
+    "correction_rate": 0.0,
+    "status": "active"
+   }
+  }
+ },
+ "note": "Simulation overlay on the real series: before May nothing changes; corrections = actual backtest misses."
+}

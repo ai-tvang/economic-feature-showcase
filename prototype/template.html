@@ -1,0 +1,1263 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workflow-forslag (prototype)</title>
+<style>
+:root{
+  --page:#ffffff; --surface:#ffffff; --ink:#1d2433; --ink2:#4b5566; --muted:#7b8494; --grid:#e6e8ec; --axis:#c9cdd6; --wash:#f3f4f6; --menu:#F0F1F3;
+  --accent:#1f6fd1; --accent-dark:#1859a9; --accent-wash:#e8f1fc; --top:#14213d; --top-ink:#f2f4f8; --border:#dfe2e8;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.top{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;background:var(--top);color:var(--top-ink)}
+.topr{display:flex;gap:16px;align-items:center;font-size:13px}
+.topr .agr{color:#a8b1c4}
+.adm{border:1px solid #6b7a99;border-radius:4px;padding:0 7px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#d6dcea}
+.top select{background:#22345a;color:#f2f4f8;border:1px solid #4a5b82;border-radius:6px;padding:5px 8px}
+.layout{display:grid;grid-template-columns:272px 1fr;min-height:calc(100vh - 52px)}
+nav.side{background:var(--menu);border-right:1px solid #D5D8DE;padding:0 0 8px}
+nav.side{font-family:Arial,Helvetica,sans-serif;font-size:14px}
+nav.side .grp,nav.side a.it{height:36px;margin:8px 8px 0;border-radius:6px;display:flex;align-items:center}
+nav.side .grp{gap:6px;padding:0 8px 0 6px;font-weight:700;color:#000;cursor:pointer;user-select:none}
+nav.side .grp:hover,nav.side a.it:hover{background:#E8E8E8}
+nav.side .grp .ar{width:14px;color:#000;font-size:12px;line-height:1;text-align:center}
+nav.side .grp .tag{margin-left:auto}
+nav.side a.it{white-space:nowrap;justify-content:space-between;gap:8px;padding:0 8px 0 36px;font-weight:400;color:#1A1A1A;cursor:pointer}
+nav.side a.it.on,nav.side a.it.on:hover{background:#E0E0E0;color:#1A1A1A}
+nav.side .tags{display:inline-flex;align-items:center;gap:4px;margin-left:auto}
+nav.side .tag,nav.side .badge{display:inline-block;background:#2D4A8A;color:#fff;border:0;border-radius:999px;font-size:11px;line-height:16px;font-weight:700;padding:0 7px}
+.crumb{font-size:14.5px;color:var(--muted);margin:0 0 6px}
+.crumb .sep{margin:0 6px}
+.crumb .last{color:var(--ink2)}
+.tag{border:1px solid var(--accent);color:var(--accent);border-radius:4px;font-size:10.5px;padding:0 5px;font-weight:600;background:#fff}
+.tag.src{white-space:nowrap}
+.badge{background:var(--accent);color:#fff;border-radius:10px;font-size:11px;padding:1px 7px;font-weight:600}
+main{padding:26px 32px 70px;max-width:1240px;width:100%}
+h1{font-size:26px;margin:0 0 4px;font-weight:600}
+h2{font-size:16px;margin:28px 0 8px;font-weight:600}
+.sub{color:var(--ink2);margin:0 0 16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(420px,1fr))}
+.kpi .v{font-size:26px;font-weight:600;line-height:1.1}
+.kpi .l{color:var(--ink2);font-size:13px;margin-top:4px}
+.kpi .n{color:var(--muted);font-size:12px;margin-top:2px}
+.tools{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;margin:6px 0 14px}
+.tools label{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+.tools select,.tools input[type=search]{border:1px solid var(--axis);background:#fff;border-radius:4px;padding:6px 10px;min-width:140px}
+.tools .chk{display:flex;gap:6px;align-items:center;padding-bottom:6px}
+.seg{display:inline-flex;border:1px solid var(--axis);border-radius:4px;overflow:hidden;background:#fff}
+.seg button{border:0;background:transparent;padding:6px 12px;color:var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.seg button+button{border-left:1px solid var(--axis)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--grid);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;background:#fafbfc}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.row{cursor:pointer}
+tr.row:hover{background:#f7f9fc}
+tr.dim td{color:var(--muted)}
+tr.gh td{background:var(--wash);font-weight:600}
+tr.detail>td{background:#f7f9fc;padding:16px 20px}
+.pill{display:inline-block;border:1px solid var(--axis);border-radius:999px;padding:1px 9px;font-size:12px;white-space:nowrap;color:var(--ink2);background:#fff}
+.pill.low{border-color:var(--accent);color:var(--accent);font-weight:600}
+.pill.medium{background:var(--wash);color:var(--ink);font-weight:600;border-style:dashed}
+.pill.not_suggested{color:var(--muted)}
+.pill.state{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pill.kind{border-radius:4px}
+.chips button{border:1px solid var(--axis);background:#fff;border-radius:999px;padding:4px 12px;margin-right:6px;color:var(--ink2)}
+.chips button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:4px;padding:7px 14px;font-weight:600}
+.btn:hover{background:var(--accent-dark)}
+.btn.ghost{background:#fff;color:var(--accent)}
+.btn.ghost:hover{background:var(--accent-wash)}
+.btn.dark{background:var(--ink);border-color:var(--ink)}
+.btn.sm{padding:3px 9px;font-size:12px}
+.btn.danger{background:#fff;color:#b3261e;border-color:#b3261e}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.nudge{border-left:4px solid var(--accent);background:var(--accent-wash);display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.exception{border-left:4px solid var(--ink);background:#fafbfc}
+.nudgeHead{display:block;font-size:20px;font-weight:700;line-height:1.25;margin-bottom:4px}
+#nudgeTime{cursor:help;white-space:nowrap}
+#topTime{cursor:help}
+.exBox{margin-top:12px}
+.exRow{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.exRow select,.exRow input{border:1px solid var(--axis);background:#fff;border-radius:4px;padding:4px 8px;font:inherit}
+.exRow .exP{width:220px}.exRow .exA{width:180px}.exRow .exV{width:90px;text-align:right}
+.exVal{width:300px;display:flex;align-items:center;gap:6px}
+.exX{border:0;background:transparent;color:var(--muted);font-size:18px;line-height:1;padding:2px 6px;cursor:pointer;border-radius:4px}
+.exX:hover{background:var(--wash);color:var(--ink)}
+.exLine{margin-top:6px;font-size:13px;color:var(--ink2)}
+.exBad{color:#b3261e;margin-left:8px}
+.chSum{background:var(--accent-wash);border-radius:4px;padding:6px 10px;margin:0 0 10px}
+.tabsNote{margin-left:auto;align-self:center}
+.devScope{margin-bottom:8px}.devScope button{padding:3px 10px;font-size:12px}
+.nw{white-space:nowrap}
+.muted{color:var(--muted)} .sec{color:var(--ink2)}
+.cl{display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 10px;font-size:12.5px;color:var(--ink2)}
+.cl label{display:inline-flex;gap:4px;align-items:center}
+.cl .mine{color:var(--ink);font-weight:700}
+code{background:#fff;border:1px solid var(--grid);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;padding:6px 9px;border-radius:6px;font-size:12px;z-index:50;display:none;max-width:260px}
+svg text{font-family:inherit}
+.flash{position:fixed;right:20px;bottom:20px;background:var(--ink);color:#fff;padding:10px 14px;border-radius:6px;max-width:380px;z-index:40}
+.undo{position:sticky;top:0;z-index:30;background:var(--ink);color:#fff;padding:10px 32px;display:flex;gap:16px;align-items:center}
+.undo .btn{background:#fff;color:var(--ink);border-color:#fff;padding:3px 12px}
+.note{font-size:12px;color:var(--muted)}
+.def{font-size:12px;color:var(--muted);margin-top:4px}
+.simtag{display:inline-block;border:1px dashed var(--ink);border-radius:4px;padding:0 6px;font-size:11px;font-weight:700;margin-left:8px;vertical-align:middle}
+.fbwrap{position:fixed;inset:0;background:rgba(15,30,50,.35);z-index:60;display:flex;align-items:center;justify-content:center}
+.fbbox{background:#fff;border-radius:8px;padding:18px 20px;width:min(420px,92vw);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.fbbox label.r{display:block;margin:6px 0}
+.fbbox input[type=text]{width:100%;margin:4px 0 12px;padding:6px 8px;border:1px solid var(--axis);border-radius:4px}
+.dueCards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.dueCards .v{font-size:32px;font-weight:600;line-height:1.1}
+.dueCards .l{color:var(--ink2);font-size:13.5px;font-weight:600;margin-bottom:4px}
+.ctl{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:0 0 12px}
+.ctl .inl{display:inline-flex;align-items:center;gap:6px;color:var(--ink2)}
+.ctl select,.ctl input[type=search]{border:1px solid var(--axis);background:#fff;border-radius:4px;padding:6px 10px}
+.ctl input[type=search]{margin-left:auto;min-width:200px}
+.tabbox{display:inline-flex;gap:2px;background:#E9EBEF;border-radius:6px;padding:3px}
+.tabbox button{border:0;background:transparent;border-radius:4px;padding:5px 12px;color:var(--ink2);font-weight:600}
+.tabbox button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(20,33,61,.18)}
+.tabbox .n{font-weight:400;margin-left:3px}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;position:relative}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.switch .sl{flex:none;display:block;width:34px;height:18px;border-radius:9px;background:var(--axis);position:relative}
+.switch .sl::after{content:'';position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff}
+.switch input:checked+.sl{background:var(--accent)}
+.switch input:checked+.sl::after{left:18px}
+.switch input:focus-visible+.sl{outline:2px solid var(--accent);outline-offset:2px}
+.iconbtn{padding:6px 8px;line-height:0}
+.ico{flex:none;vertical-align:-3px;margin-right:6px}
+.nudge .ico{margin:2px 10px 0 0}
+.topCards{grid-template-columns:1.4fr 1fr 1fr}
+.topCards .l{margin:4px 0 0}
+.topLine{margin:0 0 16px}
+.nudge{align-items:center}.nudgeL{flex:1 1 420px;min-width:0}.nudge>div:last-child{flex:none}
+.tsRow{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.tsBig{flex:none;min-width:200px}.tsBig .v{font-size:34px;font-weight:700;line-height:1.1;margin:4px 0}.tsBig .v .who{font-size:16px;font-weight:600}.tsBig .n{color:var(--muted);font-size:12.5px}
+.tsBar{flex:1 1 200px;min-width:160px}.tsBar .n{font-size:12.5px;color:var(--ink2);text-align:center;margin-bottom:4px}
+.tsBar .track{height:14px;border-radius:7px;background:#e3e7ee;overflow:hidden}.tsBar .fill{height:100%;background:var(--accent);border-radius:7px}
+a.lnk{color:var(--accent);cursor:pointer;font-weight:600}a.lnk:hover{text-decoration:underline}
+.sugg{display:block;margin-top:10px;color:var(--ink2)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-top:16px}
+.tabs button{border:1px solid transparent;border-bottom:0;background:transparent;padding:6px 14px;border-radius:6px 6px 0 0;color:var(--ink2);font-weight:600}
+.tabs button[aria-pressed="true"]{background:#fff;border-color:var(--border);color:var(--accent);box-shadow:inset 0 -2px var(--accent)}
+.bt{width:100%;font-size:12.5px;background:#fff}
+.bt td.dev{background:#fdecea;color:#8a1c14;font-weight:700;border-left:3px solid #b3261e}
+.bt td.same{color:var(--muted)}
+.pill.dv{border-color:#b3261e;color:#b3261e;font-weight:600;margin-left:4px}
+.xnote{display:inline-block;font-size:11px;border:1px dashed var(--axis);border-radius:4px;padding:0 6px;color:var(--muted);margin-left:8px;font-weight:400;vertical-align:middle}
+.below{font-weight:700;text-decoration:underline}
+.subline{display:block;color:var(--muted);font-size:12px}
+.acts{white-space:nowrap}
+.riskWhy{display:block;font-size:11.5px;line-height:1.3;color:var(--ink2);margin-top:4px;min-width:170px;max-width:230px}
+.riskPanel{margin:0 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.riskPanel .riskWhy{display:inline;margin:0;max-width:none;font-size:13px}
+@media (max-width:820px){.layout{grid-template-columns:1fr}nav.side{border-right:0;border-bottom:1px solid var(--border)}main{padding:16px}.g2{grid-template-columns:1fr}.topCards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top"><div></div><div class="topr"><b>Nordkyst Regnskab</b><span class="agr" id="agr"></span><span class="adm">Admin</span><select id="bkSel" aria-label="Bogholder"></select></div></div>
+<div id="undo"></div><div id="fb"></div>
+<div class="layout"><nav class="side" id="side"></nav><main id="main"></main></div>
+<div class="tip" id="tip"></div><div id="flash"></div>
+<script id="data" type="application/json">/*DATA*/</script>
+<script id="btdata" type="application/json">/*BT*/</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const $ = (s, r=document) => r.querySelector(s);
+const nf = (n, d=0) => Number(n).toLocaleString('da-DK', {minimumFractionDigits:d, maximumFractionDigits:d});
+const pct = (x, d=1) => nf(x*100, d) + ' %';
+const kr = (x, d=2) => nf(x, d) + ' kr.';
+const fdate = iso => iso.slice(8,10)+'.'+iso.slice(5,7)+'.'+iso.slice(2,4);
+const ftime = m => String(Math.floor(m/60)).padStart(2,'0')+':'+String(Math.round(m%60)).padStart(2,'0');
+const vatL = v => v==='NONE' ? 'Ingen moms' : v;
+const MON = ['nov 25','dec 25','jan 26','feb 26','mar 26','apr 26','maj 26','jun 26','jul 26','aug 26','sep 26','okt 26'];
+const TODAY = '29.10.26';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const P = D.patterns, byId = Object.fromEntries(P.map(p=>[p.pattern_id,p]));
+const EXC = D.value.exception, BKS = Object.keys(D.praksis);
+const cname = c => D.clientName[c], cfull = c => `${D.clientName[c]} (${c})`, bkl = b => `${D.bkName[b]} (${b})`;
+const S = {page:'tasks', bk:'B2', level:'mid', model:'equal', open:null, showAll:false, risk:'all', type:'all', q:'', sort:'safety',
+           rules:[], ruleSeq:1, dismissed:new Set(), heldClients:new Set([EXC.client]), choosing:null, confirmDel:null, undo:null, fb:null, feedback:[], tab:'mine', btAll:false, suggestColl:false, suggested:{},
+           menu:{admin:true, central:false, praksis:true, defaults:false, automation:true},
+           drafts:{}, ruleEdit:null, devScope:'all', group:'none', taskTab:'open', myOnly:true, tq:'', ttype:'all', filtersOpen:false, period:'this', nudgeHidden:false};
+D.value.approved.forEach(a => S.rules.push({id:'R'+(S.ruleSeq++), pid:a.pattern_id, clients:[...byId[a.pattern_id].clients], created:'02.05.26', batch:'init', initial:true, exc:[]}));
+const excRule = () => S.rules.find(r=>r.pid===EXC.pattern);
+if(excRule()) Object.assign(excRule(), {payee:EXC.usual_to, amount:EXC.usual_amount, sentToJournal:false});
+const MODEL_LABEL = {equal:'Touch cost equal', split:'Suggestion cheaper'}, LEVEL_LABEL = {low:'Low', mid:'Mid', high:'High'};
+const RISK_DA = {low:'Lav risiko', medium:'Mellem risiko', not_suggested:'Ikke foreslået'}, RISK_ORD = {low:0, medium:1, not_suggested:2};
+const mm = x => nf(x, Number.isInteger(x)?0:(x*10%1===0?1:2));
+const mins = () => D.minutes[S.model][S.level];
+
+const hoursOf = h => (h.suggestion_accepted*mins().suggestion_accepted + h.rule_to_journal*mins().rule_to_journal + h.manual*mins().manual)/60;
+
+/* ---------- rules and state ---------- */
+const rulesFor = pid => S.rules.filter(r=>r.pid===pid);
+const pausedOf = r => r.paused||(r.paused=new Set());
+const rAllPaused = r => r.clients.every(c=>pausedOf(r).has(c));
+const ownClients = r => r.clients.filter(isMine);
+const ownPaused = r => { const o=ownClients(r); return o.length>0 && o.every(c=>pausedOf(r).has(c)); };
+const ruleEff = r => r.clients.filter(c=>!pausedOf(r).has(c) && !(r.pid===EXC.pattern && S.heldClients.has(c)));
+const effSet = p => new Set(rulesFor(p.pattern_id).flatMap(ruleEff));
+const hasHold = () => S.heldClients.size>0 && !!excRule();
+const stateOf = p => {
+  if(S.dismissed.has(p.pattern_id)) return 'dismissed';
+  const rs=rulesFor(p.pattern_id);
+  if(!rs.length) return p.status==='suggested' ? 'open' : 'not_suggested';
+  if(p.pattern_id===EXC.pattern && hasHold() && rs.some(r=>!rAllPaused(r))) return 'held';
+  const n=effSet(p).size;
+  if(n===0) return unappr(p).length?'partial':'paused';
+  return n>=p.n_clients ? 'approved' : 'partial';
+};
+const isOpen = p => p.status==='suggested' && ['open','partial'].includes(stateOf(p));
+const myOpen = p => unappr(p).filter(isMine);
+const colleagues = p => unappr(p).filter(c=>!isMine(c));
+const unappr = p => { const e=effSet(p); const all=new Set(rulesFor(p.pattern_id).flatMap(r=>r.clients)); return p.clients.filter(c=>!all.has(c) || (!e.has(c) && false)); };
+const sv = (p,c) => p.saved_by_client[c]||0;
+const savedFor = (p, cs) => cs.reduce((s,c)=>s+sv(p,c),0);
+const hoursPer = p => p.saved_per_month ? hoursOf(p.saved_by_handling)/p.saved_per_month : 0;
+const isMine = c => D.clientBk[c]===S.bk;
+const mine = p => p.clients.filter(isMine);
+const mySaved = p => savedFor(p, unappr(p).filter(isMine));
+const sortSafe = (a,b) => RISK_ORD[a.risk]-RISK_ORD[b.risk] || a.safety_rank-b.safety_rank;
+const openMine = () => P.filter(p=>isOpen(p) && p.type!=='rent' && mySaved(p)>0);
+const rentPats = () => P.filter(p=>p.type==='rent' && isMine(p.clients[0]) && p.status==='suggested' && !S.dismissed.has(p.pattern_id));
+const openRentMine = () => rentPats().filter(isOpen);
+const activeRules = () => S.rules.filter(r=>S.rules.includes(r));
+const activePats = () => P.filter(p=>['approved','partial','paused','held'].includes(stateOf(p)));
+const liveSaved = (only) => P.reduce((s,p)=>s+savedFor(p,[...effSet(p)].filter(c=>!only||isMine(c))),0);
+const liveHoursOffice = () => P.reduce((s,p)=>s+savedFor(p,[...effSet(p)])*hoursPer(p),0);
+const openLow = () => openMine().filter(p=>p.risk==='low').sort(sortSafe);
+const riskLine = t => `<span class="riskWhy">${esc(t)}</span>`;
+const flash = msg => { const f=$('#flash'); f.innerHTML=`<div class="flash">${esc(msg)}</div>`; clearTimeout(flash.t); flash.t=setTimeout(()=>f.innerHTML='',3500); };
+
+/* ---------- tooltip ---------- */
+const tip = $('#tip');
+function showTip(e, html){ tip.innerHTML=html; tip.style.display='block'; tip.style.left=Math.min(e.clientX+12,innerWidth-280)+'px'; tip.style.top=(e.clientY+12)+'px'; }
+function hideTip(){ tip.style.display='none'; }
+function wireTips(root){ root.querySelectorAll('[data-tip]').forEach(r=>{ r.addEventListener('mousemove',e=>showTip(e,r.dataset.tip)); r.addEventListener('mouseleave',hideTip); }); }
+
+/* ---------- chart ---------- */
+function niceTicks(max){ const raw=max/4, mag=Math.pow(10,Math.floor(Math.log10(raw))), nm=raw/mag, step=(nm<=1?1:nm<=2?2:nm<=5?5:10)*mag; const top=Math.ceil(max/step-1e-9)*step, ticks=[]; for(let v=0;v<=top+1e-9;v+=step) ticks.push(+v.toFixed(6)); return {ticks,top,step}; }
+function barChart(items, o){
+  const W=o.w||560,H=o.h||250,m={l:46,r:16,t:18,b:o.bottom||54}, iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const mx=Math.max(...items.map(i=>i.v))*1.08||1, nt=niceTicks(mx), hi=nt.top, Y=v=>m.t+ih*(1-v/hi), bw=Math.min(54,iw/items.length*0.6);
+  let g='';
+  nt.ticks.forEach(v=>{ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${nf(v,nt.step<1?1:0)}</text>`; });
+  items.forEach((it,i)=>{
+    const cx=m.l+iw*(i+.5)/items.length, y=Y(it.v);
+    const fill=it.proj?'var(--accent-wash)':(it.hl?'var(--accent)':'var(--axis)'), stroke=it.proj?'var(--accent)':'none';
+    g+=`<path d="M${cx-bw/2},${m.t+ih} V${y+3} Q${cx-bw/2},${y} ${cx-bw/2+3},${y} H${cx+bw/2-3} Q${cx+bw/2},${y} ${cx+bw/2},${y+3} V${m.t+ih} Z" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${it.proj?'stroke-dasharray="4 3"':''}/>`;
+    g+=`<text x="${cx}" y="${H-(it.sub?32:10)}" text-anchor="middle" font-size="${items.length>8?10.5:12}" fill="var(--ink2)">${esc(it.name)}</text>`;
+    if(it.sub) g+=`<text x="${cx}" y="${H-12}" text-anchor="middle" font-size="11" fill="var(--muted)">${esc(it.sub)}</text>`;
+    g+=`<rect data-tip="${esc(it.tip||it.name+': '+nf(it.v,o.dec||0)+(o.unit||''))}" x="${cx-iw/items.length/2}" y="${m.t}" width="${iw/items.length}" height="${ih}" fill="transparent"/>`;
+  });
+  items.forEach((it,i)=>{ if(items.length<=6){ const cx=m.l+iw*(i+.5)/items.length; g+=`<text class="valLabel" x="${cx}" y="${Y(it.v)-6}" text-anchor="middle" font-size="12" fill="var(--ink)" stroke="#fff" stroke-width="3" paint-order="stroke">${nf(it.v,o.dec||0)}${o.unit||''}</text>`; } });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(o.aria)}">${g}</svg>`;
+}
+
+/* ---------- shell ---------- */
+const BULB = sz => `<svg class="ico bulb" width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>`;
+const AR_OPEN='\u25BC', AR_SHUT='\u25B6\uFE0E';
+const MENU = [
+  {id:'admin', label:'Administrator', items:[['Master information'],['Users'],['Services'],['Website text'],['Price list'],['Log']]},
+  {id:'central', label:'Admin Central', items:[]},
+  {id:'praksis', label:'Praksis', tag:'New', items:[['Teams'],['Opgaver','tasks'],['Templates'],['Time registration','time'],['Companies']]},
+  {id:'defaults', label:'Default setups', items:[]},
+  {id:'automation', label:'Automation', items:[['Dashboard','dashboard','New'],['Bank workflows','workflows'],['Workflow-forslag','suggestions','NewCount']]}];
+function renderShell(){
+  $('#agr').textContent = 'Aftale ' + D.agreement;
+  $('#bkSel').innerHTML = BKS.map(b=>`<option value="${b}" ${b===S.bk?'selected':''}>${esc(bkl(b))}</option>`).join('');
+  const n = openMine().length + (openRentMine().length?1:0);
+  $('#side').innerHTML = MENU.map(g=>`<div class="grp ${g.items.some(i=>i[1]&&i[1]===S.page)?'cur':''}" data-grp="${g.id}"><span class="ar">${S.menu[g.id]?AR_OPEN:AR_SHUT}</span><span>${g.label}</span>${g.tag?`<span class="tag">${g.tag}</span>`:''}</div>`
+    + (S.menu[g.id]?g.items.map(([l,k,t])=>`<a class="it ${k&&S.page===k?'on':''}" ${k?`data-page="${k}"`:''}>${l}${t==='New'?'<span class="tags"><span class="tag">New</span></span>':t==='NewCount'?`<span class="tags"><span class="tag">New</span> <span class="badge" id="badge">${n}</span></span>`:''}</a>`).join(''):'')).join('');
+  $('#fb').innerHTML = fbBox();
+  $('#undo').innerHTML = S.undo ? `<div class="undo" id="undoBar"><span id="undoMsg">${esc(S.undo.msg)}</span><button class="btn" data-act="undo">Fortryd</button></div>` : '';
+}
+const FB_REASONS = ['Forkert konto eller moms','Ikke sikker endnu','Ikke relevant'], FB_MISTAKE = 'Klikkede ved en fejl';
+const FB_PAUSE = ['Forkert konto eller moms','Noget har ændret sig hos kunden','Ikke sikker endnu'];
+const FB_TITLE = {dismiss:'Hvorfor afviser du forslaget?', undo:'Hvorfor fortryder du?', delete:'Hvorfor sletter du workflowen?', pause:'Hvorfor sætter du workflowen på pause?'};
+function fbBox(){
+  if(!S.fb) return '';
+  const opts=S.fb.kind==='undo'?FB_REASONS.concat([FB_MISTAKE]):S.fb.kind==='pause'?FB_PAUSE:FB_REASONS;
+  return `<div class="fbwrap"><div class="fbbox" id="fbBox"><b>${FB_TITLE[S.fb.kind]}</b>${S.fb.kind==='pause'?'<div class="note" id="fbOptional">Årsagen er valgfri.</div>':''}
+   ${opts.map(o=>`<label class="r"><input type="radio" name="fbr" value="${esc(o)}"> ${esc(o)}</label>`).join('')}
+   <label for="fbt" style="display:block;margin-top:10px"><b>Hvorfor?</b></label><input type="text" id="fbt" placeholder="Valgfrit">
+   <div><button class="btn" data-act="fbConfirm">Bekræft</button> <button class="btn ghost" data-act="fbCancel">Annuller</button></div></div></div>`;
+}
+const fbCounts = () => { const c={}; [...FB_REASONS,...FB_PAUSE,FB_MISTAKE,'Ingen årsag angivet'].forEach(r=>c[r]=0); S.feedback.forEach(f=>c[f.reason]=(c[f.reason]||0)+1); return c; };
+function setUndo(msg, kind, payload){
+  clearTimeout(S.undoTimer);
+  S.undo={msg,kind,payload,expires:Date.now()+10000};
+  S.undoTimer=setTimeout(()=>{ S.undo=null; if(S.fb) $('#undo').innerHTML=''; else render(); },10000);
+}
+
+/* ---------- Praksis: Opgaveoversigt ---------- */
+const TODAY_ISO='2026-10-29', WEEK_END_ISO='2026-11-01';
+const SUBTASKS={Bankafstemning:'0/2'}; // display only: the task data holds no subtasks
+const TIME_TIP='Beregnet ved 1 min. pr. manuel håndtering.';
+const fmtTime = x => { const m=x>0?Math.max(5,Math.round(x/5)*5):0, h=Math.floor(m/60), r=m%60; return h?(r?`${h} t ${r} min`:`${h} t`):`${m} min`; };
+const mhWord = x => x===1?'manuel håndtering':'manuelle håndteringer';
+const listOg = a => a.length>1?a.slice(0,-1).join(', ')+' og '+a[a.length-1]:a.join('');
+const safest3 = () => { const c=openLow().slice(0,3), x=c.reduce((s,p)=>s+rowTouch(p),0); return {c,x,n:c.length,time:fmtTime(x)}; };
+const PRINT_ICON=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>`;
+function viewTasks(){
+  const {c,x,n,time}=safest3();
+  const scope=D.tasks.filter(t=>!S.myOnly||t.bk===S.bk);
+  const overdue=scope.filter(t=>t.date<TODAY_ISO).length, dueWeek=scope.filter(t=>t.date>=TODAY_ISO&&t.date<=WEEK_END_ISO).length;
+  const found=scope.filter(t=>(S.ttype==='all'||t.type===S.ttype)&&(cname(t.client)+' '+t.comment+' '+t.type).toLowerCase().includes(S.tq.toLowerCase()));
+  const tabN={open:found.filter(t=>!t.done).length, done:found.filter(t=>t.done).length, all:found.length};
+  let rows=found.filter(t=>S.taskTab==='all'||(S.taskTab==='done')===!!t.done);
+  const key = S.group==='company' ? t=>cname(t.client) : S.group==='type' ? t=>t.type : null;
+  rows=rows.slice().sort(key ? (a,b)=>key(a).localeCompare(key(b),'da')||b.n-a.n||a.date.localeCompare(b.date)
+                             : (a,b)=>b.n-a.n||b.voucher-a.voucher||a.client.localeCompare(b.client)||a.date.localeCompare(b.date));
+  let body='', last=null;
+  rows.forEach(t=>{ if(key && key(t)!==last){ last=key(t); body+=`<tr class="gh"><td colspan="4">${esc(last)}</td></tr>`; }
+    body+=`<tr data-n="${t.n}"><td>${esc(t.comment)}<span class="subline">${fdate(t.date)} · ${esc(D.bkName[t.bk])}</span></td><td>${esc(cname(t.client))} <span class="muted">${t.client}</span><span class="subline">${nf(t.n)} posteringer rørt i okt, ${nf(t.voucher)} bilag</span></td><td><span class="pill">${t.done?'Udført':'Åben'}</span></td><td>${SUBTASKS[t.comment]||'-'}</td></tr>`; });
+  const ttab=(k,l)=>`<button data-ttab="${k}" aria-pressed="${S.taskTab===k}">${l}<span class="n">${nf(tabN[k])}</span></button>`;
+  $('#main').innerHTML = `<h1>Opgaveoversigt</h1>
+  ${S.nudgeHidden?'':n?`<div class="card nudge" id="nudge"><div class="nudgeL" style="display:flex;align-items:flex-start">${BULB(24)}<div><b class="nudgeHead" id="nudgeText">Spar ca. <span id="nudgeTime" data-tip="${TIME_TIP}">${time}</span> om måneden</b>
+    <div class="sec" id="nudgeLine">${n} workflow-forslag kan fjerne <span id="nudgeNum">${nf(x,0)}</span> ${mhWord(x)} for dig: ${esc(listOg(c.map(p=>p.name)))}. Godkend én gang, så kommer kun undtagelser tilbage.</div></div></div>
+    <div><button class="btn" data-act="nudgeGo">${n===1?'Se forslaget':`Se de ${n} forslag`}</button> <button class="btn ghost" data-act="nudgeLater">Senere</button></div></div>`
+   :`<div class="card nudge" id="nudge"><b id="nudgeText">${openMine().length?'Ingen åbne lav-risiko-forslag hos dine kunder.':'Ingen åbne forslag hos dine kunder.'}</b></div>`}
+  <div class="dueCards" id="dueCards"><div class="card"><div class="l">Forfalden</div><div class="v" id="dueOver">${nf(overdue)}</div></div><div class="card"><div class="l">Forfalder denne uge</div><div class="v" id="dueWeek">${nf(dueWeek)}</div></div></div>
+  <div class="ctl" id="taskCtl"><button class="btn" data-act="taskNew">Opret opgave</button>
+   <label class="inl">Periode: <select id="period"><option>Dette kvartal</option></select></label>
+   <label class="inl">Gruppér efter: <select id="groupBy"><option value="none" ${S.group==='none'?'selected':''}>Ingen</option><option value="company" ${S.group==='company'?'selected':''}>Virksomhed</option><option value="type" ${S.group==='type'?'selected':''}>Opgavetype</option></select></label></div>
+  <div class="ctl" id="taskBar"><div class="tabbox" id="taskTabs">${ttab('open','Åbne opgaver')}${ttab('done','Udført')}${ttab('all','Alle')}</div>
+   <label class="switch"><input type="checkbox" id="myOnly" ${S.myOnly?'checked':''}><span class="sl"></span>Kun mine opgaver</label>
+   <button class="btn ghost" data-act="filters">Filtre${S.ttype!=='all'?' (1)':''}</button>
+   <button class="btn ghost iconbtn" data-act="taskPrint" aria-label="Udskriv" title="Udskriv">${PRINT_ICON}</button>
+   <input type="search" id="tq" value="${esc(S.tq)}" placeholder="Søg..." aria-label="Søg"></div>
+  ${S.filtersOpen?`<div class="ctl" id="taskFilter"><label class="inl">Opgavetype: <select id="ttype">${['all','Bogføring','Afstemning','Fakturering'].map(v=>`<option value="${v}" ${S.ttype===v?'selected':''}>${v==='all'?'Alle':v}</option>`).join('')}</select></label></div>`:''}
+  <div class="card" style="padding:0;overflow:auto"><table id="taskTable"><thead><tr><th>Opgavenavn</th><th>Virksomhed</th><th>Status</th><th>Underopgaver</th></tr></thead><tbody>${body||`<tr><td colspan="4" class="muted" id="taskEmpty">${S.taskTab==='done'?'Ingen udførte opgaver.':'Ingen opgaver.'}</td></tr>`}</tbody></table></div>`;
+  $('#groupBy').onchange=e=>{S.group=e.target.value; render();};
+  $('#myOnly').onchange=e=>{S.myOnly=e.target.checked; render();};
+  wireTips($('#main'));
+  const tt=$('#ttype'); if(tt) tt.onchange=e=>{S.ttype=e.target.value; render();};
+  $('#tq').oninput=e=>{S.tq=e.target.value; const pos=e.target.selectionStart; render(); const q=$('#tq'); q.focus(); q.setSelectionRange(pos,pos);};
+}
+
+/* ---------- Praksis: Time registration ---------- */
+function viewTime(){
+  const rows=D.times.filter(t=>t.week===S.period&&(!S.myOnly||t.bk===S.bk)&&(cname(t.client)+' '+t.comment+' '+t.type).toLowerCase().includes(S.tq.toLowerCase()));
+  const tot=rows.reduce((s,t)=>s+t.total,0), bill=rows.reduce((s,t)=>s+t.billable,0);
+  $('#main').innerHTML = `<h1>Time registration</h1><p class="sub">Registreret tid pr. firma og opgavetype.</p>
+  <div class="card" id="timeNote" style="margin-bottom:14px;background:#fafbfc"><b>Illustrativ:</b> afledt af antagne minutter pr. manuel håndtering.</div>
+  <div class="tools"><div><label>Periode</label><select id="period"><option value="this" ${S.period==='this'?'selected':''}>Denne uge</option><option value="last" ${S.period==='last'?'selected':''}>Sidste uge</option></select></div>
+   <label class="chk"><input type="checkbox" id="myOnly" ${S.myOnly?'checked':''}> Mine registreringer</label>
+   <div><label>Søg</label><input type="search" id="tq" value="${esc(S.tq)}" placeholder="Søg..."></div></div>
+  <div class="card" style="padding:0;overflow:auto"><table id="timeTable"><thead><tr><th>Dato</th><th>Virksomhed</th><th>Opgavetype</th><th class="num">Samlet tid</th><th class="num">Fakturerbar tid</th><th>Kommentar</th><th>Ansvarlig</th></tr></thead><tbody>
+  ${rows.map(t=>`<tr><td>${fdate(t.date)}</td><td>${esc(cname(t.client))} <span class="muted">${t.client}</span></td><td>${t.type}</td><td class="num">${ftime(t.total)}</td><td class="num">${ftime(t.billable)}</td><td>${esc(t.comment)}</td><td>${esc(bkl(t.bk))}</td></tr>`).join('')||'<tr><td colspan="7" class="muted">Ingen registreringer.</td></tr>'}
+  <tr class="gh"><td colspan="3">I alt (${rows.length} registreringer)</td><td class="num">${ftime(tot)}</td><td class="num">${ftime(bill)}</td><td colspan="2"></td></tr></tbody></table></div>`;
+  $('#period').onchange=e=>{S.period=e.target.value; render();};
+  $('#myOnly').onchange=e=>{S.myOnly=e.target.checked; render();};
+  $('#tq').oninput=e=>{S.tq=e.target.value; const pos=e.target.selectionStart; render(); const q=$('#tq'); q.focus(); q.setSelectionRange(pos,pos);};
+}
+
+/* ---------- Automation: Workflow-forslag ---------- */
+function pickSpread(arr,n){ if(arr.length<=n) return arr; const out=[]; for(let i=0;i<n;i++) out.push(arr[Math.round(i*(arr.length-1)/(n-1))]); return out; }
+function examplesFor(list){
+  const all=list.flatMap(p=>p.examples), hers=all.filter(e=>isMine(e.client_id)), others=all.filter(e=>!isMine(e.client_id));
+  const a=pickSpread(hers,5); return a.concat(pickSpread(others,5-a.length));
+}
+/* ---------- backtest postings behind a suggestion (decoded lazily on first use) ---------- */
+let BT=null; const btData=()=>BT||(BT=JSON.parse($('#btdata').textContent));
+const DAY0=Date.UTC(2026,4,1), isoOf=d=>new Date(DAY0+d*864e5).toISOString().slice(0,10);
+const accVat = (a,v) => `${a} / ${vatL(v)}`;
+const btCache = {};
+function btRows(pids){
+  const key=pids.join(','); if(btCache[key]) return btCache[key];
+  const B=btData(), out=[];
+  pids.forEach(pid=>{ const p=byId[pid], sug=accVat(p.account,p.vat_code);
+    (B.rows[pid]||[]).forEach(r=>{ const dev=r[4]>=0, b=dev?B.booked[r[4]].split('|'):null;
+      out.push({date:isoOf(r[0]), client:B.clients[r[1]], text:B.texts[r[2]], amount:r[3], sug, book:dev?accVat(b[0],b[1]):sug, dev}); }); });
+  out.sort((a,b)=>b.date.localeCompare(a.date)||a.client.localeCompare(b.client));
+  return btCache[key]=out;
+}
+function btInner(pids){
+  const chosen=S.choosing?S.choosing.sel:null, rows=btRows(pids).filter(r=>!chosen||chosen.has(r.client));
+  const dev=rows.filter(r=>r.dev&&(chosen||S.devScope==='all'||isMine(r.client))), list=S.tab==='dev'?dev:rows.filter(r=>chosen||isMine(r.client)), shown=S.btAll?list:list.slice(0,20);
+  const tr=r=>`<tr><td>${fdate(r.date)}</td><td>${esc(cname(r.client))} <span class="muted">${r.client}</span></td><td><code>${esc(r.text)}</code></td><td class="num">${kr(r.amount)}</td><td>${esc(r.sug)}</td>
+    <td class="${r.dev?'dev':'same'}">${esc(r.book)}${r.dev?' <span class="pill dv">Afviger</span>':''}</td></tr>`;
+  const foot=`Nyeste først. Backtest maj–okt${chosen?', for de valgte kunder':''}.`;
+  const empty=chosen&&!chosen.size?'Ingen kunder valgt.':S.tab==='dev'?(chosen?'Ingen afvigelser hos de valgte kunder.':S.devScope==='mine'?'Ingen afvigelser hos dine kunder.':'Ingen afvigelser i backtesten'):(chosen?'Ingen posteringer hos de valgte kunder i backtesten.':'Ingen posteringer hos dine kunder i backtesten.');
+  return `<div class="tabs" id="btTabs"><button data-tab="mine" aria-pressed="${S.tab==='mine'}">Dine kunder</button><button data-tab="dev" aria-pressed="${S.tab==='dev'}">Afvigelser (${dev.length})</button>${chosen?'<span class="note tabsNote" id="btScope">Tallene gælder for de valgte kunder</span>':''}</div>
+   <div style="padding-top:10px">${!chosen&&S.tab==='dev'?`<div class="seg devScope" id="devScope"><button data-devscope="mine" aria-pressed="${S.devScope==='mine'}">Mine kunder</button><button data-devscope="all" aria-pressed="${S.devScope==='all'}">Alle kunder</button></div>`:''}${list.length?`<div style="overflow:auto"><table class="bt"><thead><tr><th>Dato</th><th>Virksomhed</th><th>Banktekst</th><th class="num">Beløb</th><th>Foreslået (konto / moms)</th><th>Bogført (konto / moms)</th></tr></thead><tbody>${shown.map(tr).join('')}</tbody></table></div>
+     ${list.length>20?`<p style="margin:8px 0 0"><button class="btn sm ghost" data-act="btAll">${S.btAll?'Vis færre':`Vis alle (${nf(list.length)})`}</button> <span class="note">${foot}</span></p>`:`<div class="note" style="margin-top:6px">${foot}</div>`}`
+     :`<div class="muted" id="btEmpty">${empty}</div>`}</div>`;
+}
+const btRefresh = () => { const w=$('#btWrap'); if(w) w.innerHTML=btInner(w.dataset.pids.split(',')); };
+
+/* ---------- afvigelsesregler: shared editor for the panel and Bank workflows ---------- */
+/* Amounts in the backtest are signed (payments are negative). A limit is about the size of the amount, so every comparison uses the absolute value. */
+const EX_PARAM={gt:'Beløb større end',lt:'Beløb mindre end',new:'Ny modtager',vat:'Bilagets momskode afviger'}, EX_ACT={hold:'Hold tilbage',journal:'Send til kassekladde'}, EX_SUG='Forslag ud fra historikken';
+const exIsAmt = k => k==='gt'||k==='lt';
+const quantile = (a,q) => { if(!a.length) return null; const s=[...a].sort((x,y)=>x-y), i=(s.length-1)*q, lo=Math.floor(i); return s[lo]+(s[Math.min(lo+1,s.length-1)]-s[lo])*(i-lo); };
+const exSuggest = (k,post) => { const v=quantile(post.map(b=>Math.abs(b.amount)),k==='gt'?.95:.05); return v===null?'':Math.round(v); };
+const exValid = r => !exIsAmt(r.param)||(!r.edited&&r.value==='')||(r.value!==''&&isFinite(r.value)&&+r.value>=0);
+const exHit = (rows,size) => rows.some(r=>exIsAmt(r.param)&&r.value!==''&&exValid(r)&&(r.param==='gt'?size>+r.value:size<+r.value));
+const exKey = k => S.bk+':'+k;
+const draftOf = k => S.drafts[exKey(k)]||(S.drafts[exKey(k)]=[]);
+const exBadDraft = k => draftOf(k).some(r=>!exValid(r));
+const exFreeze = rows => rows.map(r=>exIsAmt(r.param)&&!r.edited?{...r,edited:true,note:EX_SUG}:{...r});
+const exCount = r => { const n=(r.exc||[]).length; return n?`${n} ${n===1?'afvigelsesregel':'afvigelsesregler'}`:'Ingen afvigelsesregler'; };
+const exCtx = key => { if(key==='edit'){ const r=S.rules.find(x=>x.id===S.ruleEdit.rid); return {rows:S.ruleEdit.rows, post:btRows([r.pid]).filter(b=>r.clients.includes(b.client)), chosen:false}; }
+  const pids=key==='RENT'?openRentMine().map(p=>p.pattern_id):[key]; return {rows:draftOf(key), post:btRows(pids).filter(b=>!S.choosing||S.choosing.sel.has(b.client)), chosen:!!S.choosing}; };
+const exNote = r => r.param==='vat'?'Virker, når bilaget er matchet.':exIsAmt(r.param)?(r.edited?(r.note||''):EX_SUG):'';
+function exLineHtml(c){
+  const amt=c.rows.filter(r=>exIsAmt(r.param)); if(!amt.length) return '';
+  const bad=c.rows.some(r=>!exValid(r))?'<span class="exBad" id="exBad">Udfyld beløbet, eller fjern reglen.</span>':'';
+  if(!c.post.length) return `Vælg mindst én kunde for at se tallene.${bad}`;
+  const hit=c.post.filter(b=>exHit(c.rows,Math.abs(b.amount))).length, M=c.post.length, acts=new Set(amt.map(r=>r.action));
+  const verb=acts.size>1?'holdt tilbage eller sendt til kassekladden':acts.has('journal')?'sendt til kassekladden':'holdt tilbage';
+  return `Med disse regler var ${nf(hit)} af ${nf(M)} blevet ${verb} i backtesten${c.chosen?' for de valgte kunder':''} (${nf(hit/M*100,1)} %).${bad}`;
+}
+function exEditor(key){
+  const c=exCtx(key), used=new Set(c.rows.map(r=>r.param));
+  c.rows.forEach(r=>{ if(exIsAmt(r.param)&&!r.edited) r.value=exSuggest(r.param,c.post); });
+  return `<div class="exBox" id="exBox" data-ex="${key}">${c.rows.map((r,i)=>`<div class="exRow" data-i="${i}">
+    <select class="exP" aria-label="Parameter">${Object.entries(EX_PARAM).map(([k,l])=>`<option value="${k}" ${k===r.param?'selected':''} ${k!==r.param&&used.has(k)?'disabled':''}>${l}</option>`).join('')}</select>
+    <span class="exVal">${exIsAmt(r.param)?`<input type="number" class="exV" min="0" step="1" value="${r.value}" aria-label="Værdi"> kr.`:''}<span class="note exN">${exNote(r)}</span></span>
+    <select class="exA" aria-label="Handling">${Object.entries(EX_ACT).map(([k,l])=>`<option value="${k}" ${k===r.action?'selected':''}>${l}</option>`).join('')}</select>
+    <button class="exX" data-act="exDel" data-i="${i}" aria-label="Fjern reglen" title="Fjern reglen">×</button></div>`).join('')}
+    <button class="btn sm ghost" data-act="exAdd" ${c.rows.length>=Object.keys(EX_PARAM).length?'disabled':''}>+ Tilføj afvigelsesregel</button>
+    <div class="exLine" id="exLine">${exLineHtml(c)}</div></div>`;
+}
+function exSync(key){
+  const c=exCtx(key), bad=c.rows.some(r=>!exValid(r));
+  $('#exLine').innerHTML=exLineHtml(c);
+  c.rows.forEach((r,i)=>{ const n=document.querySelector(`.exRow[data-i="${i}"] .exN`); if(n) n.textContent=exNote(r); });
+  document.querySelectorAll('[data-act=approveAll],[data-act=exSave]').forEach(b=>b.disabled=bad);
+  const as=$('[data-act=approveSel]'); if(as) as.disabled=bad||!S.choosing.sel.size;
+}
+/* Husleje hos Olsen Rådgivning has two rules from the start */
+if(excRule()) excRule().exc=[{param:'new',value:'',action:'hold',edited:true},
+  {param:'gt',value:Math.round(quantile(btRows([EXC.pattern]).filter(b=>b.client===EXC.client).map(b=>Math.abs(b.amount)),.5)*1.02),action:'hold',edited:true,note:'Medianen plus 2 %'}];
+
+const fmtMan = x => x<10?nf(Math.round(x*10)/10,x%1?1:0):nf(Math.round(x));
+function detailHtml(p, isRent){
+  const pid=isRent?'RENT':p.pattern_id, rp=isRent?openRentMine():[], pids=isRent?rp.map(q=>q.pattern_id):[p.pattern_id], ch1=S.choosing&&S.choosing.key===pid;
+  const chRows=ch1?btRows(pids).filter(r=>S.choosing.sel.has(r.client)):null, chDev=ch1?chRows.filter(r=>r.dev).length:0, chOk=ch1?chRows.length-chDev:0;
+  const chMan=ch1?(isRent?rp.reduce((t,q)=>t+savedFor(q,q.clients.filter(c=>S.choosing.sel.has(c))),0):savedFor(p,[...S.choosing.sel])):0;
+  const ex=ch1?pickSpread(chRows,5).map(r=>({date:r.date,bank_text:r.text,amount:r.amount,client_id:r.client})):examplesFor(isRent?rp:[p]);
+  const st=isRent?null:stateOf(p), ch0=S.choosing && S.choosing.key===pid, cs=isRent?rp.map(q=>q.clients[0]):(ch0?myOpen(p):p.clients);
+  const vat = !isRent && p.vat_code==='NONE' ? 'uden moms' : !isRent ? `momskode ${esc(p.vat_code)}` : '';
+  const why = isRent ? `Hver af disse kunder har betalt samme udlejer mindst 3 gange i nov–apr, altid på konto 7000. Husleje er kundespecifik, så hver kunde er sit eget mønster.`
+    : `${p.n_clients} kunder har selv rørt ${p.bank_texts.slice(0,3).map(t=>`<code>${esc(t)}</code>`).join(' ')} mindst 3 gange hver i nov–apr, næsten altid på konto ${p.account}, ${vat}. Kørt på maj–okt ville reglen have bogført ${nf(ch1?chOk:p.hits)} af ${nf(ch1?chRows.length:p.postings_test)} korrekt${ch1?' for de valgte kunder':''}.`;
+  const ch = S.choosing && S.choosing.key===pid;
+  const nCollNow=isRent?0:colleagues(p).length;
+  const suggestBox=nCollNow?`<label class="sugg"><input type="checkbox" id="suggestColl" ${S.suggestColl?'checked':''}> Foreslå til kolleger med samme mønster (${nCollNow} ${nCollNow===1?'kunde':'kunder'})</label>`:'';
+  let acts='', withEditor=false;
+  if(!isRent && (st==='paused'||st==='held'||st==='approved'||(st==='partial'&&mine(p).length&&!myOpen(p).length)) && rulesFor(pid).length) acts=`<span class="muted">Workflowen styres under Aktive workflows og Bank workflows.</span>`;
+  else if(!isRent && st==='dismissed') acts=`<button class="btn ghost" data-act="restore" data-pid="${pid}">Gendan</button>`;
+  else if(!isRent && p.status==='not_suggested') acts=`<button class="btn" disabled>Ikke foreslået: træfsikkerhed ${pct(p.hit_rate,1)}</button>`;
+  else if(ch){ withEditor=true; acts=`<button class="btn" data-act="approveSel" data-pid="${pid}" ${S.choosing.sel.size&&!exBadDraft(pid)?'':'disabled'}>Godkend for ${S.choosing.sel.size} valgte</button> <button class="btn ghost" data-act="cancelChoose">Annuller</button>${suggestBox}`; }
+  else { withEditor=true; const nMine=isRent?rp.length:myOpen(p).length;
+    acts=`<button class="btn" data-act="approveAll" data-pid="${pid}" ${exBadDraft(pid)?'disabled':''}>Godkend for mine kunder (${nMine})</button> <button class="btn ghost" data-act="choose" data-pid="${pid}">Vælg kunder</button> <button class="btn ghost" data-act="dismiss" data-pid="${pid}">Afvis</button>
+    ${suggestBox}`; }
+  const nm=c=>`<span class="${isMine(c)?'mine':''}" title="${c}">${esc(cname(c))}</span>`;
+  const clist = ch ? `<div class="cl">${cs.map(c=>`<label><input type="checkbox" data-c="${c}" ${S.choosing.sel.has(c)?'checked':''}> ${nm(c)}</label>`).join('')}</div>`
+    : `<div class="cl">${cs.map(nm).join('')}</div>`;
+  const rr=isRent?(rp[0]||{risk:'medium',risk_reason:''}):p;
+  return `<div class="riskPanel" id="riskPanel"><span class="pill ${rr.risk}">${RISK_DA[rr.risk]}</span>${riskLine(rr.risk_reason)}</div>${ch?`<div class="chSum" id="chSum">${S.choosing.sel.size?`<b>For de valgte kunder (${S.choosing.sel.size} af ${cs.length}):</b> <span id="chOk">${nf(chOk)} af ${nf(chRows.length)} korrekte${chRows.length?` (${pct(chOk/chRows.length,1)})`:''}</span>, <span id="chDev">${nf(chDev)} ${chDev===1?'afvigelse':'afvigelser'}</span>, <span id="chMan">${fmtMan(chMan)} ${mhWord(Math.round(chMan))} om måneden</span>.`:'<b>Ingen kunder valgt.</b> Vælg mindst én kunde for at se tallene.'}</div>`:''}<div class="grid g2"><div><b>Hvorfor foreslås det</b><p class="sec" style="margin:4px 0 10px">${why}</p>
+   <b>${ch?'Dine kunder':'Kunder (dine i fed)'}</b>${clist}</div>
+   <div><b>Eksempelposteringer</b><table><tbody>${ex.map(e=>`<tr><td>${fdate(e.date)}</td><td><code>${esc(e.bank_text)}</code></td><td class="num">${kr(e.amount)}</td><td>${esc(cname(e.client_id))}</td></tr>`).join('')}</tbody></table>
+   <div class="note" style="margin-top:4px">${ch?(S.choosing.sel.size?'Spredt over maj–okt, for de valgte kunder.':'Ingen kunder valgt.'):'Spredt over maj–okt, dine kunder først.'}</div></div></div>
+   ${withEditor?exEditor(pid):''}<div style="margin-top:12px">${acts}</div>
+   <div id="btWrap" data-pids="${pids.join(',')}">${btInner(pids)}</div>`;
+}
+function stateLabel(p){
+  const st=stateOf(p);
+  return st==='approved'?'<span class="pill state">Godkendt</span>':st==='partial'?'<span class="pill state">Delvist godkendt</span>':st==='paused'?'<span class="pill state">På pause</span>'
+    :st==='held'?`<span class="pill state">Tilbageholdt (${S.heldClients.size} af ${rulesFor(p.pattern_id).reduce((n,r)=>n+r.clients.length,0)})</span>`:st==='dismissed'?'<span class="pill">Afvist</span>':p.status==='suggested'?'<span class="pill">Åben</span>':'';
+}
+const rowTouch = p => Math.round(savedFor(p,mine(p)));
+function suggRow(p){
+  const mc=mine(p).length, exp=S.open===p.pattern_id;
+  return `<tr class="row ${p.status==='not_suggested'?'dim':''}" data-act="toggle" data-pid="${p.pattern_id}"><td><b>${esc(p.name)}</b> <span class="pill kind">${p.kind}</span><div class="note">${p.type==='rent'?'Kundespecifik husleje':esc(p.bank_texts[0])}${S.suggested[p.pattern_id]&&S.suggested[p.pattern_id].by!==S.bk?` <span class="pill">Foreslået af ${esc(D.bkName[S.suggested[p.pattern_id].by])}</span>`:''}</div></td>
+   <td>${p.account} <span class="muted">/ ${esc(vatL(p.vat_code))}</span></td><td class="num">${S.showAll?nf(p.n_clients):nf(mc)+' af '+nf(p.n_clients)}</td><td class="num">${nf(S.showAll?Math.round(p.touched_per_month):rowTouch(p),0)}</td>
+   <td class="num">${nf(p.hits)} af ${nf(p.postings_test)} korrekte <span class="muted">(${pct(p.hit_rate,1)})</span></td><td><span class="pill ${p.risk}">${RISK_DA[p.risk]}</span>${riskLine(p.risk_reason)}</td><td>${stateLabel(p)}</td></tr>
+   ${exp?`<tr class="detail"><td colspan="7">${detailHtml(p,false)}</td></tr>`:''}`;
+}
+function viewSuggestions(){
+  const b=S.bk, myTouch=D.praksis[b].touches, openAll=P.filter(p=>isOpen(p)&&mySaved(p)>0);
+  const list=openMine().sort(sortSafe), rent=openRentMine(), nPat=list.length+(rent.length?1:0);
+  const rentTouch=Math.round(rent.reduce((s,p)=>s+savedFor(p,unappr(p)),0));
+  const N=list.reduce((s,p)=>s+rowTouch(p),0)+rentTouch, X=myTouch?N/myTouch:0, Y=N, s3=safest3();
+  const rentRow = rent.length ? `<tr class="row" data-act="toggle" data-pid="RENT"><td><b>Husleje (kundespecifik): ${rent.length} kunder</b> <span class="pill kind">Husleje</span><div class="note">Én udlejer pr. kunde</div></td><td>7000 <span class="muted">/ Ingen moms</span></td>
+    <td class="num">${rent.length}</td><td class="num">${nf(rentTouch,0)}</td><td class="num">${nf(rent.reduce((s,p)=>s+p.hits,0))} af ${nf(rent.reduce((s,p)=>s+p.postings_test,0))} korrekte</td><td><span class="pill medium">Mellem risiko</span>${riskLine(rent[0].risk_reason)}</td><td><span class="pill">Åben</span></td></tr>
+    ${S.open==='RENT'?`<tr class="detail"><td colspan="7">${detailHtml(null,true)}</td></tr>`:''}`:'';
+  const head=`<thead><tr><th>Leverandør</th><th>Konto / momskode</th><th class="num">${S.showAll?'Kunder':'Dine kunder'}</th><th class="num">Manuelle / md.</th><th class="num">Backtest (maj–okt)</th><th>Risiko</th><th>Status</th></tr></thead>`;
+  let body;
+  if(S.showAll){
+    let rows=P.filter(p=>(S.risk==='all'||p.risk===S.risk)&&(S.type==='all'||(S.type==='rent'?p.type==='rent':S.type==='fees'?p.kind==='Gebyr':S.type==='settlement'?p.kind==='Afregning':p.kind==='Leverandør'))&&p.name.toLowerCase().includes(S.q.toLowerCase()));
+    rows=rows.slice().sort(S.sort==='safety'?(a,c)=>a.safety_rank-c.safety_rank:(a,c)=>hoursOf(c.saved_by_handling)-hoursOf(a.saved_by_handling));
+    body=rows.slice(0,60).map(suggRow).join('')+(rows.length>60?`<tr><td colspan="7" class="muted">Viser 60 af ${nf(rows.length)}. Indsnævr med filtrene.</td></tr>`:'');
+  } else body=list.map(suggRow).join('')+rentRow+(!list.length&&!rent.length?`<tr><td colspan="7" class="muted">Ingen åbne forslag hos ${esc(D.bkName[b])}s kunder.</td></tr>`:'');
+  const chip=(k,l,g)=>`<button data-chip="${g}" data-v="${k}" aria-pressed="${S[g]===k}">${l}</button>`;
+  $('#main').innerHTML = `<h1>Workflow-forslag</h1>
+  <div class="dueCards topCards" id="topCards"><div class="card" id="topSafe"><div class="v">${BULB(28)}${s3.n?`ca. <span class="nw" id="topTime" data-tip="${TIME_TIP}">${s3.time}</span> <span class="nw">om måneden</span>`:'0 min'}</div><div class="l">${s3.n?`med ${s3.n===1?'det sikreste forslag':`de ${s3.n} sikreste forslag`} (${nf(s3.x)} ${mhWord(s3.x)}, lav risiko)`:'Ingen åbne lav-risiko-forslag'}</div></div>
+   <div class="card" id="topAll"><div class="v">${N?'Op til '+nf(N):'0'}</div><div class="l">${nPat?`${mhWord(N)}, hvis du godkender ${nPat===1?'forslaget':`alle ${nPat} forslag`} (${nf(X*100,0)} %)`:'manuelle håndteringer: ingen åbne forslag'}</div></div>
+   <div class="card" id="topMonth"><div class="v">${nf(myTouch)}</div><div class="l">${mhWord(myTouch)} hos dine 30 kunder denne måned</div></div></div>
+  <p class="topLine" id="topLine">Godkend én gang pr. workflow på tværs af kunder. Kundegennemgangen bliver kortere, ikke væk.</p>
+  <h2>${S.showAll?'Alle forslag (hele porteføljen)':'Workflow-forslag til '+esc(D.bkName[b])+', sikreste først'}</h2>
+  ${S.showAll?`<div class="tools"><div><label>Risiko</label><div class="chips">${chip('all','Alle','risk')}${chip('low','Lav','risk')}${chip('medium','Mellem','risk')}${chip('not_suggested','Ikke foreslået','risk')}</div></div>
+   <div><label>Type</label><div class="chips">${chip('all','Alle','type')}${chip('fees','Gebyrer','type')}${chip('settlement','Afregning','type')}${chip('supplier','Leverandør','type')}${chip('rent','Husleje','type')}</div></div>
+   <div><label>Søg</label><input type="search" id="q" value="${esc(S.q)}" placeholder="Søg..."></div>
+   <div><label>Sortér</label><div class="seg"><button data-sort="safety" aria-pressed="${S.sort==='safety'}">Sikreste først</button><button data-sort="saved" aria-pressed="${S.sort==='saved'}">Mest tid sparet</button></div></div></div>`:''}
+  <div class="card" style="padding:0;overflow:auto"><table id="suggTable">${head}<tbody>${body}</tbody></table></div>
+  <p style="margin:10px 0"><button class="btn ghost" data-act="showAll">${S.showAll?'Tilbage til mine forslag':'Vis alle'}</button> <span class="note">Lav risiko = træfsikkerhed på mindst 95 %, gennemsnitsbeløb under 1.000 kr., ingen særlig moms. Mellem risiko = mindst 95 %, men større beløb, særlig moms, omsætning, husleje eller brændstof. Ikke foreslået = under 95 %.</span></p>
+  <h2>Aktive workflows</h2>${rulesTable(true)}
+  ${exceptionBox()}`;
+  const q=$('#q'); if(q) q.oninput=e=>{S.q=e.target.value; const pos=e.target.selectionStart; render(); const n=$('#q'); n.focus(); n.setSelectionRange(pos,pos);};
+  wireTips($('#main'));
+}
+function exceptionBox(){
+  if(!hasHold()) return '';
+  const c=EXC.client, p=byId[EXC.pattern];
+  return `<div class="card exception" id="exception" style="margin-top:14px"><b>Undtagelse: husleje-workflow hos ${esc(cfull(c))}, ${esc(D.bkName[D.clientBk[c]])}. Workflowen er holdt tilbage for kunden.</b><span class="simtag">Simuleret</span> <span class="note">siden ${EXC.date}</span>
+   <div style="margin-top:6px">Normalt: ${kr(EXC.usual_amount)} til ${esc(EXC.usual_to)}. Nu: ${kr(EXC.held_amount)} til ${esc(EXC.new_to)}.</div>
+   <div id="excTrigger">Udløst af: Ny modtager og Beløb større end</div>
+   <div class="sec">Sandsynligvis en flytning med depositum. Tal med kunden, før du godkender.</div>
+   <p style="margin:10px 0 0"><button class="btn dark" data-act="excUpdate">Opdater workflow</button> <button class="btn ghost" data-act="excBook">Bogfør som normalt</button> <button class="btn ghost" data-act="excHold">Hold tilbage</button></p></div>`;
+}
+const payeeLine = r => r.payee ? `<span class="subline payee">Modtager: ${esc(r.payee)}, ${kr(r.amount)}${r.sentToJournal?` Betalingen på ${kr(EXC.held_amount)} til ${esc(EXC.new_to)} er sendt til kassekladden.`:''}</span>` : '';
+function latest(pid){
+  const h=D.value.health[pid]; if(!h) return null;
+  for(const m of Object.keys(h).sort().reverse()) if(h[m].status==='active') return {m,...h[m]};
+  return null;
+}
+function ruleStatus(r){
+  const p=byId[r.pid];
+  if(rAllPaused(r)) return 'På pause';
+  if(ownPaused(r)) return `På pause (${pausedOf(r).size} af ${r.clients.length})`;
+  if(r.pid===EXC.pattern && hasHold()) return `Tilbageholdt (${S.heldClients.size} af ${r.clients.length})`;
+  return 'Aktiv';
+}
+function healthRow(r){
+  const p=byId[r.pid], l=r.initial?latest(r.pid):null, eff=ruleEff(r);
+  let handled, corr, basis;
+  const nP=pausedOf(r).size, pausedNote=nP?`, på pause for ${nP} af ${r.clients.length} kunder`:'';
+  const running=r.clients.filter(c=>!pausedOf(r).has(c)), share=savedFor(p,p.clients)?savedFor(p,running)/savedFor(p,p.clients):1;
+  if(rAllPaused(r)){handled=0;corr=0;basis='på pause';}
+  else if(l){handled=l.auto_posted*share; corr=l.corrections*share; basis='simuleret '+MON[+l.m.slice(5,7)>=11?+l.m.slice(5,7)-11:+l.m.slice(5,7)+1]+(r.pid===EXC.pattern&&hasHold()?', 1 betaling holdt tilbage':r.sentToJournal?', 1 betaling sendt til kassekladden':'')+pausedNote;}
+  else {handled=savedFor(p,eff); corr=handled*(1-p.hit_rate); basis='Forventet ud fra backtest'+pausedNote;}
+  return {r,p,eff,handled,corr,rate:handled?corr/handled:0,basis};
+}
+function ruleControls(r){
+  if(!ownClients(r).length){ const t='title="Ingen af dine kunder er i denne workflow."'; return `<span class="acts"><button class="btn sm ghost" disabled ${t}>Sæt på pause</button> <button class="btn sm danger" disabled ${t}>Slet</button></span>`; }
+  return `<span class="acts">${!ownPaused(r)?`<button class="btn sm ghost" data-act="rulePause" data-rid="${r.id}">Sæt på pause</button>`:`<button class="btn sm ghost" data-act="ruleResume" data-rid="${r.id}">Genoptag</button>`} <button class="btn sm danger" data-act="ruleDelete" data-rid="${r.id}">Slet</button></span>`;
+}
+function rulesTable(controls){
+  if(!S.rules.length) return '<div class="card muted">Ingen aktive workflows endnu.</div>';
+  return `<div class="card" style="padding:0;overflow:auto"><table class="activeTable"><thead><tr><th>Workflow</th><th class="num">Kunder</th><th class="num">Håndteret / md.</th><th class="num">Rettelser</th><th class="num">Rettelsesandel</th><th>Grundlag</th><th>Status</th>${controls?'<th></th>':''}</tr></thead><tbody>
+  ${S.rules.map(healthRow).map(x=>`<tr data-rid="${x.r.id}"><td><b>${esc(x.p.name)}</b> <span class="pill kind">${x.p.kind}</span>${payeeLine(x.r)}</td><td class="num">${x.eff.length} af ${x.r.clients.length}</td><td class="num">${nf(x.handled,0)}</td><td class="num">${nf(x.corr,0)}</td><td class="num">${pct(x.rate,1)}</td><td class="note">${x.basis}</td>
+   <td><span class="pill state">${ruleStatus(x.r)}</span></td>${controls?`<td>${ruleControls(x.r)}</td>`:''}</tr>`).join('')}</tbody></table></div><div class="note" id="periodNote" style="margin-top:6px">Håndteret / md.: oktober 26 (simuleret) for workflows godkendt i maj, forventet månedsgennemsnit maj–okt (backtest) for nye. Tallene i kortene på Dashboard er månedsgennemsnit maj–okt.</div>`;
+}
+
+/* ---------- Automation: Dashboard ---------- */
+/* time saved: locked to 1 min. per manual handling (Touch cost equal, Mid) */
+const withBk = (b,f) => { const o=S.bk; S.bk=b; try{ return f(); } finally{ S.bk=o; } };
+const bkOf = c => D.clientBk[c];
+const nowHours = b => P.reduce((t,p)=>t+savedFor(p,[...effSet(p)].filter(c=>!b||bkOf(c)===b))*hoursPer(p),0);
+const openHours = b => P.reduce((t,p)=>t+(isOpen(p)?savedFor(p,unappr(p).filter(c=>!b||bkOf(c)===b))*hoursPer(p):0),0);
+const openCount = b => withBk(b,()=>openMine().length+(openRentMine().length?1:0));
+function timeSaved(){
+  const who=esc(D.bkName[S.bk]), nowO=nowHours(), possO=nowO+openHours(), nowB=nowHours(S.bk), possB=nowB+openHours(S.bk), share=possB?nowB/possB:0;
+  const rows=BKS.map(b=>({b,now:nowHours(b),poss:nowHours(b)+openHours(b),n:openCount(b)}));
+  return `<h2>Tid sparet med workflows</h2><div class="card" id="timeSaved">
+   <div class="tsRow"><div class="tsBig"><div class="l"><b>Sparet nu</b></div><div class="v" id="sNow"><span class="who">${who}:</span> ${nf(nowB,1)} t</div><div class="n">Kontoret samlet: <span id="sOffice">${nf(nowO,1)} t</span> pr. måned</div></div>
+    <div class="tsBar"><div class="n" id="sShare">${nf(share*100,0)} % af det mulige</div><div class="track" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(share*100)}"><div class="fill" id="sFill" style="width:${(share*100).toFixed(1)}%"></div></div></div>
+    <div class="tsBig"><div class="l"><b>Muligt med åbne forslag</b></div><div class="v" id="sPossible"><span class="who">${who}:</span> ${nf(possB,1)} t</div><div class="n">Kontoret samlet: <span id="sPossOffice">${nf(possO,1)} t</span> pr. måned</div></div></div>
+   <table id="bkTable" style="margin-top:14px"><thead><tr><th>Bogholder</th><th class="num">Sparet nu</th><th class="num">Muligt</th><th class="num">Åbne forslag</th><th></th></tr></thead><tbody>
+   ${rows.map(r=>`<tr data-bk="${r.b}"><td>${esc(bkl(r.b))}</td><td class="num">${nf(r.now,1)} t</td><td class="num">${nf(r.poss,1)} t</td><td class="num">${r.n}</td><td><a class="lnk" data-act="goBk" data-bk="${r.b}">Se forslag</a></td></tr>`).join('')}</tbody></table>
+   <div class="note" id="timeSavedNote" style="margin-top:8px">Beregnet ved 1 min. pr. manuel håndtering. Antagelse: workflows bogfører direkte. Sender de til kassekladden, bliver gevinsten mindre.</div></div>`;
+}
+function viewDashboard(){
+  const V=D.value;
+  const live=liveSaved(), liveMine=liveSaved(true), liveH=nowHours(S.bk), oct=V.months[11];
+  const projNext=D.baseAutoOct+live;
+  const byMonth=V.months.map((m,i)=>({name:MON[i],v:m.auto_total,hl:i>=6,tip:`${MON[i]}: ${nf(m.auto_total)} posteringer håndteret automatisk (${nf(m.pct_auto_posted,1)} %)`}));
+  byMonth.push({name:'nov (est.)',v:projNext,proj:true,tip:`Forventet næste måned med de workflows, der er godkendt nu: ${nf(projNext)} (${nf(projNext/D.totalOct*100,1)} %)`});
+  const topc=Object.keys(D.clientBk).map(c=>({c,n:(D.baseAutoClient[c]||0)+P.reduce((s,p)=>s+(effSet(p).has(c)?sv(p,c):0),0)})).sort((a,b)=>b.n-a.n).slice(0,5);
+  $('#main').innerHTML = `<h1>Dashboard <span class="xnote">Tilføjelse: sparede timer og workflows' helbred på tværs af kunder</span></h1><p class="sub">Overvågningen går fra kunde for kunde til workflow for workflow.</p>
+  <div class="grid g4">
+   <div class="card kpi"><div class="v" id="kAuto">${nf(oct.auto_total)}</div><div class="l">Posteringer håndteret automatisk sidste måned</div><div class="n">${nf(oct.pct_auto_posted,1)} % af alle posteringer, alle 180 kunder</div></div>
+   <div class="card kpi"><div class="v" id="kNext">${nf(projNext)}</div><div class="l">Forventet næste måned</div><div class="n">${nf(projNext/D.totalOct*100,1)} % med de workflows, der er godkendt nu</div></div>
+   <div class="card kpi"><div class="v" id="kYours">${nf(liveMine,0)}</div><div class="l">Dine workflows håndterer så mange posteringer for dig pr. måned</div><div class="n">${esc(D.bkName[S.bk])}. Hele kontoret: <span id="kOffice">${nf(live,0)}</span> (gns. maj–okt) · ${S.rules.filter(r=>!rAllPaused(r)).length} aktive workflows</div></div>
+   <div class="card kpi"><div class="v" id="kHours">${nf(liveH,1)} t</div><div class="l">Sparet nu pr. måned</div><div class="n">${esc(D.bkName[S.bk])}, ved ${mm(mins().manual)} min. pr. manuel håndtering</div></div></div>
+  <h2>Posteringer håndteret automatisk, måned for måned</h2>
+  <div class="card">${barChart(byMonth,{w:900,h:260,bottom:30,aria:'Posteringer håndteret automatisk pr. måned, 12 måneder plus fremskrivning',dec:0})}
+   <div class="note">nov 25–apr 26 er faktiske tal (kun regler). Fra maj er de 3 sikreste workflows plus én husleje-workflow godkendt (simuleret). Den stiplede søjle er næste måned med de workflows, der er godkendt nu.</div></div>
+  ${timeSaved()}
+  <h2>Top 5 kunder med flest automatisk håndterede posteringer</h2><div class="card"><table id="topClients"><thead><tr><th>Virksomhed</th><th>Type</th><th>Bogholder</th><th class="num">Posteringer / md.</th></tr></thead><tbody>
+   ${topc.map(t=>`<tr><td>${esc(cname(t.c))} <span class="muted">${t.c}</span></td><td>${esc(D.clientType[t.c])}</td><td>${esc(bkl(D.clientBk[t.c]))}</td><td class="num">${nf(t.n,0)}</td></tr>`).join('')}</tbody></table></div>
+  <h2>Workflows' helbred</h2>${rulesTable(false)}
+  <h2>Hvorfor sagde vi nej?</h2>${fbTable()}
+  ${exceptionBox()}`;
+  wireTips($('#main'));
+}
+
+function fbTable(){
+  const c=fbCounts(), n=S.feedback.length, tx=S.feedback.filter(f=>f.text).length;
+  return `<div class="card"><table id="fbCounts"><thead><tr><th>Årsag</th><th class="num">Antal</th></tr></thead><tbody>${Object.entries(c).filter(([k,v])=>v>0||FB_REASONS.includes(k)||FB_PAUSE.includes(k)).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`).join('')}</tbody></table>
+   <div class="note" style="margin-top:6px">${n?`${n} svar fra Afvis, Fortryd, Slet og Sæt på pause, heraf ${tx} med fritekst.`:'Ingen svar endnu. Boksen åbnes ved Afvis, Fortryd, Slet og Sæt på pause.'}</div></div>`;
+}
+
+/* ---------- Bank workflows ---------- */
+function viewWorkflows(){
+  const fromProp=S.rules;
+  $('#main').innerHTML = `<h1>Bank workflows</h1><p class="sub">${nf(D.nRules)} workflows på kunde/leverandør i dag; ${D.kpi.clients_with_rule} af 180 kunder har mindst én workflow.</p>
+  <h2>Workflows oprettet fra forslag</h2>
+  ${fromProp.length?`<div class="card" style="padding:0;overflow:auto"><table id="ruleTable"><thead><tr><th>Workflow</th><th>Kunder</th><th>Handling</th><th>Afvigelsesregler</th><th>Oprettet</th><th>Status</th><th></th></tr></thead><tbody>
+  ${fromProp.map(r=>{const p=byId[r.pid]; return `<tr data-rid="${r.id}"><td><b>${esc(p.name)}</b> <span class="tag src">Oprettet fra forslag</span><span class="subline">Konto ${p.account}, ${esc(vatL(p.vat_code))}</span>${payeeLine(r)}</td>
+   <td>${r.clients.length} ${r.clients.length===1?'kunde':'kunder'}<span class="subline" title="${esc(r.clients.map(cname).join(', '))}">${esc(r.clients.slice(0,3).map(cname).join(', '))}${r.clients.length>3?' …':''}</span></td>
+   <td>Bogfør direkte<span class="subline">Antagelse: i dag sender bank workflows til kassekladden.</span></td>
+   <td class="exCell"><span class="exCount">${exCount(r)}</span><span style="display:block;margin-top:4px"><button class="btn sm ghost" data-act="exEdit" data-rid="${r.id}">Rediger regler</button></span></td><td>${r.created}</td><td><span class="pill state">${ruleStatus(r)}</span></td><td>${ruleControls(r)}</td></tr>
+   ${S.ruleEdit&&S.ruleEdit.rid===r.id?`<tr class="detail" id="exEditRow"><td colspan="7">${exEditor('edit')}<p style="margin:10px 0 0"><button class="btn" data-act="exSave" ${S.ruleEdit.rows.some(x=>!exValid(x))?'disabled':''}>Gem regler</button> <button class="btn ghost" data-act="exCancel">Annuller</button></p></td></tr>`:''}`;}).join('')}</tbody></table></div>`:'<div class="card muted">Ingen workflows oprettet fra forslag endnu.</div>'}
+  <h2>Regler pr. kunde</h2><div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Virksomhed</th><th>Bogholder</th><th>Leverandør</th><th>Konto</th><th class="num">Posteringer (12 mdr.)</th></tr></thead><tbody>
+  ${D.workflows.map(w=>`<tr><td>${esc(cname(w.client))} <span class="muted">${w.client}</span></td><td>${esc(bkl(w.bk))}</td><td>${esc(w.supplier)}</td><td>${w.account}</td><td class="num">${nf(w.n)}</td></tr>`).join('')}</tbody></table></div>
+  <p class="note">Viser de 60 travleste workflows.</p>`;
+}
+
+/* ---------- actions ---------- */
+function addRule(pid, clients, batch, exc){ S.rules.push({id:'R'+(S.ruleSeq++), pid, clients:[...clients], created:TODAY, batch, exc:exc||[]}); S.dismissed.delete(pid); }
+function approve(pids, clientsOf, suggest, key){
+  const batch='B'+Date.now()+Math.random(); let n=0;
+  const draft=exFreeze(draftOf(key)), kept=draftOf(key), dkey=exKey(key);
+  pids.forEach(pid=>{ const cs=clientsOf(byId[pid]); addRule(pid, cs, batch, draft.map(r=>({...r}))); n+=cs.length; if(suggest) S.suggested[pid]={by:S.bk,batch}; });
+  S.suggestColl=false;
+  setUndo(`Workflowen er godkendt for dine ${n} ${n===1?'kunde':'kunder'}${suggest?', og foreslået til kolleger':''}.`, 'approve', {batch, dkey, kept});
+  delete S.drafts[dkey];
+}
+function doDismiss(pid,isRent){ const pids=isRent?openRentMine().map(p=>p.pattern_id):[pid]; pids.forEach(id=>S.dismissed.add(id)); S.open=null; setUndo('Forslaget er afvist.', 'dismiss', {pids}); }
+function doUndo(){ const u=S.undo; if(!u) return; clearTimeout(S.undoTimer);
+  if(u.kind==='approve'){ S.rules=S.rules.filter(r=>r.batch!==u.payload.batch); Object.keys(S.suggested).forEach(k=>{ if(S.suggested[k].batch===u.payload.batch) delete S.suggested[k]; }); S.drafts[u.payload.dkey]=u.payload.kept; }
+  else if(u.kind==='dismiss') u.payload.pids.forEach(id=>S.dismissed.delete(id));
+  S.undo=null; flash('Fortrudt.'); }
+function doPause(rid){ const r=S.rules.find(x=>x.id===rid), own=ownClients(r); own.forEach(c=>pausedOf(r).add(c)); flash(`Sat på pause for ${own.length===1?'din 1 kunde':`dine ${own.length} kunder`}.`); }
+function resolveHold(change){ const r=excRule(); S.heldClients.clear(); r.paused=new Set(); Object.assign(r,change); }
+function doDelete(rid){ const r=S.rules.find(x=>x.id===rid), own=ownClients(r), rest=r.clients.filter(c=>!isMine(c)); S.confirmDel=null;
+  own.forEach(c=>pausedOf(r).delete(c));
+  if(rest.length) r.clients=rest; else S.rules=S.rules.filter(x=>x.id!==rid);
+  if(r.pid===EXC.pattern && own.includes(EXC.client)) S.heldClients.clear();
+  flash(rest.length?`Workflowen for ${byId[r.pid].name} er slettet for ${own.length===1?'din 1 kunde':`dine ${own.length} kunder`}. Forslaget er tilbage.`:`Workflowen for ${byId[r.pid].name} er slettet. Forslaget er tilbage.`); }
+document.addEventListener('click', e=>{
+  const g=e.target.closest('.grp'); if(g){ if(MENU.find(m=>m.id===g.dataset.grp).items.length) S.menu[g.dataset.grp]=!S.menu[g.dataset.grp]; return render(); }
+  const nav=e.target.closest('a[data-page]'); if(nav){ S.page=nav.dataset.page; S.open=null; S.choosing=null; S.confirmDel=null; S.suggestColl=false; S.ruleEdit=null; return render(); }
+  const lv=e.target.closest('[data-lvl]'); if(lv){ S.level=lv.dataset.lvl; return render(); }
+  const md=e.target.closest('[data-mdl]'); if(md){ S.model=md.dataset.mdl; return render(); }
+  const ch=e.target.closest('[data-chip]'); if(ch){ S[ch.dataset.chip]=ch.dataset.v; return render(); }
+  const so=e.target.closest('[data-sort]'); if(so){ S.sort=so.dataset.sort; return render(); }
+  const tv=e.target.closest('[data-ttab]'); if(tv){ S.taskTab=tv.dataset.ttab; return render(); }
+  const tb=e.target.closest('[data-tab]'); if(tb){ S.tab=tb.dataset.tab; S.btAll=false; return btRefresh(); }
+  const ds=e.target.closest('[data-devscope]'); if(ds){ S.devScope=ds.dataset.devscope; S.btAll=false; return btRefresh(); }
+  const a=e.target.closest('[data-act]'); if(!a) return;
+  const act=a.dataset.act, pid=a.dataset.pid, rid=a.dataset.rid, isRent=pid==='RENT';
+  if(act==='toggle'){ S.open=(S.open===pid)?null:pid; S.choosing=null; S.suggestColl=false; S.tab='mine'; S.btAll=false; S.devScope='all'; return render(); }
+  if(act==='exAdd'||act==='exDel'){ const key=a.closest('[data-ex]').dataset.ex, c=exCtx(key);
+    if(act==='exDel'){ c.rows.splice(+a.dataset.i,1); return render(); }
+    const k=Object.keys(EX_PARAM).find(x=>!c.rows.some(r=>r.param===x)); if(k) c.rows.push({param:k,value:exIsAmt(k)?exSuggest(k,c.post):'',action:'hold',edited:false}); return render(); }
+  if(act==='exEdit'){ const r=S.rules.find(x=>x.id===rid); S.ruleEdit=S.ruleEdit&&S.ruleEdit.rid===rid?null:{rid,rows:(r.exc||[]).map(x=>({...x}))}; return render(); }
+  if(act==='exCancel'){ S.ruleEdit=null; return render(); }
+  if(act==='exSave'){ if(S.ruleEdit.rows.some(x=>!exValid(x))) return; S.rules.find(x=>x.id===S.ruleEdit.rid).exc=exFreeze(S.ruleEdit.rows); S.ruleEdit=null; flash('Afvigelsesreglerne er gemt.'); return render(); }
+  if(act==='goBk'){ S.bk=a.dataset.bk; S.page='suggestions'; S.showAll=false; S.open=null; S.choosing=null; S.suggestColl=false; return render(); }
+  if(act==='btAll'){ S.btAll=!S.btAll; return btRefresh(); }
+  if(act==='showAll'){ S.showAll=!S.showAll; S.open=null; S.choosing=null; S.suggestColl=false; return render(); }
+  if(act==='taskNew'){ flash('Opret opgave er ikke med i prototypen.'); return; }
+  if(act==='taskPrint'){ flash('Udskrift er ikke med i prototypen.'); return; }
+  if(act==='filters'){ S.filtersOpen=!S.filtersOpen; return render(); }
+  if(act==='nudgeLater'){ S.nudgeHidden=true; flash('Vi minder dig om det senere.'); return render(); }
+  if(act==='nudgeGo'){ const c=openMine().sort(sortSafe)[0]; S.page='suggestions'; S.showAll=false; S.open=c?c.pattern_id:null; return render(); }
+  if(act==='dismiss'){ S.fb={kind:'dismiss',pid,isRent}; return render(); }
+  if(act==='restore'){ S.dismissed.delete(pid); return render(); }
+  if(act==='approveAll'){ if(exBadDraft(pid)) return; if(isRent) approve(openRentMine().map(p=>p.pattern_id), p=>p.clients, false, pid); else approve([pid], p=>myOpen(p), S.suggestColl && colleagues(byId[pid]).length>0, pid); S.open=null; return render(); }
+  if(act==='choose'){ const cs=isRent?openRentMine().map(p=>p.clients[0]):myOpen(byId[pid]); S.choosing={key:pid,sel:new Set(cs)}; S.btAll=false; return render(); }
+  if(act==='cancelChoose'){ S.choosing=null; S.tab='mine'; S.btAll=false; S.devScope='all'; return render(); }
+  if(act==='approveSel'){ const sel=S.choosing.sel; if(!sel.size||exBadDraft(pid)) return;
+    if(isRent) approve(openRentMine().filter(p=>sel.has(p.clients[0])).map(p=>p.pattern_id), p=>p.clients, false, pid);
+    else approve([pid], p=>myOpen(p).filter(c=>sel.has(c)), S.suggestColl && colleagues(byId[pid]).length>0, pid);
+    S.choosing=null; S.open=null; return render(); }
+  if(act==='undo'){ if(!S.undo) return; clearTimeout(S.undoTimer); S.fb={kind:'undo'}; return render(); }
+  if(act==='fbCancel'){ if(S.fb.kind==='undo'&&S.undo){ S.undo.expires=Date.now()+10000; S.undoTimer=setTimeout(()=>{ S.undo=null; render(); },10000); } S.fb=null; return render(); }
+  if(act==='fbConfirm'){ const f=S.fb, r=document.querySelector('input[name=fbr]:checked'), t=($('#fbt').value||'').trim();
+    const wf = f.kind==='dismiss' ? (f.isRent?'Husleje':byId[f.pid].name) : (f.kind==='delete'||f.kind==='pause') ? byId[S.rules.find(x=>x.id===f.rid).pid].name : S.undo ? S.undo.msg : '';
+    S.feedback.push({kind:f.kind, workflow:wf, reason:r?r.value:'Ingen årsag angivet', text:t, at:TODAY});
+    S.fb=null;
+    if(f.kind==='dismiss') doDismiss(f.pid,f.isRent); else if(f.kind==='undo') doUndo(); else if(f.kind==='pause') doPause(f.rid); else doDelete(f.rid);
+    return render(); }
+  if(act==='rulePause'){ if(!ownClients(S.rules.find(x=>x.id===rid)).length) return; S.fb={kind:'pause',rid}; return render(); }
+  if(act==='ruleResume'){ const r=S.rules.find(x=>x.id===rid); ownClients(r).forEach(c=>pausedOf(r).delete(c)); flash('Workflowen kører igen.'); return render(); }
+  if(act==='ruleDelete'){ if(!ownClients(S.rules.find(x=>x.id===rid)).length) return; S.fb={kind:'delete',rid}; return render(); }
+  if(act==='excUpdate'){ resolveHold({payee:EXC.new_to, amount:EXC.held_amount, sentToJournal:false}); flash(`Workflowen er opdateret for ${cname(EXC.client)}.`); return render(); }
+  if(act==='excBook'){ resolveHold({sentToJournal:true}); flash('Betalingen er sendt til kassekladden. Workflowen er uændret.'); return render(); }
+  if(act==='excHold'){ flash('Workflowen er stadig holdt tilbage.'); return render(); }
+});
+document.addEventListener('change', e=>{ if(e.target.id==='suggestColl'){ S.suggestColl=e.target.checked; return; }
+  const row=e.target.closest('.exRow'); if(row&&(e.target.classList.contains('exP')||e.target.classList.contains('exA'))){ const key=e.target.closest('[data-ex]').dataset.ex, c=exCtx(key), r=c.rows[+row.dataset.i];
+    if(e.target.classList.contains('exA')){ r.action=e.target.value; return exSync(key); }
+    r.param=e.target.value; r.edited=false; r.note=undefined; r.value=exIsAmt(r.param)?exSuggest(r.param,c.post):''; return render(); }
+  const c=e.target.closest('input[data-c]'); if(c&&S.choosing){ const id=c.dataset.c; c.checked?S.choosing.sel.add(id):S.choosing.sel.delete(id); render(); const again=document.querySelector(`input[data-c="${id}"]`); if(again) again.focus(); } });
+document.addEventListener('input', e=>{ if(!e.target.classList||!e.target.classList.contains('exV')) return; const key=e.target.closest('[data-ex]').dataset.ex, r=exCtx(key).rows[+e.target.closest('.exRow').dataset.i]; r.value=e.target.value; r.edited=true; r.note=undefined; exSync(key); });
+$('#bkSel').addEventListener('change', e=>{ S.bk=e.target.value; S.open=null; S.choosing=null; S.suggestColl=false; S.ruleEdit=null; render(); });
+
+function render(){
+  hideTip();
+  renderShell();
+  ({tasks:viewTasks,time:viewTime,dashboard:viewDashboard,workflows:viewWorkflows,suggestions:viewSuggestions})[S.page]();
+  const g=MENU.find(m=>m.items.some(i=>i[1]===S.page)), it=g.items.find(i=>i[1]===S.page);
+  $('#main').insertAdjacentHTML('afterbegin',`<div class="crumb" id="crumb"><span>${g.label}</span><span class="sep">›</span><span class="last">${it[0]}</span></div>`);
+}
+(function(){const h=location.hash.slice(1).split('/'); if(h[0]&&h[0]!=='selftest'){S.page=h[0]; if(h[1]) S.open=h[1]; if(h[2]) S.model=h[2]; if(h[3]) S.tab=h[3];}})();
+render();
+
+/* ---------- self-test: real DOM clicks; open index.html#selftest and read the list at the bottom ---------- */
+if(location.hash.includes('selftest')) setTimeout(()=>{
+  const out=[]; const ok=(n,c,x='')=>out.push((c?'PASS  ':'FAIL  ')+n+(x?'  ['+x+']':''));
+  const click=s=>{const el=typeof s==='string'?$(s):s; if(!el) throw new Error('missing element '+s); el.click();};
+  const num=s=>parseFloat($(s).textContent.replace(/\./g,'').replace(',','.').replace(/[^\d.]/g,''));
+  const sel=(b)=>{ const s=$('#bkSel'); s.value=b; s.dispatchEvent(new Event('change')); };
+  const all=()=>parseFloat($('#topAll .v').textContent.replace(/\D/g,''));
+  const lst=()=>parseFloat($('#topAll .v').textContent.replace(/\D/g,''));
+  const goto=(p)=>click('a[data-page='+p+']');
+  const overlap=(svg)=>{ const bb=[...svg.querySelectorAll('text')].map(t=>({t:t.textContent,b:t.getBBox()})); const hits=[]; for(let i=0;i<bb.length;i++)for(let j=i+1;j<bb.length;j++){const a=bb[i].b,b=bb[j].b; if(a.x<b.x+b.width&&b.x<a.x+a.width&&a.y<b.y+b.height&&b.y<a.y+a.height) hits.push(bb[i].t+' x '+bb[j].t);} return hits; };
+  try{
+    S.page='tasks'; sel('B2'); render();
+    ok('0 standardmodel er Touch cost equal, Mid', S.model==='equal'&&S.level==='mid');
+    ok('0a Opgaveoversigt: kontroller og kolonner', !!$('#period')&&!!$('#groupBy')&&!!$('#myOnly')&&!!$('#tq')&&[...document.querySelectorAll('#taskTable th')].map(t=>t.textContent).join()==='Opgavenavn,Virksomhed,Status,Underopgaver');
+    const ns=[...document.querySelectorAll('#taskTable tbody tr[data-n]')].map(tr=>+tr.dataset.n), ncl=new Set([...document.querySelectorAll('#taskTable tbody tr[data-n]')].map(tr=>tr.children[1].textContent.split(' C')[0])).size;
+    ok('0b 8–10 travleste kunder i okt, sorteret faldende', ncl>=8&&ncl<=10&&ns.every((v,i)=>i===0||v<=ns[i-1]), ncl+' kunder');
+    const mm=[...document.querySelectorAll('#taskTable tbody tr')].find(tr=>/Bogføring af ~(\d+) bilag/.test(tr.textContent));
+    ok('0c "Bogføring af ~N bilag" = "N bilag" i underteksten', mm.children[0].textContent.match(/~(\d+) bilag/)[1]===mm.children[1].textContent.match(/, (\d+) bilag/)[1]);
+    ok('0d nudge: overskriften er "Spar ca. 1 t 15 min om måneden" (77 håndteringer, afrundet til 75 min)', $('#nudgeText').textContent==='Spar ca. 1 t 15 min om måneden' && $('#nudgeNum').textContent==='77' && !$('#nudge').textContent.includes('En berøring') && !$('#nudge').textContent.includes('En manuel håndtering:'), $('#nudgeText').textContent);
+    // --- clean-state checks: wording, counts, defaults, probe of Nets approval on Dashboard ---
+    ok('0e nudge: "Godkend én gang, så kommer kun undtagelser tilbage."', $('#nudge').textContent.includes('Godkend én gang, så kommer kun undtagelser tilbage.') && !$('#nudge').textContent.includes('som opgaver') && !$('#nudge').textContent.includes('ikke tilbage'));
+    goto('workflows');
+    const wfAll=[...document.querySelectorAll('#main table')], wfHead=[...wfAll[wfAll.length-1].querySelectorAll('th')].map(t=>t.textContent).join('|');
+    ok('20 Bank workflows: "Regler pr. kunde" uden Mode; "Bogfør direkte" kun i workflows fra forslag', wfHead==='Virksomhed|Bogholder|Leverandør|Konto|Posteringer (12 mdr.)' && !$('#main').textContent.includes('Sender til kassekladde') && !wfAll[wfAll.length-1].textContent.includes('Bogfør'), wfHead);
+    ok('20a terminologi: "Bank workflows", "Workflows oprettet fra forslag", "N workflows", intet "regel/regler"', $('h1').textContent==='Bank workflows' && $('#main').textContent.includes('Workflows oprettet fra forslag') && /\d+ workflows på kunde\/leverandør i dag; \d+ af 180 kunder har mindst én workflow\./.test($('.sub').textContent) && !/\bregler?\b/i.test($('#main').textContent.replace('Regler pr. kunde','')), $('.sub').textContent);
+    goto('dashboard');
+    const nBefore=num('#kNext'), yBefore=num('#kYours'), hBefore=num('#kHours'), oBefore=num('#kOffice'), sNowB=num('#sNow'), sOffB=num('#sOffice'), sPosB=num('#sPossible'), sPosOB=num('#sPossOffice'), b2B=[...document.querySelectorAll('#bkTable tr[data-bk=B2] td')].slice(1,4).map(t=>t.textContent).join(' / '), kpiTxt=$('#kYours').closest('.grid').textContent;
+    ok('21 Dashboard: "4 aktive workflows", "ved 1 min. pr. manuel håndtering"; ingen kontakter til minutter eller kostmodel; beregningen er låst til Mid og Touch cost equal', kpiTxt.includes('4 aktive workflows') && kpiTxt.includes('ved 1 min. pr. manuel håndtering') && !document.querySelector('[data-lvl],[data-mdl]') && S.level==='mid' && S.model==='equal' && !$('#main').textContent.includes('Minutes per touch') && !$('#main').textContent.includes('Cost model'), kpiTxt.slice(0,160));
+    const dh=$('#bkTable');
+    ok('22 Tid sparet med workflows: titel, to store tal med bjælke imellem, tabel med Se forslag og note', $('#timeSaved').previousElementSibling.textContent==='Tid sparet med workflows' && !!$('#sNow') && !!$('#sPossible') && !!$('#sFill') && $('#sNow').compareDocumentPosition($('#sFill')) & Node.DOCUMENT_POSITION_FOLLOWING && $('#sFill').compareDocumentPosition($('#sPossible')) & Node.DOCUMENT_POSITION_FOLLOWING && [...dh.querySelectorAll('th')].map(t=>t.textContent).join('|')==='Bogholder|Sparet nu|Muligt|Åbne forslag|' && dh.querySelectorAll('tbody tr').length===6 && [...dh.querySelectorAll('tbody tr')].every(r=>r.querySelector('[data-act=goBk]').textContent==='Se forslag') && $('#timeSavedNote').textContent==='Beregnet ved 1 min. pr. manuel håndtering. Antagelse: workflows bogfører direkte. Sender de til kassekladden, bliver gevinsten mindre.' && !!$('#main').textContent.includes('Sparet nu') && !$('#main').textContent.includes('Konservativt') && !$('#main').textContent.includes('Forventet:'));
+    ok('22a perioder: "Hele kontoret ... (gns. maj–okt)" og note under helbredstabellen', $('#kYours').closest('.kpi').textContent.includes('(gns. maj–okt)') && $('#periodNote').textContent.includes('oktober 26 (simuleret)') && $('#periodNote').textContent.includes('maj–okt'));
+    ok('22b Normalt/Nu i undtagelsen', $('#exception').textContent.includes(`Normalt: ${kr(EXC.usual_amount)} til ${EXC.usual_to}. Nu: ${kr(EXC.held_amount)} til ${EXC.new_to}.`) && !/Usually|Now:/.test($('#exception').textContent));
+    goto('suggestions'); const netsP=P.find(p=>p.name==='Nets kortgebyrer'); S.open=netsP.pattern_id; render(); click('[data-act=approveAll]');
+    goto('dashboard'); const nAfter=num('#kNext'), yAfter=num('#kYours'), hAfter=num('#kHours'), oAfter=num('#kOffice'), sNowA=num('#sNow'), sOffA=num('#sOffice'), sPosA=num('#sPossible'), sPosOA=num('#sPossOffice'), b2A=[...document.querySelectorAll('#bkTable tr[data-bk=B2] td')].slice(1,4).map(t=>t.textContent).join(' / ');
+    out.push(`INFO  Nets godkendt for Jonas: Sparet nu ${sNowB} t -> ${sNowA} t (kontoret ${sOffB} -> ${sOffA}); Muligt ${sPosB} t -> ${sPosA} t (kontoret ${sPosOB} -> ${sPosOA}); Jonas (nu / muligt / åbne): ${b2B} -> ${b2A}; Forventet næste måned ${nBefore} -> ${nAfter}; dine workflows ${yBefore} -> ${yAfter}`);
+    ok('22c Nets-godkendelse opdaterer Dashboard uden genindlæsning: Sparet nu stiger, KPI-kortet = Sparet nu, Muligt uændret samlet; Fortryd sætter tilbage', sNowA>sNowB && hAfter===sNowA && Math.abs((sNowA+0)-(sNowB)) > 0 && Math.abs(sPosA-sPosB)<0.06 && hAfter>hBefore && nAfter>nBefore, `${sNowB}->${sNowA}, ${sPosB}->${sPosA}`);
+    S.rules=S.rules.filter(r=>r.batch!==S.undo.payload.batch); S.undo=null; clearTimeout(S.undoTimer); S.open=null; S.page='tasks'; render();
+    // internal category names must not appear anywhere in the UI
+    const leak=[]; ['tasks','time','dashboard','workflows','suggestions'].forEach(pg=>{ S.page=pg; render(); const t=$('#main').textContent+$('#side').textContent; if(/rule_to_journal|rule_posted|suggestion_accepted|\bmanual\b/.test(t)) leak.push(pg); }); S.showAll=true; S.page='suggestions'; render(); if(/rule_to_journal|rule_posted|suggestion_accepted/.test($('#main').textContent)) leak.push('showAll'); S.showAll=false; S.page='tasks'; render();
+    ok('22d ingen interne kategorinavne (rule_to_journal, rule_posted, suggestion_accepted) i UI', leak.length===0, leak.join(','));
+    // --- backtest postings panel: N = total - correct for every suggestion, tabs work without reload ---
+    goto('suggestions'); const bpids=[...document.querySelectorAll('#suggTable tr.row')].map(tr=>tr.dataset.pid), btBad=[], leakP=[]; let devTotal=0, longList=null;
+    const btParse=t=>{ const m=t.match(/^([\d.]+) af ([\d.]+) korrekte/); return [parseInt(m[1].replace(/\./g,'')),parseInt(m[2].replace(/\./g,''))]; };
+    for(const pidx of bpids){
+      click(`#suggTable tr.row[data-pid="${pidx}"]`);
+      const tr0=document.querySelector(`#suggTable tr.row[data-pid="${pidx}"]`), [okc,tot]=btParse(tr0.children[4].textContent), lab=document.querySelector('[data-tab=dev]').textContent, n=parseInt(lab.match(/\((\d+)\)/)[1]);
+      if(n!==tot-okc) btBad.push(pidx+': '+n+' != '+tot+'-'+okc);
+      click('[data-tab=dev]'); const body=document.querySelectorAll('#btWrap table.bt tbody tr');
+      if(n===0){ if(!$('#btEmpty')||$('#btEmpty').textContent!=='Ingen afvigelser i backtesten') btBad.push(pidx+': tom tekst'); }
+      else if(body.length!==Math.min(n,20) || ![...body].every(r=>r.children[5].classList.contains('dev'))) btBad.push(pidx+': rækker '+body.length);
+      devTotal+=n;
+      if(/vendor_true|rule_posted|rule_to_journal|suggestion_accepted|\bmanual\b/.test($('#btWrap').textContent)) leakP.push(pidx);
+      if(!longList){ click('[data-tab=mine]'); const m=document.querySelectorAll('#btWrap table.bt tbody tr').length, va=document.querySelector('[data-act=btAll]'); if(va){ longList={pid:pidx,shown:m,label:va.textContent}; } }
+      click(`#suggTable tr.row[data-pid="${pidx}"]`);
+    }
+    ok(`24 N = total − korrekte for alle ${bpids.length} forslag; ingen afvigelser giver "Ingen afvigelser i backtesten"`, btBad.length===0 && bpids.length===num('#badge'), btBad.join('; ')+' | afvigelser i alt '+devTotal);
+    ok('24a ingen interne navne i panelerne', leakP.length===0, leakP.join(','));
+    const netsId=P.find(p=>p.name==='Nets kortgebyrer').pattern_id; click(`#suggTable tr.row[data-pid="${netsId}"]`); click('[data-tab=dev]');
+    const btn=[...document.querySelectorAll('#btWrap table.bt tbody tr')], btHd=[...document.querySelectorAll('#btWrap table.bt th')].map(t=>t.textContent).join('|');
+    ok('24b Nets: Afvigelser (33), kolonner og markering i Bogført', $('[data-tab=dev]').textContent==='Afvigelser (33)' && btn.length===20 && btHd==='Dato|Virksomhed|Banktekst|Beløb|Foreslået (konto / moms)|Bogført (konto / moms)' && btn.every(r=>r.children[4].textContent==='7810 / Ingen moms' && r.children[5].textContent.startsWith('7811 / Ingen moms') && r.children[3].textContent.endsWith(' kr.')), btHd);
+    click('[data-act=btAll]'); ok('24c "Vis alle" viser alle 33 uden genindlæsning', document.querySelectorAll('#btWrap table.bt tbody tr').length===33);
+    click('[data-tab=mine]'); const mrows=[...document.querySelectorAll('#btWrap table.bt tbody tr')], dts=mrows.map(r=>r.children[0].textContent.split('.').reverse().join(''));
+    ok('24d Dine kunder: kun Jonas\' kunder, nyeste først, højst 20', mrows.length<=20 && mrows.length>0 && dts.every((d,i)=>i===0||d<=dts[i-1]), mrows.length+' rækker');
+    ok('24e lange lister har "Vis alle (n)"', !longList || /^Vis alle \(\d/.test(longList.label), longList?longList.label:'ingen lange lister');
+    click(`#suggTable tr.row[data-pid="${netsId}"]`); S.open=null; S.page='tasks'; render();
+    const nudgeB2=$('#nudgeLine').textContent; sel('B1'); const nudgeB1=$('#nudgeLine').textContent; sel('B2');
+    ok('1 bogholdervælger skifter nudge', nudgeB1!==nudgeB2, nudgeB2+' | '+nudgeB1);
+    click('[data-act=nudgeLater]'); ok('1b "Senere" skjuler nudge', !$('#nudge')); S.nudgeHidden=false; render();
+    const badge0=num('#badge'), nudgeNum0=parseFloat(nudgeB2.match(/fjerne (\d+)/)[1]);
+    click('[data-act=nudgeGo]');
+    ok('2 "Se de 3 forslag" åbner Forslag med mønster foldet ud', S.page==='suggestions' && !!$('tr.detail'));
+    const th=$('#topAll').textContent;
+    ok('2a toppen: sætningen og kortene "I dag"/"Med workflows" er væk; midterkortet viser Op til 441, alle 24 forslag (37 %)', !$('#thisMonth') && !$('#cover') && !$('.ba') && !$('#main p.sub') && !$('#main').textContent.includes('I dag') && !$('#main').textContent.includes('Hver gentagen postering vurderes i hver kunde.') && !$('#main').textContent.includes('Med workflows') && !$('#def2') && !$('#main').textContent.includes('En berøring') && !$('#main').textContent.includes('30 kundegennemgange') && $('#topAll .v').textContent==='Op til 441' && $('#topAll .l').textContent==='manuelle håndteringer, hvis du godkender alle 24 forslag (37 %)', th);
+    const sumCol=[...document.querySelectorAll('#suggTable tr.row')].reduce((s,tr)=>s+parseFloat(tr.children[3].textContent.replace(/\./g,'')),0);
+    const nRows=document.querySelectorAll('#suggTable tr.row').length, nHead=parseFloat(th.match(/alle (\d+) forslag/)[1]), pctH=parseFloat(th.match(/\((\d+) %\)/)[1]);
+    ok('2b N = sum af "Manuelle / md." i tabellen; antal rækker = N i overskriften = badget; ingen "(top 8)"', sumCol===lst() && nRows===nHead && nHead===badge0 && pctH===Math.round(sumCol/1198*100) && !th.includes('Med alle forslag') && !$('#main').textContent.includes('top 8') && [...document.querySelectorAll('#suggTable th')].some(t=>t.textContent==='Manuelle / md.'), `rækker ${nRows}, overskrift ${nHead}, badge ${badge0}, X ${lst()}, sum ${sumCol}`);
+    const top3=[...document.querySelectorAll('#suggTable tr.row')].slice(0,3).reduce((s,tr)=>s+parseFloat(tr.children[3].textContent.replace(/\./g,'')),0);
+    ok('2f nudgens tal = summen af de tre viste rækker', top3===nudgeNum0, top3+' = '+nudgeNum0);
+    ok('2c ingen "NONE" vises; "Ingen moms" bruges', !$('#main').textContent.includes('NONE') && $('#main').textContent.includes('Ingen moms'));
+    const exs=[...document.querySelectorAll('tr.detail table:not(.bt) tbody tr')].map(tr=>({d:tr.children[0].textContent,c:tr.children[3].textContent}));
+    const pid=S.open, mineNames=new Set(byId[pid].clients.filter(isMine).map(cname)), x0=all();
+    ok('2d eksempler: 5 stk., spredte datoer maj–okt, egne kunder først', exs.length===5 && exs.every(e=>/^\d\d\.(0[5-9]|10)\.26$/.test(e.d)) && new Set(exs.map(e=>e.d)).size>=3 && (mineNames.size===0||mineNames.has(exs[0].c)));
+    // approve + rule + undo
+    const undoNow=(reason)=>{ click('[data-act=undo]'); if(reason){ const r=[...document.querySelectorAll('input[name=fbr]')].find(i=>i.value===reason); r.checked=true; } click('[data-act=fbConfirm]'); };
+    const P0=byId[pid], nMine=myOpen(P0).length, nColl=colleagues(P0).length, rules0=S.rules.length;
+    ok('2e knap "Godkend for mine kunder (N)" og afkrydsningsfelt "Foreslå til kolleger med samme mønster (M kunder)"', $('[data-act=approveAll]').textContent===`Godkend for mine kunder (${nMine})` && (nColl===0 || $('#suggestColl').parentElement.textContent.trim()===`Foreslå til kolleger med samme mønster (${nColl} ${nColl===1?'kunde':'kunder'})`) && !$('[data-act=approveAll]').textContent.includes('alle kunder'), $('[data-act=approveAll]').textContent);
+    if(nColl) click('#suggestColl');
+    click('[data-act=approveAll]');
+    const nr=S.rules[S.rules.length-1];
+    ok('3 Godkend for mine kunder: regel kun for egne kunder, forslaget stadig åbent for kolleger', S.rules.length===rules0+1 && nr.clients.length===nMine && nr.clients.every(isMine) && stateOf(P0)===(nColl?'partial':'approved'), byId[pid].name+': '+nMine+' egne, '+nColl+' kolleger');
+    ok('3a undo-bjælke "Workflowen er godkendt for dine N kunder" (+ ", og foreslået til kolleger" når feltet var slået til), 10 sek.', $('#undoMsg').textContent===`Workflowen er godkendt for dine ${nMine} ${nMine===1?'kunde':'kunder'}${nColl?', og foreslået til kolleger':''}.` && !!$('[data-act=undo]') && S.undo.expires-Date.now()>9000 && S.undo.expires-Date.now()<=10000, $('#undoMsg').textContent);
+    ok('3b badge falder, "Med alle forslag" falder', num('#badge')<badge0 && all()<x0, badge0+' -> '+num('#badge')+'; '+x0+' -> '+all());
+    if(nColl){ const other=BKS.find(b=>b!==S.bk && P0.clients.some(c=>D.clientBk[c]===b)); sel(other); S.showAll=true; render();
+      const rowc=document.querySelector(`#suggTable tr.row[data-pid="${pid}"]`);
+      ok('3f kolleger ser "Foreslået af ..." på forslaget', !!rowc && rowc.textContent.includes('Foreslået af '+D.bkName['B2']), other); S.showAll=false; sel('B2'); S.page='suggestions'; render(); }
+    goto('workflows'); const rr=document.querySelector('#ruleTable tbody tr:last-child');
+    ok('3c Bank workflows: ny regel med "Oprettet fra forslag", dato, kunder, "Bogfør direkte" og antagelsen', rr.textContent.includes('Oprettet fra forslag') && rr.textContent.includes('29.10.26') && /\d+ kunde/.test(rr.textContent) && rr.textContent.includes('Bogfør direkte') && rr.textContent.includes('Antagelse: i dag sender bank workflows til kassekladden.') && rr.textContent.includes(byId[pid].name), rr.children[0].textContent);
+    click('[data-act=undo]'); ok('3g Fortryd åbner feedbackboks med 4 valg og "Hvorfor?"', !!$('#fbBox') && [...document.querySelectorAll('input[name=fbr]')].map(i=>i.value).join('|')==='Forkert konto eller moms|Ikke sikker endnu|Ikke relevant|Klikkede ved en fejl' && $('#fbBox').textContent.includes('Hvorfor?') && S.rules.length===rules0+1);
+    click('[data-act=fbCancel]'); ok('3h Annuller i feedbackboksen: intet sker, bjælken består', !$('#fbBox') && S.rules.length===rules0+1 && !!$('#undoBar'));
+    undoNow('Klikkede ved en fejl');
+    ok('3d Fortryd: regel fjernet, forslag tilbage, bjælke væk, markering fjernet', S.rules.length===rules0 && stateOf(P0)==='open' && !$('#undoBar') && !S.suggested[pid] && S.feedback.length===1 && S.feedback[0].reason==='Klikkede ved en fejl' && S.feedback[0].kind==='undo');
+    goto('suggestions'); ok('3e badge og overskrift tilbage efter Fortryd', num('#badge')===badge0 && all()===x0, badge0+' / '+x0);
+    S.open=pid; render(); click('[data-act=approveAll]'); // approve again (no colleague flag) for the next steps
+    ok('3i uden afkrydsning: ingen "foreslået til kolleger"', $('#undoMsg').textContent===`Workflowen er godkendt for dine ${nMine} ${nMine===1?'kunde':'kunder'}.`);
+    goto('dashboard'); const yours1=num('#kYours'), off1=num('#kOffice'), next1=num('#kNext'), hrs1=num('#kHours');
+    ok('4 Dashboard: din tæller og kontoret som sekundær linje', off1>=yours1 && next1>0 && $('#kYours').closest('.kpi').textContent.includes('Hele kontoret') && $('#kYours').closest('.kpi').textContent.includes('Dine workflows håndterer'), `dig ${yours1}, kontoret ${off1}, t ${hrs1}`);
+    ok('4a Dashboard viser undtagelsen og "Workflows\' helbred"', !!$('#exception') && $('#main').textContent.includes("Workflows' helbred") && $('#main').textContent.includes('Tilføjelse: sparede timer og workflows\' helbred på tværs af kunder'));
+    // pause / resume / delete on the new rule
+    goto('workflows'); const rid=S.rules[S.rules.length-1].id;
+    click(`tr[data-rid="${rid}"] [data-act=rulePause]`); click('[data-act=fbConfirm]');
+    ok('5 Sæt på pause på regel: workflow på pause, tællere falder', stateOf(P0)===(nColl?'partial':'paused') && ownPaused(S.rules.find(r=>r.id===rid)) && !!$(`tr[data-rid="${rid}"] [data-act=ruleResume]`));
+    goto('dashboard'); const off2=num('#kOffice'); ok('5a Dashboard-tæller falder ved pause', off2<off1, off1+' -> '+off2);
+    goto('workflows'); click(`tr[data-rid="${rid}"] [data-act=ruleResume]`); ok('5b Genoptag på regel: workflow godkendt igen', stateOf(P0)===(nColl?'partial':'approved'));
+    click(`tr[data-rid="${rid}"] [data-act=ruleDelete]`);
+    ok('5c Slet åbner feedbackboks med 3 valg og "Hvorfor?"', !!$('#fbBox') && [...document.querySelectorAll('input[name=fbr]')].map(i=>i.value).join('|')==='Forkert konto eller moms|Ikke sikker endnu|Ikke relevant' && S.rules.some(r=>r.id===rid));
+    click('[data-act=fbCancel]'); ok('5d Annuller beholder reglen', S.rules.some(r=>r.id===rid) && !$('#fbBox'));
+    click(`tr[data-rid="${rid}"] [data-act=ruleDelete]`); document.querySelector('input[name=fbr][value="Ikke relevant"]').checked=true; $('#fbt').value='Passer ikke til vores kunder'; click('[data-act=fbConfirm]');
+    ok('5e Slet: regel væk, forslag tilbage, valg og tekst gemt', !S.rules.some(r=>r.id===rid) && stateOf(P0)==='open' && isOpen(P0) && S.feedback.some(f=>f.kind==='delete'&&f.reason==='Ikke relevant'&&f.text==='Passer ikke til vores kunder'));
+    goto('suggestions'); ok('5f badge tilbage efter Slet', num('#badge')===badge0, String(num('#badge')));
+    ok('5g Aktive workflows har Sæt på pause/Genoptag/Slet pr. regel', !!document.querySelector('.activeTable [data-act=rulePause]') && !!document.querySelector('.activeTable [data-act=ruleDelete]') && $('#main').textContent.includes('Aktive workflows'));
+    // choose clients: only own clients
+    const pid2=openMine().sort(sortSafe).find(p=>myOpen(p).length>=2).pattern_id; S.open=pid2; render();
+    click('[data-act=choose]'); const boxes=document.querySelectorAll('input[data-c]');
+    ok('6 Vælg kunder viser kun egne kunder', boxes.length===myOpen(byId[pid2]).length && [...boxes].every(b=>isMine(b.dataset.c)), boxes.length+' kunder');
+    boxes[0].checked=false; boxes[0].dispatchEvent(new Event('change',{bubbles:true}));
+    const k=S.choosing.sel.size, nOpen2=boxes.length; click('[data-act=approveSel]');
+    ok('6b Vælg kunder: delvis godkendelse + regel + undo-bjælke', stateOf(byId[pid2])==='partial' && effSet(byId[pid2]).size===k && k===nOpen2-1 && new RegExp('godkendt for dine '+k+' kunde').test($('#undoMsg').textContent), byId[pid2].name+': '+k+' af '+byId[pid2].n_clients);
+    goto('dashboard'); const off3=num('#kOffice'); ok('6a kontoret-tæller stiger', off3>off2, off2+' -> '+off3);
+    // dismiss with feedback, then undo
+    goto('suggestions'); const badge1=num('#badge'); const r2=document.querySelector('#suggTable tr.row'); const pid3=r2.dataset.pid; click(r2); click('[data-act=dismiss]');
+    ok('7 Afvis åbner feedbackboks; intet afvist før Bekræft', !!$('#fbBox') && stateOf(byId[pid3])!=='dismissed' && [...document.querySelectorAll('input[name=fbr]')].map(i=>i.value).join('|')==='Forkert konto eller moms|Ikke sikker endnu|Ikke relevant');
+    click('[data-act=fbCancel]'); ok('7b Annuller: forslaget uændret', stateOf(byId[pid3])!=='dismissed');
+    click('[data-act=dismiss]'); document.querySelector('input[name=fbr][value="Forkert konto eller moms"]').checked=true; $('#fbt').value='Vi bruger konto 7120'; click('[data-act=fbConfirm]');
+    ok('7c Bekræft: afvist, væk fra listen, undo-bjælke, valg og tekst gemt', stateOf(byId[pid3])==='dismissed' && !document.querySelector(`#suggTable tr.row[data-pid="${pid3}"]`) && num('#badge')<=badge1 && $('#undoMsg').textContent==='Forslaget er afvist.' && S.feedback.some(f=>f.kind==='dismiss'&&f.reason==='Forkert konto eller moms'&&f.text==='Vi bruger konto 7120'));
+    undoNow('Ikke sikker endnu'); ok('7a Fortryd på Afvis: forslaget er tilbage, valg gemt', stateOf(byId[pid3])!=='dismissed' && num('#badge')===badge1 && S.feedback.filter(f=>f.kind==='undo').length===2);
+    goto('dashboard'); const fbt=$('#fbCounts').textContent, tot=[...document.querySelectorAll('#fbCounts tbody tr')].reduce((n,tr)=>n+parseInt(tr.children[1].textContent),0);
+    ok('7d Dashboard: optælling af årsager', tot===S.feedback.length && fbt.includes('Forkert konto eller moms') && fbt.includes('Klikkede ved en fejl'), S.feedback.map(f=>f.kind+':'+f.reason).join(' | '));
+    // exception: simulated rent hold at one of Jonas Krogh's clients
+    goto('suggestions');
+    const ex=$('#exception'), exb=[...document.querySelectorAll('#exception button')].map(b=>b.textContent);
+    ok('8 Undtagelse: husleje hos Jonas Kroghs kunde, "Simuleret", beløb og tekst', !!ex && D.clientBk[EXC.client]==='B2' && ex.textContent.includes('Simuleret') && ex.textContent.includes(`Normalt: ${kr(EXC.usual_amount)} til ${EXC.usual_to}. Nu: ${kr(EXC.held_amount)} til ${EXC.new_to}.`) && ex.textContent.includes('Sandsynligvis en flytning med depositum. Tal med kunden, før du godkender.') && EXC.held_amount/EXC.usual_amount>2.9 && EXC.held_amount/EXC.usual_amount<3.1, ex.textContent.slice(0,260));
+    ok('8a tre knapper; Circle K-undtagelsen er væk', exb.join('|')==='Opdater workflow|Bogfør som normalt|Hold tilbage' && !ex.textContent.includes('Circle K') && !$('#main').textContent.includes('Delvis pause'), exb.join('|'));
+    ok('8b statusmærke "Tilbageholdt (1 af 1)" i Aktive workflows', [...document.querySelectorAll('.activeTable .pill.state')].some(p=>p.textContent==='Tilbageholdt (1 af 1)'));
+    const flashTxt=()=>$('#flash').textContent, xr=excRule(), rowStatus=()=>$(`tr[data-rid="${xr.id}"] .pill.state`).textContent, rowPayee=()=>$(`tr[data-rid="${xr.id}"] .payee`).textContent;
+    const reHold=()=>{ S.heldClients.add(EXC.client); Object.assign(xr,{payee:EXC.usual_to,amount:EXC.usual_amount,sentToJournal:false,paused:new Set()}); render(); };
+    const oldLine=`Modtager: ${EXC.usual_to}, ${kr(EXC.usual_amount)}`, newLine=`Modtager: ${EXC.new_to}, ${kr(EXC.held_amount)}`;
+    ok('8c0 før valget: gammel modtager og gammelt beløb på workflowen', rowPayee()===oldLine, rowPayee());
+    click('[data-act=excHold]');
+    ok('8c Hold tilbage: alt uændret, knapperne består, bekræftelse', [...document.querySelectorAll('#exception button')].length===3 && hasHold() && rowStatus()==='Tilbageholdt (1 af 1)' && rowPayee()===oldLine && flashTxt()==='Workflowen er stadig holdt tilbage.', flashTxt());
+    goto('dashboard'); click('[data-act=excBook]');
+    ok('8d Bogfør som normalt fra Dashboard: undtagelsen væk, Aktiv i helbred uden genindlæsning, gammel modtager og beløb, bekræftelse', !hasHold() && !$('#exception') && S.page==='dashboard' && rowStatus()==='Aktiv' && rowPayee().startsWith(oldLine) && rowPayee().includes('sendt til kassekladden') && !rowPayee().includes('kr..') && $(`tr[data-rid="${xr.id}"]`).textContent.includes('1 betaling sendt til kassekladden') && flashTxt()==='Betalingen er sendt til kassekladden. Workflowen er uændret.', rowPayee());
+    goto('workflows'); ok('8d1 Bank workflows: Aktiv og uændret workflow efter Bogfør som normalt', rowStatus()==='Aktiv' && rowPayee().startsWith(oldLine) && xr.payee===EXC.usual_to && xr.amount===EXC.usual_amount);
+    reHold(); goto('dashboard'); const offA=num('#kOffice'); goto('suggestions'); click('[data-act=excUpdate]');
+    ok('8e Opdater workflow: undtagelsen væk, Aktiv, ny modtager og nyt beløb, bekræftelse', !hasHold() && !$('#exception') && effSet(byId[EXC.pattern]).has(EXC.client) && rowStatus()==='Aktiv' && rowPayee()===newLine && flashTxt()===`Workflowen er opdateret for ${cname(EXC.client)}.` && cname(EXC.client)==='Olsen Rådgivning ApS', rowPayee()+' | '+flashTxt());
+    goto('workflows'); ok('8e1 Bank workflows: Aktiv med ny modtager og nyt beløb uden genindlæsning', rowStatus()==='Aktiv' && rowPayee()===newLine);
+    reHold(); click(`tr[data-rid="${xr.id}"] [data-act=rulePause]`); click('[data-act=fbConfirm]'); goto('suggestions'); click('[data-act=excBook]');
+    ok('8e2 undtagelse på en workflow på pause: status bliver stadig Aktiv', rowStatus()==='Aktiv' && !pausedOf(xr).size);
+    reHold(); goto('workflows'); click(`tr[data-rid="${xr.id}"] [data-act=ruleDelete]`); click('[data-act=fbConfirm]'); goto('suggestions');
+    ok('8e3 Slet af husleje-workflowen fjerner også undtagelsen', !$('#exception') && !hasHold());
+    S.rules.push(xr); reHold(); goto('suggestions'); click('[data-act=excUpdate]');
+    goto('dashboard'); const off4=num('#kOffice'); ok('8f Dashboard-tæller stiger efter løft af hold', off4>offA, offA+' -> '+off4);
+    const cnt=l=>{ const tr=[...document.querySelectorAll('#fbCounts tbody tr')].find(t=>t.children[0].textContent===l); return tr?parseInt(tr.children[1].textContent):0; };
+    const ns0=cnt('Ikke sikker endnu'); goto('suggestions'); const rw=document.querySelector('#suggTable tr.row'); click(rw); click('[data-act=dismiss]');
+    document.querySelector('input[name=fbr][value="Ikke sikker endnu"]').checked=true; click('[data-act=fbConfirm]'); goto('dashboard');
+    ok('23 Afvis med "Ikke sikker endnu" øger tallet på Dashboard uden genindlæsning', cnt('Ikke sikker endnu')===ns0+1, ns0+' -> '+cnt('Ikke sikker endnu'));
+    goto('suggestions'); click('[data-act=undo]'); click('[data-act=fbConfirm]'); goto('dashboard');
+
+    // --- demo round: 1 pause with reason ---
+    { const circle=S.rules.find(r=>byId[r.pid].name==='Circle K'), fbN=S.feedback.length, cntD=l=>{ const tr=[...document.querySelectorAll('#fbCounts tbody tr')].find(t=>t.children[0].textContent===l); return tr?parseInt(tr.children[1].textContent):-1; };
+      goto('dashboard'); const n0=num('#sNow'), o0=num('#sOffice'), j0=$('#bkTable tr[data-bk=B2] td:nth-child(2)').textContent, cr0=cntD('Noget har ændret sig hos kunden');
+      ok('30 "Hvorfor sagde vi nej?" viser pause-årsagen, også ved 0', cr0>=0, String(cr0));
+      goto('workflows'); click(`tr[data-rid="${circle.id}"] [data-act=rulePause]`);
+      ok('30a Sæt på pause åbner boksen med titel og de tre årsager; intet på pause før Bekræft; årsag valgfri', $('#fbBox b').textContent==='Hvorfor sætter du workflowen på pause?' && [...document.querySelectorAll('input[name=fbr]')].map(i=>i.value).join('|')==='Forkert konto eller moms|Noget har ændret sig hos kunden|Ikke sikker endnu' && !pausedOf(circle).size && !document.querySelector('input[name=fbr]:checked') && $('#fbOptional').textContent==='Årsagen er valgfri.');
+      click('[data-act=fbCancel]'); ok('30b Annuller: workflowen er stadig aktiv, ingen årsag gemt', !pausedOf(circle).size && S.feedback.length===fbN && !$('#fbBox') && S.rules.includes(circle));
+      click(`tr[data-rid="${circle.id}"] [data-act=rulePause]`); document.querySelector('input[name=fbr][value="Noget har ændret sig hos kunden"]').checked=true; click('[data-act=fbConfirm]');
+      ok('30c Bekræft: status "På pause", knappen bliver Genoptag, workflowen er ikke slettet', S.rules.includes(circle) && ownPaused(circle) && $(`tr[data-rid="${circle.id}"] .pill.state`).textContent==='På pause (2 af 8)' && $(`tr[data-rid="${circle.id}"] [data-act=ruleResume]`).textContent==='Genoptag' && !$(`tr[data-rid="${circle.id}"] [data-act=rulePause]`));
+      goto('dashboard'); const n1=num('#sNow'), o1=num('#sOffice'), j1=$('#bkTable tr[data-bk=B2] td:nth-child(2)').textContent;
+      ok('30d Sparet nu falder uden genindlæsning; årsagen tælles', n1<n0 && o1<o0 && cntD('Noget har ændret sig hos kunden')===cr0+1 && S.feedback[S.feedback.length-1].kind==='pause' && S.feedback[S.feedback.length-1].workflow==='Circle K' && $('#fbCounts').closest('.card').textContent.includes('Sæt på pause'), `${n0} -> ${n1}; kontoret ${o0} -> ${o1}; Jonas ${j0} -> ${j1}`);
+      { const cp=byId[circle.pid], want=latest(circle.pid).auto_posted*savedFor(cp,circle.clients.filter(c=>!pausedOf(circle).has(c)))/savedFor(cp,cp.clients), tr=$(`tr[data-rid="${circle.id}"]`);
+      ok('30e Workflows\' helbred: "På pause (2 af 8)", og håndteret falder kun med Jonas\' del', tr.querySelector('.pill.state').textContent==='På pause (2 af 8)' && tr.children[2].textContent===nf(want,0) && want>0 && want<latest(circle.pid).auto_posted, tr.children[2].textContent); }
+      goto('workflows'); click(`tr[data-rid="${circle.id}"] [data-act=ruleResume]`); goto('dashboard');
+      ok('30f Genoptag: Sparet nu er tilbage, ingen ny årsag', num('#sNow')===n0 && num('#sOffice')===o0 && S.feedback.length===fbN+1);
+      goto('suggestions'); click(`.activeTable tr[data-rid="${circle.id}"] [data-act=rulePause]`); click('[data-act=fbConfirm]');
+      ok('30g Sæt på pause fra Aktive workflows, uden årsag: tælles som "Ingen årsag angivet"', ownPaused(circle) && S.feedback[S.feedback.length-1].reason==='Ingen årsag angivet' && S.feedback[S.feedback.length-1].kind==='pause');
+      click(`.activeTable tr[data-rid="${circle.id}"] [data-act=ruleResume]`); }
+    // --- demo round: 3 choose clients ---
+    { sel('B2'); goto('suggestions'); const pc=openMine().sort(sortSafe).find(p=>myOpen(p).length>=2 && colleagues(p).length>0), id=pc.pattern_id, keep=S.rules.length;
+      const reset=()=>{ S.rules=S.rules.slice(0,keep); delete S.suggested[id]; S.undo=null; clearTimeout(S.undoTimer); S.suggestColl=false; };
+      S.open=id; S.choosing=null; S.suggestColl=false; render(); click('[data-act=choose]');
+      const cb=()=>$('#suggestColl'), vis=e=>!!e && e.offsetParent!==null;
+      ok('31 Vælg kunder: "Foreslå til kolleger..." er synlig og ikke afkrydset', vis(cb()) && !cb().checked && cb().parentElement.textContent.trim()===`Foreslå til kolleger med samme mønster (${colleagues(pc).length} ${colleagues(pc).length===1?'kunde':'kunder'})`, pc.name);
+      click(cb()); const b0=document.querySelector('input[data-c]'); b0.checked=false; b0.dispatchEvent(new Event('change',{bubbles:true}));
+      ok('31a afkrydsningen overlever, når kunder vælges til og fra', vis(cb()) && cb().checked && S.suggestColl);
+      click('[data-act=approveSel]');
+      ok('31b afkrydset ved godkendelse: foreslået til kolleger', !!S.suggested[id] && $('#undoMsg').textContent.endsWith(', og foreslået til kolleger.'), $('#undoMsg').textContent); reset();
+      S.open=id; render(); click('[data-act=choose]'); click('[data-act=approveSel]');
+      ok('31c ikke afkrydset ved godkendelse: ikke foreslået', !S.suggested[id] && !$('#undoMsg').textContent.includes('kolleger'), $('#undoMsg').textContent); reset();
+      S.open=id; render(); click(cb()); click('[data-act=choose]');
+      ok('31d afkrydset før Vælg kunder: stadig synlig og afkrydset i kundevalget', vis(cb()) && cb().checked); click('[data-act=cancelChoose]');
+      ok('31e Annuller: stadig synlig og afkrydset', vis(cb()) && cb().checked);
+      goto('tasks'); ok('31f skjult ved sideskift: afkrydsningen nulstilles', S.suggestColl===false);
+      goto('suggestions'); S.open=id; render(); click(cb()); sel('B1'); ok('31g bogholderskift nulstiller', S.suggestColl===false); sel('B2');
+      S.open=id; render(); click(cb()); click(`#suggTable tr.row[data-pid="${id}"]`); ok('31h foldes panelet sammen, nulstilles afkrydsningen', S.suggestColl===false);
+      S.open=id; render(); click(cb()); click('[data-act=showAll]'); ok('31i Vis alle nulstiller', S.suggestColl===false); click('[data-act=showAll]');
+      // 0 selected: the approve button is disabled and nothing can be created
+      const uncheckAll=()=>[...S.choosing.sel].forEach(c=>{ const i=document.querySelector(`input[data-c="${c}"]`); i.checked=false; i.dispatchEvent(new Event('change',{bubbles:true})); });
+      S.open=id; S.choosing=null; S.suggestColl=false; render(); click('[data-act=choose]');
+      ok('35 Vælg kunder: knappen er aktiv, når kunder er valgt', !$('[data-act=approveSel]').disabled && $('[data-act=approveSel]').textContent===`Godkend for ${myOpen(pc).length} valgte`, $('[data-act=approveSel]').textContent);
+      uncheckAll(); const rulesZ=S.rules.length, undoZ=S.undo;
+      ok('35a 0 valgt: "Godkend for 0 valgte" er deaktiveret', $('[data-act=approveSel]').disabled && $('[data-act=approveSel]').textContent==='Godkend for 0 valgte' && S.choosing.sel.size===0, $('[data-act=approveSel]').textContent);
+      click('[data-act=approveSel]'); ok('35b klik på den deaktiverede knap: ingen workflow, kundevalget står åbent', S.rules.length===rulesZ && !!S.choosing && S.undo===undoZ && !S.suggested[id]);
+      $('[data-act=approveSel]').disabled=false; click('[data-act=approveSel]'); ok('35c heller ingen workflow, hvis disabled omgås', S.rules.length===rulesZ && !!S.choosing && S.undo===undoZ); render();
+      click('#suggestColl'); click('[data-act=approveSel]'); ok('35d afkrydset "Foreslå til kolleger" og 0 valgt: intet foreslået', S.rules.length===rulesZ && !S.suggested[id]); click('#suggestColl');
+      const first=document.querySelector('input[data-c]'), firstC=first.dataset.c; first.checked=true; first.dispatchEvent(new Event('change',{bubbles:true}));
+      ok('35e vælges én kunde igen: knappen er aktiv igen', !$('[data-act=approveSel]').disabled && $('[data-act=approveSel]').textContent==='Godkend for 1 valgte', $('[data-act=approveSel]').textContent);
+      click('[data-act=approveSel]'); ok('35f godkendelsen gælder netop den ene kunde', S.rules.length===rulesZ+1 && S.rules[S.rules.length-1].clients.join()===firstC, S.rules[S.rules.length-1].clients.join()); reset();
+      S.open=id; render(); click('[data-act=choose]'); uncheckAll(); click('[data-act=cancelChoose]'); ok('35g Annuller virker ved 0 valgt, og Godkend for mine kunder er aktiv', !S.choosing && !$('[data-act=approveAll]').disabled);
+      if(openRentMine().length){ S.open='RENT'; render(); click('[data-act=choose]'); uncheckAll(); const rz=S.rules.length; ok('35h Husleje: deaktiveret ved 0 valgt', $('[data-act=approveSel]').disabled); click('[data-act=approveSel]'); ok('35i Husleje: ingen workflow ved 0 valgt', S.rules.length===rz); click('[data-act=cancelChoose]'); }
+      S.open=null; S.choosing=null; render(); }
+    // --- demo round: 4 risk reason, 5 fuel ---
+    { const LOW='Mindst 95 % korrekte, beløb under 1.000 kr., ingen særlig moms.', FUEL='Momsfradrag afhænger af køretøjet (varebil eller personbil).', pn=n=>P.find(p=>p.name===n);
+      ok('32 alle lav-risiko-forslag opfylder linjen', P.filter(p=>p.risk==='low').every(p=>p.risk_reason===LOW && p.hit_rate>=.95 && p.avg_abs_amount<1000 && !p.special_vat_appears));
+      ok('32a alle mellem-risiko-forslag har en konkret grund, der passer', P.filter(p=>p.risk==='medium').every(p=>p.risk_reason && p.risk_reason!==LOW && (p.risk_reason===FUEL ? (p.account===7500&&p.vat_code==='I25') : p.risk_reason==='Husleje: gælder én kunde.' ? p.type==='rent' : p.avg_abs_amount>=1000)), [...new Set(P.filter(p=>p.risk==='medium').map(p=>p.risk_reason))].join(' | '));
+      S.page='suggestions'; S.bk='B2'; S.showAll=false; S.open=null; render();
+      const rowsR=[...document.querySelectorAll('#suggTable tr.row')];
+      ok('32b hver række i forslagslisten har én linje under risikomærket', rowsR.length>0 && rowsR.every(tr=>{ const td=tr.children[5], w=td.querySelectorAll('.riskWhy'); return w.length===1 && w[0].textContent.length>0 && !!(td.querySelector('.pill').compareDocumentPosition(w[0]) & Node.DOCUMENT_POSITION_FOLLOWING); }), rowsR.length+' rækker');
+      const nets=pn('Nets kortgebyrer'); click(`#suggTable tr.row[data-pid="${nets.pattern_id}"]`);
+      ok('32c Nets: Lav risiko og linjen i række og panel', $('#riskPanel .pill').textContent==='Lav risiko' && $('#riskPanel .riskWhy').textContent===LOW && $(`#suggTable tr.row[data-pid="${nets.pattern_id}"] .riskWhy`).textContent===LOW, $('#riskPanel').textContent);
+      click(`#suggTable tr.row[data-pid="${nets.pattern_id}"]`);
+      const tryg=pn('Tryg'); S.open=tryg.pattern_id; render(); ok('32d Tryg: Mellem risiko, "Beløb over 1.000 kr."', $('#riskPanel .pill').textContent==='Mellem risiko' && $('#riskPanel .riskWhy').textContent==='Beløb over 1.000 kr.', tryg.risk_reason);
+      S.open=null; render(); const rr=document.querySelector('#suggTable tr.row[data-pid=RENT]');
+      if(rr){ ok('32e Huslejelinjen: "Husleje: gælder én kunde." i række', rr.querySelector('.riskWhy').textContent==='Husleje: gælder én kunde.'); click(rr); ok('32f Husleje-panelet har linjen', $('#riskPanel .riskWhy').textContent==='Husleje: gælder én kunde.' && $('#riskPanel .pill').textContent==='Mellem risiko'); click('#suggTable tr.row[data-pid=RENT]'); }
+      const fuelP=P.filter(p=>p.account===7500&&p.vat_code==='I25'), names=fuelP.map(p=>p.name).sort().join(',');
+      ok('33 brændstof: OK, Shell, Q8 er Mellem risiko med momsbegrundelsen; Circle K er stadig Lav risiko', names==='Circle K,OK (brændstof),Q8,Shell' && fuelP.every(p=>p.name==='Circle K' ? (p.risk==='low' && p.risk_reason===LOW && p.safety_rank===3) : (p.risk==='medium' && p.risk_reason===FUEL)), fuelP.map(p=>p.name+':'+p.risk).join(' '));
+      ok('33a kun brændstof er flyttet: 16 lav, 78 mellem, 18 ikke foreslået; rangering følger risiko', [['low',16],['medium',78],['not_suggested',18]].every(([k,n])=>P.filter(p=>p.risk===k).length===n) && [...P].sort((a,b)=>a.safety_rank-b.safety_rank).every((p,i,a)=>i===0||RISK_ORD[a[i-1].risk]<=RISK_ORD[p.risk]) && new Set(P.map(p=>p.safety_rank)).size===P.length);
+      ok('33b godkendte workflows er de samme fire', S.rules.filter(r=>r.initial).map(r=>r.pid).join()===D.value.approved.map(a=>a.pattern_id).join() && D.value.approved.length===4);
+      S.showAll=true; S.risk='medium'; S.type='all'; S.q=''; S.sort='safety'; render(); const ms=[...document.querySelectorAll('#suggTable tr.row')].map(tr=>tr.querySelector('b').textContent);
+      ok('33c Vis alle, Mellem: OK, Shell og Q8 er med', ['OK (brændstof)','Shell','Q8'].every(n=>ms.includes(n)));
+      const okRow=[...document.querySelectorAll('#suggTable tr.row')].find(tr=>tr.querySelector('b').textContent==='OK (brændstof)'); ok('33d OK-rækken viser begrundelsen', okRow.querySelector('.pill.medium').textContent==='Mellem risiko' && okRow.querySelector('.riskWhy').textContent===FUEL);
+      S.risk='all'; S.showAll=false; render();
+      const bad=[]; BKS.forEach(b=>withBk(b,()=>{ const c=openLow().slice(0,3); if(c.length!==3||c.some(p=>p.risk!=='low')||c.some(p=>['OK (brændstof)','Shell','Q8'].includes(p.name))) bad.push(b); }));
+      ok('34 nudgen hos alle seks bogholdere: 3 lav-risiko-forslag, intet brændstof', bad.length===0, bad.join(','));
+      sel('B2'); S.nudgeHidden=false; S.page='tasks'; render();
+      ok('34a Jonas\' nudge: tallet = de tre viste forslag, ingen brændstof', parseInt($('#nudgeNum').textContent)===openLow().slice(0,3).reduce((s,p)=>s+rowTouch(p),0) && !/OK \(brændstof\)|Shell|Q8/.test($('#nudge .sec').textContent), $('#nudgeText').textContent+' '+$('#nudge .sec').textContent);
+      const keepD=new Set(S.dismissed); P.filter(p=>p.risk==='low').forEach(p=>S.dismissed.add(p.pattern_id)); render(); const lowTxt=$('#nudgeText').textContent; S.dismissed=keepD; render();
+      ok('34b ingen åbne lav-risiko: nudgen foreslår ikke mellem risiko', lowTxt==='Ingen åbne lav-risiko-forslag hos dine kunder.', lowTxt); }
+    // charts
+
+
+
+
+    goto('dashboard'); const sA0=num('#sNow'), oA0=num('#sOffice'), kA0=num('#kHours');
+    goto('suggestions'); S.open=P.find(p=>p.name==='Stripe gebyrer (Stripe Europe)').pattern_id; render(); click('[data-act=approveAll]'); goto('dashboard');
+    const sA1=num('#sNow'), oA1=num('#sOffice'), kA1=num('#kHours'), bB2=document.querySelector('#bkTable tr[data-bk=B2] td:nth-child(2)').textContent;
+    click('[data-act=undo]'); click('[data-act=fbConfirm]'); const sA2=num('#sNow'), kA2=num('#kHours');
+    ok('27 Sparet nu opdateres ved Godkend og Fortryd uden genindlæsning; KPI-kortet bruger samme tal', sA1>sA0 && oA1>oA0 && kA1===sA1 && sA2===sA0 && kA2===kA0 && parseFloat(bB2.replace(',','.'))>0, `${sA0} -> ${sA1} -> ${sA2}`);
+    const poss=num('#sPossible'), share=num('#sShare'), fillW=parseFloat($('#sFill').style.width);
+    ok('27a bjælken viser Sparet nu som andel af Muligt', Math.abs(fillW-num('#sNow')/poss*100)<2 && share===Math.round(fillW), `${fillW.toFixed(1)} % / ${share}`);
+    click('#bkTable tr[data-bk=B4] [data-act=goBk]');
+    ok('27b "Se forslag" åbner Workflow-forslag for den bogholder', S.page==='suggestions' && S.bk==='B4' && $('#bkSel').value==='B4' && $('h1').textContent==='Workflow-forslag' && $('#main').textContent.includes('Workflow-forslag til Anders Bruun') && $('a.it.on').dataset.page==='suggestions'); sel('B2');
+    // no 'berøring' / 'kill' anywhere in visible text or tooltips, on any page, in any state
+    const hits=[]; ['tasks','time','dashboard','workflows','suggestions'].forEach(pg=>{ [false,true].forEach(sa=>{ S.page=pg; S.showAll=sa; S.open=null; render(); const t=$('#main').textContent+$('#side').textContent+[...document.querySelectorAll('[data-tip],[aria-label],[title]')].map(e=>(e.dataset.tip||'')+(e.getAttribute('aria-label')||'')+(e.title||'')).join(' ');
+      if(/berøring/i.test(t)) hits.push(pg+':berøring'); if(/\bkill/i.test(t)) hits.push(pg+':kill'); }); }); S.showAll=false; S.page='tasks'; render();
+    S.open=P.find(p=>p.name==='Nets kortgebyrer').pattern_id; S.page='suggestions'; render(); if(/berøring/i.test($('#main').textContent)) hits.push('panel'); S.open=null; S.page='tasks'; render();
+    ok('28 ordet "berøring" og "kill" står ingen steder i den viste tekst', hits.length===0, hits.join(','));
+    const t2=[...document.querySelectorAll('.card svg')][0]; const tk2=[...t2.querySelectorAll('text')].filter(t=>t.getAttribute('text-anchor')==='end').map(t=>t.textContent);
+    ok('10b månedsgrafen har runde akseværdier', tk2.every(s=>/^\d{1,3}(\.\d{3})*$/.test(s)), tk2.join(' '));
+    ok('11 corrections er heltal', [...document.querySelectorAll('.activeTable tbody tr')].every(tr=>/^\d+$/.test(tr.children[3].textContent)));
+    ok('12 kundetyper på dansk', [...document.querySelectorAll('#topClients tbody tr')].every(tr=>['detail','service','holding','håndværk'].includes(tr.children[1].textContent)));
+    ok('13 Nordea og Danske Bank gebyrer mærkes "Gebyr"', ['Nordea gebyrer','Danske Bank gebyrer','Jyske Bank gebyrer','Sydbank gebyrer'].every(n=>P.some(p=>p.name===n&&p.kind==='Gebyr')));
+    goto('suggestions'); click('[data-act=showAll]');
+    const names=[...document.querySelectorAll('#suggTable tr.row td:first-child b')].map(b=>b.textContent);
+    ok('14 Vis alle: Clearhaus gebyrer øverst', names.length>20 && names[0]==='Clearhaus gebyrer');
+    click('[data-chip=type][data-v=settlement]'); const sn=[...document.querySelectorAll('#suggTable tr.row td:first-child b')].map(b=>b.textContent);
+    ok('14a Teya kortgebyrer og Teya kortafregning er adskilte; OK (brændstof)', sn.includes('Teya kortafregning') && P.some(p=>p.name.startsWith('Teya kortgebyrer')) && P.some(p=>p.name==='OK (brændstof)'));
+    click('[data-act=showAll]'); S.type='all';
+    let rentBk=BKS.find(b=>{sel(b); return !!document.querySelector('[data-pid=RENT]');});
+    if(rentBk){ const n0=num('#badge'); click('[data-pid=RENT]'); click('[data-act=approveAll]'); ok('15 Huslejelinjen godkender alle huslejemønstre', !document.querySelector('[data-pid=RENT]') && num('#badge')<n0, rentBk); undoNow(); ok('15a Fortryd bringer huslejelinjen tilbage', !!document.querySelector('[data-pid=RENT]')); }
+    S.nudgeHidden=false; goto('tasks'); const nfs=parseFloat(getComputedStyle($('#nudgeText')).fontSize)/parseFloat(getComputedStyle($('#nudgeLine')).fontSize);
+    ok('25 nudge: pære-ikon (inline SVG) til venstre; overskriften er fed og større end linjen under', !!$('#nudge svg.bulb') && $('#nudge').firstElementChild.firstElementChild.tagName.toLowerCase()==='svg' && nfs>=1.3 && parseInt(getComputedStyle($('#nudgeText')).fontWeight)>=700 && parseInt(getComputedStyle($('#nudgeLine')).fontWeight)<700 && /^Spar ca\. (\d+ t( \d+ min)?|\d+ min) om måneden$/.test($('#nudgeText').textContent), 'ratio '+nfs.toFixed(2));
+    goto('tasks'); const nd=$('#nudge'), ndr=nd.getBoundingClientRect(), bt=$('[data-act=nudgeGo]').getBoundingClientRect(), tx=$('#nudgeText').getBoundingClientRect();
+    ok('26 nudge: knapperne til højre for teksten på samme række, lodret centreret', bt.left>tx.right-1 && Math.abs((bt.top+bt.bottom)/2-(ndr.top+ndr.bottom)/2)<ndr.height*0.2 && $('[data-act=nudgeLater]').getBoundingClientRect().left>bt.left, `knap ${Math.round(bt.left)} / tekst slutter ${Math.round(tx.right)}`);
+    goto('suggestions'); S.open=P.find(p=>p.name==='Nets kortgebyrer').pattern_id; render();
+    ok('26a Nets-panel: Godkend/Vælg kunder/Afvis står over fanerne', !!($('[data-act=approveAll]').compareDocumentPosition($('#btWrap')) & Node.DOCUMENT_POSITION_FOLLOWING) && !!($('[data-act=choose]').compareDocumentPosition($('#btTabs')) & Node.DOCUMENT_POSITION_FOLLOWING)); S.open=null; render();
+    goto('suggestions'); ok('25a pære-ikon i venstre kort og i nudgen, ingen ikoner i menuen', !!$('#topSafe .v svg.bulb') && !document.querySelector('#side svg') && $('a[data-page=suggestions]').textContent.startsWith('Workflow-forslag'));
+    sel('B2'); goto('suggestions'); const navOn=$('a.it.on'), cs=getComputedStyle(navOn), grpCur=$('.grp.cur');
+    ok('18 aktivt menupunkt: neutral grå baggrund #E0E0E0, afrundet, næsten sort tekst, ingen farvet kant; gruppen fed', navOn.textContent.startsWith('Workflow-forslag') && cs.backgroundColor==='rgb(224, 224, 224)' && parseFloat(cs.borderTopLeftRadius)>0 && cs.boxShadow==='none' && cs.borderLeftStyle==='none' && cs.color==='rgb(26, 26, 26)' && grpCur.textContent.includes('Automation') && getComputedStyle(grpCur).fontWeight==='700', cs.backgroundColor);
+    ok('18a titel, overskrift og brødkrumme', $('h1').textContent==='Workflow-forslag' && $('#main').textContent.includes('Workflow-forslag til Jonas Krogh, sikreste først') && $('#crumb').textContent==='Automation›Workflow-forslag' && $('#crumb').nextElementSibling.tagName==='H1' && document.title.startsWith('Workflow-forslag') && !($('#main').textContent+$('#side').textContent).includes('Forslag til automatisering'));
+    const crumbs={tasks:'Praksis›Opgaver',time:'Praksis›Time registration',dashboard:'Automation›Dashboard',workflows:'Automation›Bank workflows',suggestions:'Automation›Workflow-forslag'};
+    ok('19 brødkrumme og markering på alle fem sider', Object.entries(crumbs).every(([pg,c])=>{ goto(pg); return $('#crumb').textContent===c && $('#crumb').nextElementSibling.tagName==='H1' && document.querySelectorAll('a.it.on').length===1 && $('a.it.on').dataset.page===pg; }), Object.keys(crumbs).join(','));
+    sel('B2'); goto('tasks'); S.nudgeHidden=false; render(); click('[data-act=nudgeGo]');
+    ok('19a "Se de 3 forslag" lander på Workflow-forslag med rigtigt menupunkt og brødkrumme', S.page==='suggestions' && $('a.it.on').dataset.page==='suggestions' && $('a.it.on').textContent.startsWith('Workflow-forslag') && $('.grp.cur').textContent.includes('Automation') && $('#crumb').textContent==='Automation›Workflow-forslag' && $('h1').textContent==='Workflow-forslag');
+    sel('B2'); click('.grp[data-grp=automation]'); const folded=!$('a[data-page=dashboard]'); click('.grp[data-grp=automation]');
+    ok('16 menugrupper kan foldes (▶/▼)', folded && !!$('a[data-page=dashboard]'));
+    click('a[data-page=time]'); ok('17 Time registration: note og kolonner', $('#timeNote').textContent==='Illustrativ: afledt af antagne minutter pr. manuel håndtering.' && [...document.querySelectorAll('#timeTable th')].map(t=>t.textContent).join()==='Dato,Virksomhed,Opgavetype,Samlet tid,Fakturerbar tid,Kommentar,Ansvarlig');
+    // --- menu as in e-conomic today: exact order, labels, tags, folded state ---
+    sel('B2'); goto('suggestions');
+    const menuNow=()=>[...document.querySelectorAll('#side .grp, #side a.it')].map(e=>e.textContent), badgeNow=$('#badge').textContent;
+    const menuWant=[AR_OPEN+'Administrator','Master information','Users','Services','Website text','Price list','Log',AR_SHUT+'Admin Central',AR_OPEN+'PraksisNew','Teams','Opgaver','Templates','Time registration','Companies',AR_SHUT+'Default setups',AR_OPEN+'Automation','DashboardNew','Bank workflows',`Workflow-forslagNew ${badgeNow}`];
+    ok('36 menuen er præcis som aftalt: rækkefølge, navne, New-mærker og tæller', menuNow().join('|')===menuWant.join('|'), menuNow().join('|'));
+    ok('36a tælleren står ved Workflow-forslag som før', badgeNow===String(openMine().length+(openRentMine().length?1:0)) && !!$('a[data-page=suggestions] #badge'), badgeNow);
+    ok('36b New-mærker kun på Praksis, Dashboard og Workflow-forslag', document.querySelectorAll('#side .tag').length===3 && [...document.querySelectorAll('#side .tag')].every(t=>t.textContent==='New') && !!$('.grp[data-grp=praksis] .tag') && !!$('a[data-page=dashboard] .tag') && !!$('a[data-page=suggestions] .tag'));
+    const before36=menuNow().join('|'), page36=S.page; click('.grp[data-grp=defaults]'); click('.grp[data-grp=central]');
+    ok('36c Admin Central og Default setups er sammenfoldet og forbliver det ved klik', menuNow().join('|')===before36 && $('.grp[data-grp=defaults] .ar').textContent===AR_SHUT && $('.grp[data-grp=central] .ar').textContent===AR_SHUT, menuNow().join('|'));
+    [...document.querySelectorAll('#side a.it:not([data-page])')].forEach(a=>a.click());
+    ok('36d menupunkter uden side står der, er uden link og skifter ikke side', document.querySelectorAll('#side a.it:not([data-page])').length===9 &&[...document.querySelectorAll('#side a.it:not([data-page])')].every(a=>!a.hasAttribute('href')) && S.page===page36, String(document.querySelectorAll('#side a.it:not([data-page])').length));
+    ok('36e de gamle navne er væk fra menu, brødkrumme og sidetitel på alle fem sider', ['tasks','time','dashboard','workflows','suggestions'].every(pg=>{ goto(pg); const x=$('#side').textContent+' '+$('#crumb').textContent+' '+$('h1').firstChild.textContent; return !/Overblik|Automatisering|Tidsregistrering|Stamoplysninger|Brugere|Hjemmesidetekst|Prisliste|Virksomhedsoverblik|KYC|Anmod om adgang|Skabeloner|Virksomheder|Standardopsætninger|\bNy\b/.test(x); }));
+    ok('36e1 Opgaver beholder sidetitlen Opgaveoversigt', (goto('tasks'),$('h1').textContent==='Opgaveoversigt' && $('#crumb').textContent==='Praksis›Opgaver'));
+    goto('dashboard'); ok('36f Dashboard: sidetitel, brødkrumme og tagget står uændret', $('h1').firstChild.textContent.trim()==='Dashboard' && $('#crumb').textContent==='Automation›Dashboard' && $('h1 .xnote').textContent==="Tilføjelse: sparede timer og workflows' helbred på tværs af kunder" && $('a.it.on').textContent==='DashboardNew' && $('#periodNote').textContent.includes('Tallene i kortene på Dashboard er månedsgennemsnit maj–okt.') && !$('#main').textContent.includes('Overblik'), $('h1').textContent);
+    goto('time'); ok('36g Time registration: sidetitel, brødkrumme og menupunkt', $('h1').textContent==='Time registration' && $('#crumb').textContent==='Praksis›Time registration' && $('a.it.on').textContent==='Time registration');
+    goto('workflows'); ok('36h Bank workflows: Automation i brødkrummen, resten uændret', $('h1').textContent==='Bank workflows' && $('#crumb').textContent==='Automation›Bank workflows');
+    // --- e-conomic look: menu ---
+    sel('B2'); goto('suggestions');
+    { const g=$('.grp[data-grp=praksis]'), gc=getComputedStyle(g), it=$('a.it:not(.on)'), ic=getComputedStyle(it), on=$('a.it.on'), oc=getComputedStyle(on), sc=getComputedStyle($('#side')), tagR=e=>e.getBoundingClientRect();
+      ok('37 gruppeoverskrifter: fede, sorte, samme størrelse som menupunkterne, fyldt sort pil til venstre', [...document.querySelectorAll('#side .grp')].every(x=>{ const c=getComputedStyle(x); return c.fontWeight==='700' && c.color==='rgb(0, 0, 0)' && c.fontSize===ic.fontSize && x.firstElementChild.classList.contains('ar') && getComputedStyle(x.firstElementChild).color==='rgb(0, 0, 0)' && parseFloat(getComputedStyle(x.firstElementChild).fontSize)>=12 && [0x25BC,0x25B6].includes(x.firstElementChild.textContent.codePointAt(0)); }), gc.fontSize+' / '+ic.fontSize);
+      ok('37a menupunkter: almindelig vægt, næsten sort, rykket ind under gruppen', ic.fontWeight==='400' && ic.color==='rgb(26, 26, 26)' && (it.getBoundingClientRect().left+parseFloat(ic.paddingLeft))>g.querySelector('span:nth-child(2)').getBoundingClientRect().left);
+      ok('37b aktivt punkt: neutral grå (ikke blålig), mørkere end menuen, almindelig vægt', (()=>{ const c=oc.backgroundColor.match(/\d+/g).map(Number), m=sc.backgroundColor.match(/\d+/g).map(Number); return c[0]===c[1]&&c[1]===c[2]&&c[0]<m[0]; })() && on.getBoundingClientRect().width/$('#side').clientWidth>0.9 && on.getBoundingClientRect().width<$('#side').clientWidth && oc.fontWeight==='400' && document.querySelectorAll('a.it.on').length===1, Math.round(on.getBoundingClientRect().width)+' af '+$('#side').clientWidth);
+      const pills=[...document.querySelectorAll('#side .tag'),$('#badge')];
+      ok('37c New-mærker og tæller: udfyldt #2D4A8A, hvid fed tekst', pills.length===4 && pills.every(x=>{ const c=getComputedStyle(x); return c.backgroundColor==='rgb(45, 74, 138)' && c.color==='rgb(255, 255, 255)' && c.fontWeight==='700' && parseFloat(c.borderTopLeftRadius)>=8; }));
+      const r1=tagR($('.grp[data-grp=praksis] .tag')).right, r2=tagR($('a[data-page=dashboard] .tag')).right, r3=tagR($('#badge')).right;
+      ok('37d mærkerne er højrestillede på samme linje; tælleren lige efter New', Math.abs(r1-r2)<1.5 && Math.abs(r2-r3)<1.5 && tagR($('a[data-page=suggestions] .tag')).right<=tagR($('#badge')).left && tagR($('#badge')).left-tagR($('a[data-page=suggestions] .tag')).right<10, [r1,r2,r3].map(Math.round).join('/'));
+      ok('37e ingen ikoner i menuen; pæren står i nudgen og i venstre kort', !document.querySelector('#side svg, #side img') && !!$('#topSafe .v svg.bulb'));
+      ok('37f menuens baggrund #F0F1F3 og tynd lodret streg', sc.backgroundColor==='rgb(240, 241, 243)' && sc.borderRightWidth==='1px' && sc.borderRightStyle==='solid');
+      const lines=[...document.querySelectorAll('#side .grp, #side a.it')].map(e=>e.getBoundingClientRect().top), pitch=lines.slice(1).map((v,i)=>v-lines[i]);
+      ok('37g1 44 px pr. linje i hele menuen', pitch.every(p=>Math.abs(p-44)<1), [...new Set(pitch.map(Math.round))].join('/'));
+      ok('37g2 menuens skrifttype er Arial, Helvetica, sans-serif', sc.fontFamily.replace(/["\s]/g,'')==='Arial,Helvetica,sans-serif' && parseFloat(gc.fontSize)===parseFloat(ic.fontSize) && getComputedStyle(on).fontFamily===sc.fontFamily, sc.fontFamily);
+      const bottom=$('a[data-page=suggestions]').getBoundingClientRect().bottom+scrollY;
+      out.push(`INFO  Workflow-forslag slutter ${Math.round(bottom)} CSS-px nede. Fuld skærm (F11), zoom 110 %, skærmhøjde 1080: 982 CSS-px synligt, luft ${Math.round(1080/1.1-bottom)} CSS-px.`);
+      ok('37g Workflow-forslag kan ses uden at rulle i fuld skærm ved zoom 110 % på en skærm med 1080 pixels i højden', bottom<=1080/1.1, Math.round(bottom)+' af '+Math.round(1080/1.1)+' px');
+      const fold=[...document.querySelectorAll('#side .grp')].map(x=>x.dataset.grp+':'+(x.querySelector('.ar').textContent===AR_OPEN?'åben':'lukket')).join();
+      ok('37h åbne grupper: Administrator, Praksis og Automation', fold==='admin:åben,central:lukket,praksis:åben,defaults:lukket,automation:åben', fold); }
+    // --- e-conomic look: Opgaver page ---
+    { S.nudgeHidden=false; S.myOnly=true; S.taskTab='open'; S.tq=''; S.ttype='all'; S.group='none'; S.filtersOpen=false; sel('B2'); goto('tasks');
+      const after=(a,b)=>!!($(a).compareDocumentPosition($(b)) & Node.DOCUMENT_POSITION_FOLLOWING), mineT=D.tasks.filter(x=>x.bk==='B2');
+      ok('38 titel og brødkrumme beholdes; nudge lige under titlen, så kort, kontrollinje, faner og tabel', $('h1').textContent==='Opgaveoversigt' && $('#crumb').textContent==='Praksis›Opgaver' && $('h1').nextElementSibling.id==='nudge' && $('#nudge').nextElementSibling.id==='dueCards' && $('#dueCards').nextElementSibling.id==='taskCtl' && $('#taskCtl').nextElementSibling.id==='taskBar' && after('#taskBar','#taskTable'));
+      const over=mineT.filter(x=>x.date<'2026-10-29').length, wk=mineT.filter(x=>x.date>='2026-10-29'&&x.date<='2026-11-01').length;
+      ok('38a to kort side om side med tal ud fra opgaverne', [...document.querySelectorAll('#dueCards .l')].map(l=>l.textContent).join()==='Forfalden,Forfalder denne uge' && num('#dueOver')===over && num('#dueWeek')===wk && over+wk===mineT.length && $('#dueOver').getBoundingClientRect().top===$('#dueWeek').getBoundingClientRect().top && $('#dueWeek').getBoundingClientRect().left>$('#dueOver').getBoundingClientRect().right, over+' / '+wk);
+      const c0=$('#taskCtl').children;
+      ok('38b kontrollinje: blå Opret opgave, Periode: Dette kvartal, Gruppér efter: Ingen', c0[0].textContent==='Opret opgave' && c0[0].classList.contains('btn') && !c0[0].classList.contains('ghost') && c0[1].textContent.startsWith('Periode:') && $('#period').selectedOptions[0].textContent==='Dette kvartal' && c0[2].textContent.startsWith('Gruppér efter:') && $('#groupBy').selectedOptions[0].textContent==='Ingen');
+      const tabs=()=>[...document.querySelectorAll('#taskTabs button')], tabT=()=>tabs().map(b=>b.textContent).join('|');
+      ok('38c faneblade med tal i grå boks; den valgte er hvid', tabT()===`Åbne opgaver${mineT.length}|Udført0|Alle${mineT.length}` && getComputedStyle(tabs()[0]).backgroundColor==='rgb(255, 255, 255)' && getComputedStyle(tabs()[1]).backgroundColor==='rgba(0, 0, 0, 0)' && getComputedStyle($('#taskTabs')).backgroundColor!=='rgba(0, 0, 0, 0)', tabT());
+      const bar=[...$('#taskBar').children];
+      ok('38d samme linje: faner, kontakten Kun mine opgaver (til), Filtre, print-ikon, Søg...', bar.length===5 && bar[0].id==='taskTabs' && bar[1].textContent.trim()==='Kun mine opgaver' && $('#myOnly').checked && bar[2].textContent==='Filtre' && !!bar[3].querySelector('svg') && bar[3].getAttribute('aria-label')==='Udskriv' && bar[4].id==='tq' && $('#tq').placeholder==='Søg...' && bar.slice(0,4).every(e=>Math.abs((e.getBoundingClientRect().top+e.getBoundingClientRect().bottom)-(bar[0].getBoundingClientRect().top+bar[0].getBoundingClientRect().bottom))<4), bar.map(e=>e.textContent.trim().slice(0,20)).join('|'));
+      ok('38e de gamle felter er væk', !/\bPeriod\b|Group by|My entries|\bFilters\b|\bSearch\b|\bNone\b|This week/.test($('#main').textContent) && !$('#tq').placeholder.includes('Search'));
+      const r0=$('#taskTable tbody tr[data-n]');
+      ok('38f kolonner og rækker: opgavenavn med dato og ansvarlig som undertekst, virksomhed med undertekst, mærket Åben', [...document.querySelectorAll('#taskTable th')].map(x=>x.textContent).join()==='Opgavenavn,Virksomhed,Status,Underopgaver' && [...document.querySelectorAll('#taskTable tbody tr[data-n]')].every(tr=>/^\d\d\.\d\d\.26 · Jonas Krogh$/.test(tr.children[0].querySelector('.subline').textContent) && /\bC\d{3}/.test(tr.children[1].textContent) && /^[\d.]+ posteringer rørt i okt, [\d.]+ bilag$/.test(tr.children[1].querySelector('.subline').textContent) && tr.children[2].querySelector('.pill').textContent==='Åben' && /^(0\/2|-)$/.test(tr.children[3].textContent)), r0.textContent.slice(0,120));
+      const names=[...document.querySelectorAll('#taskTable tbody tr[data-n]')].map(tr=>tr.children[0].firstChild.textContent);
+      ok('38g opgavenavne: Bankafstemning, Bogføring af ~N bilag, Daglig bogføring', names.includes('Bankafstemning') && names.some(n=>/^Bogføring af ~\d+ bilag$/.test(n)) && names.includes('Daglig bogføring') && [...document.querySelectorAll('#taskTable tbody tr[data-n]')].filter(tr=>tr.children[0].firstChild.textContent==='Bankafstemning').every(tr=>tr.children[3].textContent==='0/2'));
+      click('[data-ttab=done]'); ok('38h Udført: ingen rækker og en tom tekst; kortene er uændrede', document.querySelectorAll('#taskTable tbody tr[data-n]').length===0 && $('#taskEmpty').textContent==='Ingen udførte opgaver.' && getComputedStyle(tabs()[1]).backgroundColor==='rgb(255, 255, 255)' && num('#dueOver')===over);
+      click('[data-ttab=all]'); ok('38i Alle: alle mine opgaver', document.querySelectorAll('#taskTable tbody tr[data-n]').length===mineT.length); click('[data-ttab=open]');
+      click('#myOnly'); ok('38j kontakten slået fra: hele kontorets opgaver, i tal og kort', document.querySelectorAll('#taskTable tbody tr[data-n]').length===D.tasks.length && num('#dueOver')+num('#dueWeek')===D.tasks.length, String(D.tasks.length)); click('#myOnly');
+      click('[data-act=filters]'); ok('38k Filtre åbner Opgavetype, og filteret virker', !!$('#ttype') && $('#ttype').options[0].textContent==='Alle'); { const v=$('#ttype'); v.value='Afstemning'; v.dispatchEvent(new Event('change')); }
+      ok('38l Filtre (1), kun Bankafstemning, tallet på fanen følger med', $('[data-act=filters]').textContent==='Filtre (1)' && [...document.querySelectorAll('#taskTable tbody tr[data-n]')].every(tr=>tr.children[0].firstChild.textContent==='Bankafstemning') && tabs()[0].textContent===`Åbne opgaver${document.querySelectorAll('#taskTable tbody tr[data-n]').length}`); { const v=$('#ttype'); v.value='all'; v.dispatchEvent(new Event('change')); } click('[data-act=filters]');
+      { const v=$('#groupBy'); v.value='company'; v.dispatchEvent(new Event('change')); } ok('38m Gruppér efter Virksomhed giver grupperækker over hele tabellen', !!$('#taskTable tr.gh td') && $('#taskTable tr.gh td').colSpan===4); { const v=$('#groupBy'); v.value='none'; v.dispatchEvent(new Event('change')); }
+      { const q=$('#tq'), first=names[0]; q.value='Bankafstemning'; q.dispatchEvent(new Event('input')); ok('38n søgning filtrerer og beholder feltet', [...document.querySelectorAll('#taskTable tbody tr[data-n]')].every(tr=>tr.children[0].firstChild.textContent==='Bankafstemning') && $('#tq').value==='Bankafstemning', first); const q2=$('#tq'); q2.value=''; q2.dispatchEvent(new Event('input')); }
+      const fl=S.rules.length; click('[data-act=taskNew]'); const f1=$('#flash').textContent; click('[data-act=taskPrint]'); const f2=$('#flash').textContent;
+      ok('38o Opret opgave og print-ikon ændrer intet, de siger det bare', f1==='Opret opgave er ikke med i prototypen.' && f2==='Udskrift er ikke med i prototypen.' && S.rules.length===fl && document.querySelectorAll('#taskTable tbody tr[data-n]').length===mineT.length);
+      ok('38p pæren står stadig i nudgen', !!$('#nudge svg.bulb')); }
+    // --- nudge and top of Workflow-forslag: same numbers, live on approve and undo ---
+    { S.nudgeHidden=false; S.showAll=false; S.open=null; S.page='tasks'; sel('B2'); goto('tasks');
+      ok('40 tiden: afrundet til nærmeste 5 min og skrevet som "1 t 15 min" / "45 min"', [[77,'1 t 15 min'],[67,'1 t 5 min'],[45,'45 min'],[43,'45 min'],[58,'1 t'],[120,'2 t'],[2,'5 min'],[0,'0 min']].every(([x,t])=>fmtTime(x)===t));
+      const s=safest3(), want=fmtTime(s.x), names=s.c.map(p=>p.name), tm=$('#nudgeTime');
+      tm.dispatchEvent(new MouseEvent('mousemove',{clientX:10,clientY:10,bubbles:true})); const tipOn=$('#tip').style.display, tipT=$('#tip').textContent; tm.dispatchEvent(new MouseEvent('mouseleave'));
+      ok('40a tooltip på tiden i nudgen', tipOn==='block' && tipT==='Beregnet ved 1 min. pr. manuel håndtering.' && $('#tip').style.display==='none', tipT);
+      ok('40b linjen under nævner N og de tre navne med "og"', $('#nudgeLine').textContent===`3 workflow-forslag kan fjerne ${s.x} manuelle håndteringer for dig: ${names[0]}, ${names[1]} og ${names[2]}. Godkend én gang, så kommer kun undtagelser tilbage.`, $('#nudgeLine').textContent);
+      ok('40c knapper: "Se de 3 forslag", "Senere" er uændret, pæren står', $('[data-act=nudgeGo]').textContent==='Se de 3 forslag' && $('[data-act=nudgeLater]').textContent==='Senere' && !!$('#nudge svg.bulb'));
+      const dueFs=getComputedStyle($('#dueOver')).fontSize, dueW=getComputedStyle($('#dueOver')).fontWeight; goto('suggestions');
+      const cs=['#topSafe','#topAll','#topMonth'].map(i=>$(i).getBoundingClientRect());
+      ok('40d tre kort på én række lige under titlen, så linjen, så tabeloverskriften', $('h1').nextElementSibling.id==='topCards' && $('#topCards').nextElementSibling.id==='topLine' && $('#topLine').nextElementSibling.tagName==='H2' && $('#topCards').children.length===3 && cs.every(r=>Math.abs(r.top-cs[0].top)<1 && Math.abs(r.height-cs[0].height)<1) && Math.abs(cs[1].width-cs[2].width)<1 && cs[0].width>cs[1].width && cs[0].right<=cs[1].left && cs[1].right<=cs[2].left, cs.map(r=>Math.round(r.left)).join(' / '));
+      ok('40e samme stil som Forfalden: stort tal med kort tekst under', ['#topSafe','#topAll','#topMonth'].every(i=>getComputedStyle($(i+' .v')).fontSize===dueFs && getComputedStyle($(i+' .v')).fontWeight===dueW && $(i+' .v').nextElementSibling===$(i+' .l')), dueFs);
+      ok('40f venstre kort: pæren og samme tid, tal og forslag som nudgen', !!$('#topSafe .v svg.bulb') && $('#topSafe .v').textContent===`ca. ${want} om måneden` && $('#topSafe .l').textContent===`med de 3 sikreste forslag (${s.x} manuelle håndteringer, lav risiko)`, $('#topSafe').textContent);
+      ok('40g højre kort og linjen i almindelig skrift', $('#topMonth .v').textContent==='1.198' && $('#topMonth .l').textContent==='manuelle håndteringer hos dine 30 kunder denne måned' && $('#topLine').textContent==='Godkend én gang pr. workflow på tværs af kunder. Kundegennemgangen bliver kortere, ikke væk.' && parseInt(getComputedStyle($('#topLine')).fontWeight)<600 && !$('#topLine b'));
+      const snap=()=>{ const r={}; ['#topSafe','#topAll','#topMonth','#badge'].forEach(i=>r[i]=$(i).textContent); const pg=S.page; goto('tasks'); r.nudge=$('#nudge').textContent; goto(pg); return JSON.stringify(r); };
+      const expectTop=()=>{ const q=safest3(), ls=openMine(), rn=openRentMine(), rt=Math.round(rn.reduce((t,p)=>t+savedFor(p,unappr(p)),0)), N=ls.reduce((t,p)=>t+rowTouch(p),0)+rt, np=ls.length+(rn.length?1:0);
+        return $('#topSafe .v').textContent===`ca. ${q.time} om måneden` && $('#topSafe .l').textContent===`med de 3 sikreste forslag (${q.x} manuelle håndteringer, lav risiko)` && $('#topAll .v').textContent==='Op til '+nf(N) && $('#topAll .l').textContent===`manuelle håndteringer, hvis du godkender alle ${np} forslag (${nf(N/1198*100,0)} %)` && $('#topMonth .v').textContent==='1.198'; };
+      const first=openLow()[0], before=snap(), allB=all(); S.open=first.pattern_id; render(); click('[data-act=approveAll]');
+      ok('40h godkendelse: kortene opdateres med det samme og følger beregningen', expectTop() && all()===allB-rowTouch(first) && $('#topSafe').textContent!==JSON.parse(before)['#topSafe'], $('#topSafe').textContent+' | '+$('#topAll').textContent);
+      const after=JSON.parse(snap()); ok('40i godkendelse: nudgen opdateres og viser samme tal som venstre kort', after.nudge!==JSON.parse(before).nudge && after.nudge.includes(`Spar ca. ${safest3().time} om måneden`) && !after.nudge.includes(first.name), after.nudge);
+      click('[data-act=undo]'); click('[data-act=fbConfirm]'); S.open=null; render();
+      ok('40j fortryd: kort, tæller og nudge er tilbage på de samme tal', snap()===before);
+      const keep=new Set(S.dismissed), low=openLow(); const leave=k=>{ S.dismissed=new Set(keep); low.slice(k).forEach(p=>S.dismissed.add(p.pattern_id)); render(); };
+      S.page='tasks'; leave(2); const two=[$('[data-act=nudgeGo]').textContent,$('#nudgeLine').textContent]; leave(1); const one=[$('[data-act=nudgeGo]').textContent,$('#nudgeLine').textContent]; S.page='suggestions'; render(); const oneC=$('#topSafe .l').textContent; leave(2); const twoC=$('#topSafe .l').textContent; leave(0); const zeroC=$('#topSafe').textContent; S.dismissed=keep; render();
+      ok('40k færre end tre lav-risiko-forslag: teksten følger antallet', two[0]==='Se de 2 forslag' && two[1].includes(` for dig: ${low[0].name} og ${low[1].name}. Godkend`) && one[0]==='Se forslaget' && one[1].startsWith('1 workflow-forslag') && one[1].includes(` for dig: ${low[0].name}. Godkend`) && twoC.startsWith('med de 2 sikreste forslag') && oneC.startsWith('med det sikreste forslag') && zeroC==='0 minIngen åbne lav-risiko-forslag', [two[0],one[0],oneC,zeroC].join(' | ')); }
+    // --- afvigelsesregler and Vælg kunder as a filter; Nets is reset to open so the numbers are fixed ---
+    { sel('B2'); S.showAll=false; S.choosing=null; S.tab='mine'; S.devScope='all'; S.drafts={}; goto('suggestions');
+      const net=P.find(p=>p.name==='Nets kortgebyrer'), nid=net.pattern_id, rulesKeep=S.rules, dismKeep=new Set(S.dismissed), undoKeep=S.undo; S.rules=S.rules.filter(r=>r.pid!==nid); S.dismissed.delete(nid); S.undo=null;
+      const open=()=>{ S.open=nid; S.choosing=null; S.tab='mine'; S.devScope='all'; render(); }, val=(i,v)=>{ const n=document.querySelectorAll('.exV')[i]; n.value=v; n.dispatchEvent(new Event('input',{bubbles:true})); return n; }, pick=(c,i,v)=>{ const n=document.querySelectorAll(c)[i]; n.value=v; n.dispatchEvent(new Event('change',{bubbles:true})); };
+      const figs=()=>JSON.stringify(BKS.map(b=>[nowHours(b),openHours(b),openCount(b)]).concat([safest3().x,liveSaved()])); const figs0=figs();
+      const tt=$('#topTime'); tt.dispatchEvent(new MouseEvent('mousemove',{clientX:10,clientY:10,bubbles:true})); const t0=$('#tip').textContent, t1=$('#tip').style.display; tt.dispatchEvent(new MouseEvent('mouseleave'));
+      ok('41 tooltip på tiden i venstre kort', t1==='block' && t0==='Beregnet ved 1 min. pr. manuel håndtering.' && $('#tip').style.display==='none', t0);
+      open(); const addB=()=>$('[data-act=exAdd]');
+      ok('41a panelet: ingen regler som udgangspunkt, kun knappen, lige over Godkend-knapperne', !document.querySelector('.exRow') && addB().textContent==='+ Tilføj afvigelsesregel' && $('#exLine').textContent==='' && $('#exBox').nextElementSibling.contains($('[data-act=approveAll]')));
+      const size=btRows([nid]).map(r=>Math.abs(r.amount)).sort((a,b)=>a-b), qq=f=>{ const i=(size.length-1)*f, l=Math.floor(i); return Math.round(size[l]+(size[Math.min(l+1,size.length-1)]-size[l])*(i-l)); }, hi=qq(.95), lo=qq(.05), M=size.length;
+      click('[data-act=exAdd]'); const r0=$('.exRow');
+      ok('41b et klik: parameter, handling, værdi og kryds', [...r0.querySelectorAll('.exP option')].map(o=>o.textContent).join('|')==='Beløb større end|Beløb mindre end|Ny modtager|Bilagets momskode afviger' && [...r0.querySelectorAll('.exA option')].map(o=>o.textContent).join('|')==='Hold tilbage|Send til kassekladde' && !!r0.querySelector('.exX') && r0.querySelector('.exN').textContent==='Forslag ud fra historikken');
+      ok('41c større end: 95. percentil af beløbets størrelse, hele kroner, positivt tal', +$('.exV').value===hi && Number.isInteger(+$('.exV').value) && hi===168, $('.exV').value);
+      const nHi=size.filter(a=>a>hi).length;
+      ok('41d linjen: N af M holdt tilbage, regnet på størrelsen (ikke de mindste gebyrer)', $('#exLine').textContent===`Med disse regler var ${nf(nHi)} af ${nf(M)} blevet holdt tilbage i backtesten (${nf(nHi/M*100,1)} %).` && M===1489 && nHi>0 && nHi<M*0.06, $('#exLine').textContent);
+      click('[data-act=exAdd]');
+      ok('41e næste regel: mindre end med 5. percentil; samme parameter kan ikke vælges to gange', +document.querySelectorAll('.exV')[1].value===lo && lo===52 && document.querySelectorAll('.exP')[1].value==='lt' && document.querySelectorAll('.exP')[0].querySelector('option[value=lt]').disabled && document.querySelectorAll('.exP')[1].querySelector('option[value=gt]').disabled && !document.querySelectorAll('.exP')[0].querySelector('option[value=new]').disabled);
+      const both=size.filter(a=>a>hi||a<lo).length; ok('41f to beløbsregler: hver postering tælles én gang', $('#exLine').textContent.includes(`var ${nf(both)} af ${nf(M)} blevet`), $('#exLine').textContent);
+      const inp=val(0,'200'), nE=size.filter(a=>a>200||a<lo).length;
+      ok('41g linjen opdateres, når værdien rettes; feltet bevares; "Forslag" forsvinder ved rettet værdi', document.querySelectorAll('.exV')[0]===inp && $('#exLine').textContent.includes(`var ${nf(nE)} af ${nf(M)} blevet`) && document.querySelectorAll('.exN')[0].textContent==='' && document.querySelectorAll('.exN')[1].textContent==='Forslag ud fra historikken', $('#exLine').textContent);
+      val(0,''); ok('41h tom værdi: Godkend er låst, og der står hvorfor', $('[data-act=approveAll]').disabled && !!$('#exBad') && $('#exBad').textContent==='Udfyld beløbet, eller fjern reglen.'); const rz=S.rules.length; $('[data-act=approveAll]').disabled=false; click('[data-act=approveAll]'); ok('41i heller ingen godkendelse, hvis låsen omgås', S.rules.length===rz && S.open===nid); val(0,'200');
+      ok('41j rettet værdi: Godkend er åben igen', !$('[data-act=approveAll]').disabled && !$('#exBad'));
+      pick('.exA',0,'journal'); const mixed=$('#exLine').textContent; pick('.exA',1,'journal'); const allJ=$('#exLine').textContent; pick('.exA',0,'hold'); pick('.exA',1,'hold');
+      ok('41k handlingen afspejles i linjen', mixed.includes('holdt tilbage eller sendt til kassekladden') && allJ.includes('blevet sendt til kassekladden') && $('#exLine').textContent.includes('blevet holdt tilbage i'), mixed);
+      pick('.exP',1,'vat'); const vr=document.querySelectorAll('.exRow')[1];
+      ok('41l momskode: ingen værdi og teksten "Virker, når bilaget er matchet."', !vr.querySelector('.exV') && vr.querySelector('.exN').textContent==='Virker, når bilaget er matchet.');
+      pick('.exP',1,'new'); const nr=document.querySelectorAll('.exRow')[1]; ok('41m ny modtager: ingen værdi og ingen tekst', !nr.querySelector('.exV') && nr.querySelector('.exN').textContent==='');
+      click('.exRow:nth-child(1) .exX'); ok('41n kryds fjerner rækken; uden beløbsregel ingen linje', document.querySelectorAll('.exRow').length===1 && $('#exLine').textContent==='' && $('.exP').value==='new');
+      click('[data-act=exAdd]'); click('[data-act=exAdd]'); click('[data-act=exAdd]'); ok('41o fire regler: knappen låses, og alle parametre er forskellige', addB().disabled && document.querySelectorAll('.exRow').length===4 && new Set([...document.querySelectorAll('.exP')].map(x=>x.value)).size===4);
+      ok('41p regler ændrer ingen eksisterende tal', figs()===figs0);
+      S.drafts={}; open(); click('[data-act=exAdd]'); click('[data-act=exAdd]'); const hiNow=+$('.exV').value, rn=S.rules.length; click('[data-act=approveAll]'); const nw=S.rules[S.rules.length-1];
+      ok('41q reglerne følger med ved Godkend', S.rules.length===rn+1 && nw.exc.length===2 && nw.exc[0].param==='gt' && +nw.exc[0].value===hiNow && nw.exc[1].param==='lt' && draftOf(nid).length===0);
+      click('[data-act=undo]'); click('[data-act=fbConfirm]'); open(); ok('41r Fortryd: workflowen er væk, og reglerne står igen i panelet', S.rules.length===rn && document.querySelectorAll('.exRow').length===2);
+      click('[data-act=approveAll]'); const nw2=S.rules[S.rules.length-1]; S.undo=null; clearTimeout(S.undoTimer); goto('workflows'); const rowOf=id=>document.querySelector(`#ruleTable tr[data-rid="${id}"]`);
+      ok('41s Bank workflows: Nets viser "2 afvigelsesregler" og knappen "Rediger regler"', rowOf(nw2.id).querySelector('.exCount').textContent==='2 afvigelsesregler' && rowOf(nw2.id).querySelector('[data-act=exEdit]').textContent==='Rediger regler');
+      const ol=S.rules.find(r=>r.pid===EXC.pattern), others=S.rules.filter(r=>r.initial&&r.pid!==EXC.pattern);
+      ok('41t Olsen Rådgivning: Ny modtager og Beløb større end (median plus 2 %), begge Hold tilbage; de andre fra maj har ingen', cname(EXC.client)==='Olsen Rådgivning ApS' && ol.exc.length===2 && ol.exc[0].param==='new' && ol.exc[0].action==='hold' && ol.exc[1].param==='gt' && ol.exc[1].action==='hold' && +ol.exc[1].value===Math.round(6427*1.02) && rowOf(ol.id).querySelector('.exCount').textContent==='2 afvigelsesregler' && others.length===3 && others.every(r=>rowOf(r.id).querySelector('.exCount').textContent==='Ingen afvigelsesregler'), ol.exc.map(x=>x.param+':'+x.value).join());
+      click(`tr[data-rid="${ol.id}"] [data-act=exEdit]`);
+      ok('41u Rediger regler åbner samme editor med reglerne og linjen for kunden', !!$('#exEditRow #exBox') && document.querySelectorAll('#exBox .exRow').length===2 && $('#exBox .exV').value==='6556' && $('#exBox .exN').textContent==='' && document.querySelectorAll('#exBox .exN')[1].textContent==='Medianen plus 2 %' && $('#exLine').textContent==='Med disse regler var 0 af 6 blevet holdt tilbage i backtesten (0,0 %).', $('#exLine').textContent);
+      click('[data-act=exAdd]'); click('[data-act=exCancel]'); ok('41v Annuller i editoren gemmer intet', ol.exc.length===2 && !$('#exEditRow'));
+      click(`tr[data-rid="${others[0].id}"] [data-act=exEdit]`); click('[data-act=exAdd]'); const ov=+$('#exBox .exV').value; click('[data-act=exSave]'); ok('41w Gem regler: tallet følger med, ental "1 afvigelsesregel"', rowOf(others[0].id).querySelector('.exCount').textContent==='1 afvigelsesregel' && +others[0].exc[0].value===ov && ov>0 && !$('#exEditRow') && $('#flash').textContent.includes('Afvigelsesreglerne er gemt.')); others[0].exc=[]; render();
+      const heldKeep=S.heldClients; S.heldClients=new Set([EXC.client]); goto('dashboard'); const ex=$('#exception');
+      ok('41x undtagelsen: "Udløst af: Ny modtager og Beløb større end" lige under beløbene', !!ex && $('#excTrigger').textContent==='Udløst af: Ny modtager og Beløb større end' && $('#excTrigger').previousElementSibling.textContent.startsWith('Normalt:')); S.heldClients=heldKeep;
+      S.rules=S.rules.filter(r=>r.pid!==nid); S.drafts={}; goto('suggestions'); open();
+      click('[data-tab=dev]'); const sc=()=>[...document.querySelectorAll('#devScope button')].map(b=>b.textContent+':'+b.getAttribute('aria-pressed')).join();
+      ok('42 Afvigelser: filter med Alle kunder som standard, Nets viser 33', sc()==='Mine kunder:false,Alle kunder:true' && $('[data-tab=dev]').textContent==='Afvigelser (33)', sc());
+      click('[data-devscope=mine]'); const mineDev=btRows([nid]).filter(r=>r.dev&&isMine(r.client)); ok('42a Mine kunder: tælleren og rækkerne følger', $('[data-tab=dev]').textContent===`Afvigelser (${mineDev.length})` && document.querySelectorAll('#btWrap table.bt tbody tr').length===mineDev.length && mineDev.length===4 && [...document.querySelectorAll('#btWrap table.bt tbody tr')].every(tr=>/Larsen Legetøj|Andersen Sko/.test(tr.children[1].textContent)), $('[data-tab=dev]').textContent);
+      click('[data-devscope=all]'); ok('42b tilbage til Alle kunder: 33', $('[data-tab=dev]').textContent==='Afvigelser (33)'); click('[data-tab=mine]'); ok('42c filteret står kun på fanen Afvigelser', !$('#devScope'));
+      click('[data-act=exAdd]'); const normalLine=$('#exLine').textContent, normalHi=$('.exV').value; click('[data-act=choose]');
+      ok('42d Vælg kunder: alle egne valgt fra start, tal for de valgte kunder', $('#chSum').textContent==='For de valgte kunder (2 af 2): 159 af 163 korrekte (97,5 %), 4 afvigelser, 27 manuelle håndteringer om måneden.' && $('#btScope').textContent==='Tallene gælder for de valgte kunder' && !$('#devScope') && $('[data-tab=dev]').textContent==='Afvigelser (4)', $('#chSum').textContent);
+      const box=c=>document.querySelector(`input[data-c="${c}"]`), tick=(c,v)=>{ const b=box(c); b.checked=v; b.dispatchEvent(new Event('change',{bubbles:true})); }; tick('C113',false);
+      ok('42e ét flueben fra: alle tal følger med det samme', $('#chSum').textContent==='For de valgte kunder (1 af 2): 84 af 86 korrekte (97,7 %), 2 afvigelser, 14 manuelle håndteringer om måneden.' && $('[data-tab=dev]').textContent==='Afvigelser (2)' && $('.sec').textContent.includes('bogført 84 af 86 korrekt for de valgte kunder.') && S.choosing.sel.size===1, $('#chSum').textContent);
+      ok('42f fanen Dine kunder og eksemplerne viser kun den valgte kunde', [...document.querySelectorAll('#btWrap table.bt tbody tr')].every(tr=>tr.children[1].textContent.includes('C035')) && [...document.querySelectorAll('tr.detail table:not(.bt) tbody tr')].every(tr=>tr.children[3].textContent==='Larsen Legetøj ApS') && document.querySelectorAll('tr.detail table:not(.bt) tbody tr').length===5 && $('#btWrap').textContent.includes('for de valgte kunder'));
+      const c1=btRows([nid]).filter(r=>r.client==='C035').map(r=>Math.abs(r.amount)).sort((a,b)=>a-b), i1=(c1.length-1)*.95, l1=Math.floor(i1), h1=Math.round(c1[l1]+(c1[Math.min(l1+1,c1.length-1)]-c1[l1])*(i1-l1)), n1=c1.filter(a=>a>h1).length;
+      ok('42g linjen og det urørte forslag følger kunden', +$('.exV').value===h1 && $('#exLine').textContent===`Med disse regler var ${n1} af 86 blevet holdt tilbage i backtesten for de valgte kunder (${nf(n1/86*100,1)} %).`, $('#exLine').textContent);
+      click('[data-tab=dev]'); ok('42h fanen Afvigelser viser kun den valgte kundes afvigelser', document.querySelectorAll('#btWrap table.bt tbody tr').length===2 && [...document.querySelectorAll('#btWrap table.bt tbody tr')].every(tr=>tr.children[1].textContent.includes('C035')));
+      tick('C035',false); ok('42i 0 valgt: ingen tal at vise, Godkend låst, ingen NaN', $('#chSum').textContent.startsWith('Ingen kunder valgt.') && $('[data-tab=dev]').textContent==='Afvigelser (0)' && $('#btEmpty').textContent==='Ingen kunder valgt.' && $('#exLine').textContent==='Vælg mindst én kunde for at se tallene.' && !$('tr.detail').textContent.includes('NaN') && $('[data-act=approveSel]').disabled, $('#exLine').textContent);
+      tick('C035',true); click('[data-act=cancelChoose]');
+      ok('42j Annuller: normal visning, tal og forslag er tilbage, reglen er bevaret', !S.choosing && !$('#chSum') && !$('#btScope') && $('.exV').value===normalHi && $('#exLine').textContent===normalLine && $('[data-tab=dev]').textContent==='Afvigelser (33)' && $('[data-tab=mine]').getAttribute('aria-pressed')==='true' && $('.sec').textContent.includes('bogført 1.456 af 1.489 korrekt.') && !$('.sec').textContent.includes('valgte'), $('#exLine').textContent);
+      const row=document.querySelector(`#suggTable tr.row[data-pid="${nid}"]`); ok('42k rækken i tabellen er uændret under Vælg kunder', (()=>{ const t0=row.textContent; click('[data-act=choose]'); const t1=document.querySelector(`#suggTable tr.row[data-pid="${nid}"]`).textContent; click('[data-act=cancelChoose]'); return t0===t1; })());
+      ok('42l Vælg kunder ændrer ingen eksisterende tal', figs()===figs0);
+      S.drafts={}; S.rules=rulesKeep; S.dismissed=dismKeep; S.undo=undoKeep; S.open=null; S.choosing=null; S.tab='mine'; S.devScope='all'; S.page='tasks'; render(); }
+    // --- Dashboard follows approve, undo, pause, resume and delete; from the start state the figures are exact ---
+    { const keep={rules:S.rules,held:S.heldClients,dism:S.dismissed,sugg:S.suggested,fb:S.feedback,undo:S.undo,seq:S.ruleSeq,bk:S.bk,drafts:S.drafts};
+      S.rules=D.value.approved.map((a,i)=>({id:'T'+i,pid:a.pattern_id,clients:[...byId[a.pattern_id].clients],created:'02.05.26',batch:'init',initial:true,exc:[]})); S.heldClients=new Set([EXC.client]); S.dismissed=new Set(); S.suggested={}; S.feedback=[]; S.undo=null; S.drafts={}; S.showAll=false; S.choosing=null; S.open=null; sel('B2'); goto('dashboard');
+      const idOf=n=>P.find(p=>p.name===n).pattern_id, nets=idOf('Nets kortgebyrer'), teya=idOf('Teya kortgebyrer (Saltpay Teya)'), stripe=idOf('Stripe gebyrer (Stripe Europe)');
+      const appr=id=>{ goto('suggestions'); S.open=id; render(); click('[data-act=approveAll]'); clearTimeout(S.undoTimer); goto('dashboard'); };
+      const b2=()=>[...document.querySelectorAll('#bkTable tr[data-bk=B2] td')].slice(1,4).map(t=>t.textContent).join(' / ');
+      const hRows=()=>{ const h=[...document.querySelectorAll('#main h2')].find(x=>x.textContent.startsWith("Workflows' helbred")); return [...h.nextElementSibling.querySelectorAll('tbody tr')]; };
+      const nov=()=>{ const ps=[...document.querySelectorAll('#main svg[role=img] path')], rs=[...document.querySelectorAll('#main svg[role=img] rect[data-tip]')]; return ps[ps.length-1].getAttribute('d')+'|'+rs[rs.length-1].dataset.tip; };
+      const snap=()=>JSON.stringify({now:$('#sNow').textContent,off:$('#sOffice').textContent,pos:$('#sPossible').textContent,posO:$('#sPossOffice').textContent,share:$('#sShare').textContent,fill:$('#sFill').style.width,b2:b2(),next:$('#kNext').closest('.kpi').textContent,yours:$('#kYours').closest('.kpi').textContent,hours:$('#kHours').closest('.kpi').textContent,nov:nov(),rows:hRows().map(r=>r.textContent)});
+      const consistent=()=>{ const n=nowHours(S.bk), o=nowHours(), p=n+openHours(S.bk), po=o+openHours(), who=D.bkName[S.bk]; return $('#sNow').textContent===`${who}: ${nf(n,1)} t` && $('#sOffice').textContent===`${nf(o,1)} t` && $('#sPossible').textContent===`${who}: ${nf(p,1)} t` && $('#sPossOffice').textContent===`${nf(po,1)} t` && Math.abs(parseFloat($('#sFill').style.width)-n/p*100)<0.06 && $('#sShare').textContent===`${nf(n/p*100,0)} % af det mulige` && $('#kHours').textContent===`${nf(n,1)} t` && num('#kOffice')===Math.round(liveSaved()) && num('#kYours')===Math.round(liveSaved(true)) && num('#kNext')===Math.round(D.baseAutoOct+liveSaved()); };
+      const line=()=>[$('#sNow').textContent,$('#sOffice').textContent,$('#sPossible').textContent,$('#sPossOffice').textContent,$('#sShare').textContent].join(' | ');
+      const s0=snap(), kAuto=$('#kAuto').closest('.kpi').textContent, nov0=nov();
+      ok('43 Tid sparet: "Sparet nu" står øverst, så bogholderen i stort, så kontoret; det samme for Muligt', $('#sNow').textContent==='Jonas Krogh: 0,8 t' && $('#sOffice').textContent==='4,9 t' && $('#sPossible').textContent==='Jonas Krogh: 8,1 t' && $('#sPossOffice').textContent==='52,9 t' && $('#sNow').previousElementSibling.textContent==='Sparet nu' && $('#sPossible').previousElementSibling.textContent==='Muligt med åbne forslag' && $('#sNow').nextElementSibling.textContent==='Kontoret samlet: 4,9 t pr. måned' && $('#sPossible').nextElementSibling.textContent==='Kontoret samlet: 52,9 t pr. måned', line());
+      ok('43a bjælken viser bogholderens andel, og KPI-kortet har samme tal som Sparet nu', Math.abs(parseFloat($('#sFill').style.width)-nowHours('B2')/(nowHours('B2')+openHours('B2'))*100)<0.06 && $('#sShare').textContent==='10 % af det mulige' && $('#kHours').textContent==='0,8 t' && $('#kHours').closest('.kpi').textContent.includes('Sparet nu pr. måned') && $('#kHours').closest('.kpi').textContent.includes('Jonas Krogh, ved 1 min.') && !$('#main').textContent.includes('pr. bogholder pr. måned'), $('#sShare').textContent);
+      ok('43b alle tal stemmer med beregningen ved start', consistent());
+      appr(nets); const s1=snap(), nov1=nov();
+      ok('43c Nets: Jonas 1,2 t, kontoret 5,3 t, Muligt uændret, tabel og KPI følger', $('#sNow').textContent==='Jonas Krogh: 1,2 t' && $('#sOffice').textContent==='5,3 t' && $('#sPossible').textContent==='Jonas Krogh: 8,1 t' && $('#sPossOffice').textContent==='52,9 t' && b2()==='1,2 t / 8,1 t / 23' && $('#kNext').textContent==='1.142' && $('#kYours').textContent==='73' && $('#kOffice').textContent==='319' && consistent(), line());
+      const newRow=n=>hRows().find(r=>r.textContent.includes(n));
+      ok('43d Workflows\' helbred: ny række med grundlaget "Forventet ud fra backtest"', hRows().length===5 && !!newRow('Nets kortgebyrer') && newRow('Nets kortgebyrer').children[5].textContent==='Forventet ud fra backtest');
+      ok('43e den stiplede søjle stiger, og KPI-kortet for sidste måned står fast', nov1!==nov0 && nov1.includes('1.142 (13,7 %)') && $('#kAuto').closest('.kpi').textContent===kAuto, nov1.split('|')[1]);
+      click('[data-act=undo]'); click('[data-act=fbConfirm]'); S.feedback=[];
+      ok('43f Fortryd på Dashboard: alt er tilbage uden genindlæsning, rækken er væk', S.page==='dashboard' && snap()===s0 && !newRow('Nets kortgebyrer') && consistent());
+      appr(nets); ok('43g godkendt igen: samme tal', snap()===s1);
+      appr(teya); ok('43h Teya: Jonas 1,6 t, kontoret 5,7 t, 6 rækker', $('#sNow').textContent==='Jonas Krogh: 1,6 t' && $('#sOffice').textContent==='5,7 t' && b2()==='1,6 t / 8,1 t / 22' && $('#kNext').textContent==='1.167' && hRows().length===6 && newRow('Saltpay').children[5].textContent==='Forventet ud fra backtest' && consistent(), line());
+      appr(stripe); const s3=snap();
+      ok('43i Stripe: Jonas 2,1 t, kontoret 6,1 t, 7 rækker; KPI-kortet følger også her', $('#sNow').textContent==='Jonas Krogh: 2,1 t' && $('#sOffice').textContent==='6,1 t' && $('#kHours').textContent==='2,1 t' && b2()==='2,1 t / 8,1 t / 21' && $('#kNext').textContent==='1.192' && hRows().length===7 && !!newRow('Stripe Europe') && consistent(), line());
+      S.undo=null; const rNets=S.rules.find(r=>r.pid===nets);
+      goto('workflows'); click(`tr[data-rid="${rNets.id}"] [data-act=rulePause]`); click('[data-act=fbConfirm]'); goto('dashboard');
+      ok('43j Sæt på pause: Sparet nu, kontoret, tabel, KPI og søjle falder, rækken står som "på pause"', $('#sNow').textContent==='Jonas Krogh: 1,6 t' && $('#sOffice').textContent==='5,7 t' && snap()!==s3 && newRow('Nets kortgebyrer').children[5].textContent==='på pause' && newRow('Nets kortgebyrer').children[6].textContent==='På pause' && num('#kNext')<1192 && consistent(), line());
+      goto('workflows'); click(`tr[data-rid="${rNets.id}"] [data-act=ruleResume]`); goto('dashboard'); ok('43k Genoptag: alt er tilbage', snap()===s3 && consistent());
+      const rStr=S.rules.find(r=>r.pid===stripe); goto('workflows'); click(`tr[data-rid="${rStr.id}"] [data-act=ruleDelete]`); click('[data-act=fbConfirm]'); goto('dashboard');
+      ok('43l Slet: rækken forsvinder, og tallene falder til trinnet før', !newRow('Stripe Europe') && hRows().length===6 && $('#sNow').textContent==='Jonas Krogh: 1,6 t' && $('#sOffice').textContent==='5,7 t' && b2()==='1,6 t / 8,1 t / 22' && consistent(), line());
+      const offB=$('#sOffice').textContent; sel('B4'); ok('43m anden bogholder i topbjælken: egne tal, samme kontor', $('#sNow').textContent===`Anders Bruun: ${nf(nowHours('B4'),1)} t` && $('#sOffice').textContent===offB && consistent(), line()); sel('B2');
+      S.rules=keep.rules; S.heldClients=keep.held; S.dismissed=keep.dism; S.suggested=keep.sugg; S.feedback=keep.fb; S.undo=keep.undo; S.ruleSeq=keep.seq; S.drafts=keep.drafts; S.open=null; S.page='tasks'; sel(keep.bk); }
+    // --- Pause, resume and delete act on the chosen bookkeeper's clients only; colleagues keep everything ---
+    { const keep={rules:S.rules,held:S.heldClients,dism:S.dismissed,sugg:S.suggested,fb:S.feedback,undo:S.undo,seq:S.ruleSeq,bk:S.bk,drafts:S.drafts};
+      S.rules=D.value.approved.map((a,i)=>({id:'T'+i,pid:a.pattern_id,clients:[...byId[a.pattern_id].clients],created:'02.05.26',batch:'init',initial:true,exc:[]})); S.heldClients=new Set([EXC.client]); S.dismissed=new Set(); S.suggested={}; S.feedback=[]; S.undo=null; S.drafts={}; S.showAll=false; S.choosing=null; S.open=null; sel('B2'); goto('dashboard');
+      const idOf=n=>P.find(p=>p.name===n).pattern_id, nets=idOf('Nets kortgebyrer'), byPid=id=>S.rules.find(r=>r.pid===id), colleagues5=BKS.filter(b=>b!=='B2');
+      const appr=id=>{ goto('suggestions'); S.open=id; render(); click('[data-act=approveAll]'); clearTimeout(S.undoTimer); S.undo=null; };
+      const pause=r=>{ goto('workflows'); click(`#ruleTable tr[data-rid="${r.id}"] [data-act=rulePause]`); click('[data-act=fbConfirm]'); }, resume=r=>{ goto('workflows'); click(`#ruleTable tr[data-rid="${r.id}"] [data-act=ruleResume]`); }, del=r=>{ goto('workflows'); click(`#ruleTable tr[data-rid="${r.id}"] [data-act=ruleDelete]`); click('[data-act=fbConfirm]'); };
+      const row=b=>[...document.querySelectorAll(`#bkTable tr[data-bk=${b}] td`)].slice(1,4).map(t=>t.textContent).join(' / ');
+      const coll=()=>{ goto('dashboard'); return JSON.stringify(colleagues5.map(b=>[row(b),withBk(b,()=>openMine().map(p=>p.pattern_id).join()+'|'+openRentMine().length)])); };
+      ['Nets kortgebyrer','Teya kortgebyrer (Saltpay Teya)','Stripe gebyrer (Stripe Europe)'].forEach(n=>appr(idOf(n)));
+      const c0=coll(), j0=row('B2'), mette0=row('B1'), poss0=nowHours()+openHours(), openN0=withBk('B1',()=>openCount('B1')), rNets=byPid(nets);
+      pause(rNets); const flashTxt=$('#flash').textContent, c1=coll(), jOwn=savedFor(byId[nets],rNets.clients)*hoursPer(byId[nets]);
+      ok('44 pause på Nets: bekræftelsen siger "Sat på pause for dine 2 kunder."', flashTxt==='Sat på pause for dine 2 kunder.', flashTxt);
+      ok('44a pause på Nets: alle fem kollegers Sparet nu, Muligt, åbne forslag og forslagsliste er uændrede', c1===c0 && row('B1')===mette0 && mette0==='0,6 t / 10,7 t / 23', row('B1'));
+      ok('44b pause på Nets: kontorets Muligt falder kun med Jonas\' egen del, og Nets er stadig åbent for kollegerne', Math.abs((nowHours()+openHours())-(poss0-jOwn))<1e-6 && isOpen(byId[nets]) && withBk('B1',()=>openMine().some(p=>p.pattern_id===nets)), nf(poss0,1)+' -> '+nf(nowHours()+openHours(),1));
+      ok('44c pause på Nets: Jonas\' tal følger, hans åbne forslag er uændrede, og Nets står ikke på hans liste', row('B2')==='1,6 t / 7,6 t / 21' && !openMine().some(p=>p.pattern_id===nets), row('B2'));
+      sel('B1'); goto('suggestions'); const mRow=document.querySelector(`#suggTable tr.row[data-pid="${nets}"]`); click(`#suggTable tr.row[data-pid="${nets}"]`); ok('44d Mette ser stadig Nets og kan godkende for sine kunder', !!mRow && $('[data-act=approveAll]').textContent===`Godkend for mine kunder (${mine(byId[nets]).length})` && !$('[data-act=approveAll]').disabled); S.open=null; goto('workflows'); const mCtl=$(`#ruleTable tr[data-rid="${rNets.id}"]`);
+      ok('44e Mette har ingen kunder i Jonas\' Nets-workflow: knapperne er låst', !mCtl.querySelector('[data-act]:not([data-act=exEdit])') && [...mCtl.querySelectorAll('.acts button')].every(b=>b.disabled));
+      sel('B2'); S.page='workflows'; render(); ok('44f Bank workflows: alle kunder på Nets er på pause, så status er "På pause"', $(`#ruleTable tr[data-rid="${rNets.id}"] .pill.state`).textContent==='På pause');
+      goto('suggestions'); S.showAll=true; S.open=nets; render(); ok('44g Vis alle: Jonas kan ikke godkende Nets for 0 kunder', !$('[data-act=approveAll]') && !$('#exBox')); S.showAll=false; S.open=null;
+      resume(rNets); const c2=coll(); ok('44h Genoptag: Jonas er tilbage, kollegerne er stadig uændrede', row('B2')===j0 && c2===c0, row('B2'));
+      del(rNets); const c3=coll(); ok('44i Slet: kun Jonas\' forslag kommer tilbage; kollegerne er uændrede', c3===c0 && row('B2')==='1,6 t / 8,1 t / 22' && !byPid(nets) && withBk('B2',()=>openMine().some(p=>p.pattern_id===nets)), row('B2'));
+      const ck=byPid(idOf('Circle K')), ckP=byId[ck.pid], ckOwn=ck.clients.filter(c=>D.clientBk[c]==='B2'), ck0=coll(), n0=nowHours('B2'), o0=nowHours(), ck0Count=ck.clients.length;
+      pause(ck); const fl2=$('#flash').textContent, ck1=coll();
+      ok('44j Circle K (8 kunder, 2 er Jonas\'): kun hans 2 er på pause', fl2==='Sat på pause for dine 2 kunder.' && ckOwn.length===2 && pausedOf(ck).size===2 && ckOwn.every(c=>pausedOf(ck).has(c)) && ruleEff(ck).length===6 && ruleEff(ck).every(c=>D.clientBk[c]!=='B2'), fl2);
+      const fall=savedFor(ckP,ckOwn)*hoursPer(ckP);
+      ok('44k Circle K: Jonas og kontoret falder med hans del, kollegernes kunder kører videre', Math.abs(nowHours('B2')-(n0-fall))<1e-6 && Math.abs(nowHours()-(o0-fall))<1e-6 && ck1===ck0 && S.rules.includes(ck) && ck.clients.length===8, nf(n0,1)+' -> '+nf(nowHours('B2'),1));
+      goto('workflows'); ok('44l Circle K: status "På pause (2 af 8)" og Genoptag for Jonas', $(`#ruleTable tr[data-rid="${ck.id}"] .pill.state`).textContent==='På pause (2 af 8)' && !!$(`#ruleTable tr[data-rid="${ck.id}"] [data-act=ruleResume]`));
+      goto('dashboard'); const hr=[...document.querySelectorAll('.activeTable tbody tr')].find(r=>r.textContent.includes('Circle K')), hEx=latest(ck.pid).auto_posted*savedFor(ckP,ruleEff(ck))/savedFor(ckP,ckP.clients);
+      ok('44m Workflows\' helbred: 6 af 8 kunder, håndteret falder forholdsmæssigt, grundlaget siger det', hr.children[1].textContent==='6 af 8' && hr.children[2].textContent===nf(hEx,0) && hr.children[5].textContent.endsWith(', på pause for 2 af 8 kunder'), hr.children[2].textContent+' | '+hr.children[5].textContent);
+      sel('B1'); goto('workflows'); const mCk=$(`#ruleTable tr[data-rid="${ck.id}"]`); ok('44n Mette ser Circle K som Aktiv og kan sætte sine egne kunder på pause', mCk.querySelector('.pill.state').textContent==='Aktiv' && !!mCk.querySelector('[data-act=rulePause]'));
+      pause(ck); const fl3=$('#flash').textContent; ok('44o Mette pauser sine 3: i alt 5 af 8', fl3==='Sat på pause for dine 3 kunder.' && pausedOf(ck).size===5, fl3);
+      sel('B2'); resume(ck); ok('44p Jonas genoptager: kun hans egne kører igen, Mettes er stadig på pause', pausedOf(ck).size===3 && ck.clients.filter(c=>D.clientBk[c]==='B1').every(c=>pausedOf(ck).has(c)) && ckOwn.every(c=>!pausedOf(ck).has(c)));
+      sel('B1'); resume(ck); sel('B2'); ok('44q Mette genoptager: alle kører igen', pausedOf(ck).size===0 && coll()===ck0);
+      sel('B4'); goto('workflows'); const b4=$(`#ruleTable tr[data-rid="${ck.id}"]`); ok('44r Anders har ingen kunder i Circle K: knapperne er låst, og et klik gør intet', !b4.querySelector('.acts [data-act]') && [...b4.querySelectorAll('.acts button')].every(b=>b.disabled)); sel('B2');
+      del(ck); const fl4=$('#flash').textContent, ck2=coll();
+      ok('44s Slet Circle K: kun Jonas\' 2 kunder ryger ud, workflowen består for de 6, forslaget er åbent for Jonas', fl4==='Workflowen for Circle K er slettet for dine 2 kunder. Forslaget er tilbage.' && S.rules.includes(ck) && ck.clients.length===ck0Count-2 && ck.clients.every(c=>D.clientBk[c]!=='B2') && ck2===ck0 && withBk('B2',()=>openMine().some(p=>p.pattern_id===ck.pid)) && withBk('B1',()=>!openMine().some(p=>p.pattern_id===ck.pid)), fl4);
+      const ch=byPid(idOf('Clearhaus gebyrer')); pause(ch); ok('44t én kunde: "Sat på pause for din 1 kunde."', $('#flash').textContent==='Sat på pause for din 1 kunde.', $('#flash').textContent); resume(ch);
+      S.rules=keep.rules; S.heldClients=keep.held; S.dismissed=keep.dism; S.suggested=keep.sugg; S.feedback=keep.fb; S.undo=keep.undo; S.ruleSeq=keep.seq; S.drafts=keep.drafts; S.open=null; S.page='tasks'; sel(keep.bk); }
+    // --- Danish everywhere: every page and state, including tooltips, selectors and confirmations ---
+    { const EN=/\b(Approve|Choose|Suggest|Dismiss|Undo|Cancel|Confirm|Pause|Resume|Delete|Update|Book|Keep|Show|Supplier|Account|VAT|Your|Clients?|clients?|Manual|month|Risk|Date|Company|Bank text|Amount|Suggested|Booked|Action|Created|Bookkeeper|Handled|Corrections?|Correction|Basis|Postings?|Task|Total|Billable|Comment|Responsible|Period|Search|Sort|Back|Low|Medium|High|Mid|Fees|Settlement|Rent|Kind|All|None|Safest|Most|Restore|This week|Last week|My|Selected|selected|Filters|Group by|Print|New)(?![A-Za-zÆØÅæøåéÉ])/;
+      const texts=()=>[...$('#main').children].filter(e=>e.id!=='crumb').map(e=>e.textContent).join(' ')+' '+$('#undo').textContent+' '+$('#fb').textContent+' '+[...document.querySelectorAll('#main [data-tip],#main [aria-label],#main [title],#main [placeholder]')].map(e=>[e.dataset.tip,e.getAttribute('aria-label'),e.title,e.placeholder].filter(Boolean).join(' ')).join(' '), bad=[];
+      const chk=l=>{ const m=texts().match(EN); if(m) bad.push(l+': '+m[0]); };
+      sel('B2'); ['tasks','time','dashboard','workflows','suggestions'].forEach(pg=>{ S.page=pg; render(); chk(pg); });
+      S.page='tasks'; S.filtersOpen=true; render(); chk('tasks filtre'); S.filtersOpen=false;
+      S.page='suggestions'; S.open=P.find(p=>p.name==='Nets kortgebyrer').pattern_id; render(); chk('Nets'); click('[data-act=choose]'); chk('Vælg kunder'); click('[data-act=cancelChoose]');
+      click('[data-act=dismiss]'); chk('feedback'); click('[data-act=fbCancel]'); S.open=null; S.showAll=true; render(); chk('Vis alle'); S.showAll=false; render();
+      const a=openMine().sort(sortSafe)[0]; S.open=a.pattern_id; render(); click('[data-act=approveAll]'); chk('undo-bjælke'); click('[data-act=undo]'); chk('fortryd-boks'); click('[data-act=fbConfirm]');
+      S.dismissed.add(a.pattern_id); S.open=a.pattern_id; S.showAll=true; render(); chk('Gendan'); S.dismissed.delete(a.pattern_id); S.open=null; S.showAll=false; render();
+      ok('39 sidernes indhold: ingen engelsk tekst på nogen side eller i nogen tilstand (menu og brødkrumme er bevidst blandet)', bad.length===0, bad.join('; '));
+      goto('suggestions'); ok('39a Workflow-forslag: kolonner på dansk', [...document.querySelectorAll('#suggTable th')].map(x=>x.textContent).join('|')==='Leverandør|Konto / momskode|Dine kunder|Manuelle / md.|Backtest (maj–okt)|Risiko|Status');
+      ok('39b Aktive workflows: kolonner på dansk', [...document.querySelectorAll('.activeTable th')].map(x=>x.textContent).join('|')==='Workflow|Kunder|Håndteret / md.|Rettelser|Rettelsesandel|Grundlag|Status|');
+      goto('workflows'); ok('39c Workflows oprettet fra forslag: kolonner på dansk', [...document.querySelectorAll('#ruleTable th')].map(x=>x.textContent).join('|')==='Workflow|Kunder|Handling|Afvigelsesregler|Oprettet|Status|');
+      goto('dashboard'); ok('39d Top 5: kolonner på dansk', [...document.querySelectorAll('#topClients th')].map(x=>x.textContent).join('|')==='Virksomhed|Type|Bogholder|Posteringer / md.');
+      goto('suggestions'); click('[data-act=showAll]'); ok('39e Vis alle: Kunder-kolonnen og Tilbage-knappen', [...document.querySelectorAll('#suggTable th')].map(x=>x.textContent)[2]==='Kunder' && $('[data-act=showAll]').textContent==='Tilbage til mine forslag'); click('[data-act=showAll]'); ok('39f Vis alle-knappen', $('[data-act=showAll]').textContent==='Vis alle');
+      goto('workflows'); const rb=$('#ruleTable tbody tr'); ok('39g regelknapper: Sæt på pause, Slet', !!rb.querySelector('[data-act=rulePause]') && rb.querySelector('[data-act=rulePause]').textContent==='Sæt på pause' && rb.querySelector('[data-act=ruleDelete]').textContent==='Slet'); }
+  }catch(err){ ok('exception during self-test', false, String(err)+' '+(err.stack||'').split('\n')[1]); }
+  const pre=document.createElement('pre'); pre.id='selftest'; pre.textContent=out.join('\n'); document.body.appendChild(pre);
+}, 50);
+</script>
+</body>
+</html>

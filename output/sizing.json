@@ -1,0 +1,1009 @@
+{
+ "grouping_method": "ai",
+ "minutes": {
+  "equal": {
+   "low": {
+    "suggestion_accepted": 0.5,
+    "rule_to_journal": 0.5,
+    "manual": 0.5
+   },
+   "mid": {
+    "suggestion_accepted": 1,
+    "rule_to_journal": 1,
+    "manual": 1
+   },
+   "high": {
+    "suggestion_accepted": 2,
+    "rule_to_journal": 2,
+    "manual": 2
+   }
+  },
+  "split": {
+   "low": {
+    "suggestion_accepted": 0.25,
+    "rule_to_journal": 0.25,
+    "manual": 0.5
+   },
+   "mid": {
+    "suggestion_accepted": 0.5,
+    "rule_to_journal": 0.5,
+    "manual": 1
+   },
+   "high": {
+    "suggestion_accepted": 1.0,
+    "rule_to_journal": 1.0,
+    "manual": 2
+   }
+  }
+ },
+ "approval_share": {
+  "expected": 0.5,
+  "conservative": 0.3
+ },
+ "scenarios": {
+  "ceiling": {
+   "approval_share": 1.0,
+   "n_patterns": 94,
+   "saved_per_month_office": 3173.666666666667,
+   "saved_by_handling": {
+    "suggestion_accepted": 2172.166666666667,
+    "rule_to_journal": 390.33333333333337,
+    "manual": 611.1666666666665
+   },
+   "per_bookkeeper": {
+    "B1": {
+     "touches_per_month": 1372.3333333333333,
+     "saved_per_month": 640.0,
+     "share_of_touches": 0.4663589992713141,
+     "hours": {
+      "equal": {
+       "low": 5.333333333333333,
+       "mid": 10.666666666666666,
+       "high": 21.333333333333332
+      },
+      "split": {
+       "low": 3.180198158456745,
+       "mid": 6.36039631691349,
+       "high": 12.72079263382698
+      }
+     }
+    },
+    "B2": {
+     "touches_per_month": 1195.0,
+     "saved_per_month": 486.16666666666663,
+     "share_of_touches": 0.406834030683403,
+     "hours": {
+      "equal": {
+       "low": 4.051388888888889,
+       "mid": 8.102777777777778,
+       "high": 16.205555555555556
+      },
+      "split": {
+       "low": 2.415791153181855,
+       "mid": 4.83158230636371,
+       "high": 9.66316461272742
+      }
+     }
+    },
+    "B3": {
+     "touches_per_month": 1151.1666666666667,
+     "saved_per_month": 452.3333333333333,
+     "share_of_touches": 0.3929347039235558,
+     "hours": {
+      "equal": {
+       "low": 3.7694444444444444,
+       "mid": 7.538888888888889,
+       "high": 15.077777777777778
+      },
+      "split": {
+       "low": 2.247671302617605,
+       "mid": 4.49534260523521,
+       "high": 8.99068521047042
+      }
+     }
+    },
+    "B4": {
+     "touches_per_month": 1147.0,
+     "saved_per_month": 441.1666666666667,
+     "share_of_touches": 0.3846265620459169,
+     "hours": {
+      "equal": {
+       "low": 3.676388888888889,
+       "mid": 7.352777777777778,
+       "high": 14.705555555555556
+      },
+      "split": {
+       "low": 2.1921834701653657,
+       "mid": 4.3843669403307315,
+       "high": 8.768733880661463
+      }
+     }
+    },
+    "B5": {
+     "touches_per_month": 1387.6666666666667,
+     "saved_per_month": 677.0,
+     "share_of_touches": 0.48786932500600527,
+     "hours": {
+      "equal": {
+       "low": 5.641666666666667,
+       "mid": 11.283333333333333,
+       "high": 22.566666666666666
+      },
+      "split": {
+       "low": 3.3640533644925252,
+       "mid": 6.7281067289850505,
+       "high": 13.456213457970101
+      }
+     }
+    },
+    "B6": {
+     "touches_per_month": 1211.6666666666667,
+     "saved_per_month": 477.0,
+     "share_of_touches": 0.3936726272352132,
+     "hours": {
+      "equal": {
+       "low": 3.975,
+       "mid": 7.95,
+       "high": 15.9
+      },
+      "split": {
+       "low": 2.3702414399747926,
+       "mid": 4.740482879949585,
+       "high": 9.48096575989917
+      }
+     }
+    }
+   },
+   "hours_office": {
+    "equal": {
+     "low": 26.447222222222226,
+     "mid": 52.89444444444445,
+     "high": 105.7888888888889
+    },
+    "split": {
+     "low": 15.77013888888889,
+     "mid": 31.54027777777778,
+     "high": 63.08055555555556
+    }
+   },
+   "hours_mid_from_rule_to_journal_ASSUMPTION": {
+    "equal": 6.505555555555556,
+    "split": 3.252777777777778
+   },
+   "assumption_note": "rule_to_journal gain assumes a bank workflow can post directly (not only to the journal)",
+   "mean_hours_mid": {
+    "equal": 8.815740740740742,
+    "split": 5.256712962962964
+   },
+   "mean_hours_mid_excl_rule_to_journal": {
+    "equal": 7.731481481481484,
+    "split": 4.714583333333334
+   },
+   "mean_share_of_touches": 0.4251490321284244
+  },
+  "expected": {
+   "approval_share": 0.5,
+   "n_patterns": 92,
+   "saved_per_month_office": 740.0833333333333,
+   "saved_by_handling": {
+    "suggestion_accepted": 515.1666666666666,
+    "rule_to_journal": 101.75,
+    "manual": 123.16666666666667
+   },
+   "per_bookkeeper": {
+    "B1": {
+     "touches_per_month": 1372.3333333333333,
+     "saved_per_month": 131.25,
+     "share_of_touches": 0.09564002914743747,
+     "hours": {
+      "equal": {
+       "low": 1.09375,
+       "mid": 2.1875,
+       "high": 4.375
+      },
+      "split": {
+       "low": 0.6378874141425517,
+       "mid": 1.2757748282851034,
+       "high": 2.5515496565702067
+      }
+     }
+    },
+    "B2": {
+     "touches_per_month": 1195.0,
+     "saved_per_month": 127.16666666666667,
+     "share_of_touches": 0.10641562064156207,
+     "hours": {
+      "equal": {
+       "low": 1.0597222222222222,
+       "mid": 2.1194444444444445,
+       "high": 4.238888888888889
+      },
+      "split": {
+       "low": 0.6180420279247834,
+       "mid": 1.2360840558495667,
+       "high": 2.4721681116991334
+      }
+     }
+    },
+    "B3": {
+     "touches_per_month": 1151.1666666666667,
+     "saved_per_month": 106.16666666666667,
+     "share_of_touches": 0.09222527870276531,
+     "hours": {
+      "equal": {
+       "low": 0.8847222222222223,
+       "mid": 1.7694444444444446,
+       "high": 3.538888888888889
+      },
+      "split": {
+       "low": 0.5159800416619751,
+       "mid": 1.0319600833239502,
+       "high": 2.0639201666479003
+      }
+     }
+    },
+    "B4": {
+     "touches_per_month": 1147.0,
+     "saved_per_month": 128.83333333333334,
+     "share_of_touches": 0.11232199941877362,
+     "hours": {
+      "equal": {
+       "low": 1.0736111111111113,
+       "mid": 2.1472222222222226,
+       "high": 4.294444444444445
+      },
+      "split": {
+       "low": 0.6261421855646888,
+       "mid": 1.2522843711293776,
+       "high": 2.5045687422587553
+      }
+     }
+    },
+    "B5": {
+     "touches_per_month": 1387.6666666666667,
+     "saved_per_month": 142.58333333333334,
+     "share_of_touches": 0.10275042036992553,
+     "hours": {
+      "equal": {
+       "low": 1.1881944444444446,
+       "mid": 2.376388888888889,
+       "high": 4.752777777777778
+      },
+      "split": {
+       "low": 0.6929684860939085,
+       "mid": 1.385936972187817,
+       "high": 2.771873944375634
+      }
+     }
+    },
+    "B6": {
+     "touches_per_month": 1211.6666666666667,
+     "saved_per_month": 104.08333333333333,
+     "share_of_touches": 0.08590096286107289,
+     "hours": {
+      "equal": {
+       "low": 0.867361111111111,
+       "mid": 1.734722222222222,
+       "high": 3.469444444444444
+      },
+      "split": {
+       "low": 0.5058548446120933,
+       "mid": 1.0117096892241866,
+       "high": 2.023419378448373
+      }
+     }
+    }
+   },
+   "hours_office": {
+    "equal": {
+     "low": 6.16736111111111,
+     "mid": 12.33472222222222,
+     "high": 24.66944444444444
+    },
+    "split": {
+     "low": 3.596875,
+     "mid": 7.19375,
+     "high": 14.3875
+    }
+   },
+   "hours_mid_from_rule_to_journal_ASSUMPTION": {
+    "equal": 1.6958333333333333,
+    "split": 0.8479166666666667
+   },
+   "assumption_note": "rule_to_journal gain assumes a bank workflow can post directly (not only to the journal)",
+   "mean_hours_mid": {
+    "equal": 2.0557870370370366,
+    "split": 1.1989583333333333
+   },
+   "mean_hours_mid_excl_rule_to_journal": {
+    "equal": 1.773148148148148,
+    "split": 1.0576388888888888
+   },
+   "mean_share_of_touches": 0.09914264663198552
+  },
+  "conservative": {
+   "approval_share": 0.3,
+   "n_patterns": 92,
+   "saved_per_month_office": 444.04999999999995,
+   "saved_by_handling": {
+    "suggestion_accepted": 309.09999999999997,
+    "rule_to_journal": 61.05,
+    "manual": 73.9
+   },
+   "per_bookkeeper": {
+    "B1": {
+     "touches_per_month": 1372.3333333333333,
+     "saved_per_month": 78.75,
+     "share_of_touches": 0.057384017488462474,
+     "hours": {
+      "equal": {
+       "low": 0.65625,
+       "mid": 1.3125,
+       "high": 2.625
+      },
+      "split": {
+       "low": 0.38273244848553095,
+       "mid": 0.7654648969710619,
+       "high": 1.5309297939421238
+      }
+     }
+    },
+    "B2": {
+     "touches_per_month": 1195.0,
+     "saved_per_month": 76.3,
+     "share_of_touches": 0.06384937238493724,
+     "hours": {
+      "equal": {
+       "low": 0.6358333333333334,
+       "mid": 1.2716666666666667,
+       "high": 2.5433333333333334
+      },
+      "split": {
+       "low": 0.37082521675486996,
+       "mid": 0.7416504335097399,
+       "high": 1.4833008670194798
+      }
+     }
+    },
+    "B3": {
+     "touches_per_month": 1151.1666666666667,
+     "saved_per_month": 63.7,
+     "share_of_touches": 0.05533516722165919,
+     "hours": {
+      "equal": {
+       "low": 0.5308333333333334,
+       "mid": 1.0616666666666668,
+       "high": 2.1233333333333335
+      },
+      "split": {
+       "low": 0.3095880249971851,
+       "mid": 0.6191760499943701,
+       "high": 1.2383520999887403
+      }
+     }
+    },
+    "B4": {
+     "touches_per_month": 1147.0,
+     "saved_per_month": 77.3,
+     "share_of_touches": 0.06739319965126417,
+     "hours": {
+      "equal": {
+       "low": 0.6441666666666667,
+       "mid": 1.2883333333333333,
+       "high": 2.5766666666666667
+      },
+      "split": {
+       "low": 0.3756853113388132,
+       "mid": 0.7513706226776264,
+       "high": 1.5027412453552529
+      }
+     }
+    },
+    "B5": {
+     "touches_per_month": 1387.6666666666667,
+     "saved_per_month": 85.55,
+     "share_of_touches": 0.06165025222195532,
+     "hours": {
+      "equal": {
+       "low": 0.7129166666666666,
+       "mid": 1.4258333333333333,
+       "high": 2.8516666666666666
+      },
+      "split": {
+       "low": 0.415781091656345,
+       "mid": 0.83156218331269,
+       "high": 1.66312436662538
+      }
+     }
+    },
+    "B6": {
+     "touches_per_month": 1211.6666666666667,
+     "saved_per_month": 62.449999999999996,
+     "share_of_touches": 0.051540577716643735,
+     "hours": {
+      "equal": {
+       "low": 0.5204166666666666,
+       "mid": 1.0408333333333333,
+       "high": 2.0816666666666666
+      },
+      "split": {
+       "low": 0.303512906767256,
+       "mid": 0.607025813534512,
+       "high": 1.214051627069024
+      }
+     }
+    }
+   },
+   "hours_office": {
+    "equal": {
+     "low": 3.7004166666666665,
+     "mid": 7.400833333333333,
+     "high": 14.801666666666666
+    },
+    "split": {
+     "low": 2.158125,
+     "mid": 4.31625,
+     "high": 8.6325
+    }
+   },
+   "hours_mid_from_rule_to_journal_ASSUMPTION": {
+    "equal": 1.0174999999999998,
+    "split": 0.5087499999999999
+   },
+   "assumption_note": "rule_to_journal gain assumes a bank workflow can post directly (not only to the journal)",
+   "mean_hours_mid": {
+    "equal": 1.233472222222222,
+    "split": 0.719375
+   },
+   "mean_hours_mid_excl_rule_to_journal": {
+    "equal": 1.0638888888888889,
+    "split": 0.6345833333333334
+   },
+   "mean_share_of_touches": 0.05948558797919131
+  },
+  "kill_check": {
+   "equal": {
+    "threshold_hours": 2.0,
+    "basis": "conservative scenario, mid minutes, per bookkeeper per month",
+    "min_hours": 1.0408333333333333,
+    "mean_hours": 1.233472222222222,
+    "mean_hours_excl_rule_to_journal": 1.0638888888888889,
+    "below_threshold": [
+     "B1",
+     "B2",
+     "B3",
+     "B4",
+     "B5",
+     "B6"
+    ],
+    "verdict": "KILL"
+   },
+   "split": {
+    "threshold_hours": 2.0,
+    "basis": "conservative scenario, mid minutes, per bookkeeper per month",
+    "min_hours": 0.607025813534512,
+    "mean_hours": 0.719375,
+    "mean_hours_excl_rule_to_journal": 0.6345833333333334,
+    "below_threshold": [
+     "B1",
+     "B2",
+     "B3",
+     "B4",
+     "B5",
+     "B6"
+    ],
+    "verdict": "KILL"
+   }
+  }
+ },
+ "sensitivity_other_grouping": {
+  "rule_based": {
+   "ceiling": {
+    "approval_share": 1.0,
+    "n_patterns": 124,
+    "saved_per_month_office": 3010.4999999999995,
+    "saved_by_handling": {
+     "suggestion_accepted": 2053.9999999999995,
+     "rule_to_journal": 376.66666666666663,
+     "manual": 579.8333333333334
+    },
+    "per_bookkeeper": {
+     "B1": {
+      "touches_per_month": 1372.3333333333333,
+      "saved_per_month": 605.5,
+      "share_of_touches": 0.4412193344668448,
+      "hours": {
+       "equal": {
+        "low": 5.045833333333333,
+        "mid": 10.091666666666667,
+        "high": 20.183333333333334
+       },
+       "split": {
+        "low": 3.008839663031243,
+        "mid": 6.017679326062486,
+        "high": 12.035358652124971
+       }
+      }
+     },
+     "B2": {
+      "touches_per_month": 1195.0,
+      "saved_per_month": 453.0,
+      "share_of_touches": 0.3790794979079498,
+      "hours": {
+       "equal": {
+        "low": 3.775,
+        "mid": 7.55,
+        "high": 15.1
+       },
+       "split": {
+        "low": 2.2510394175939767,
+        "mid": 4.5020788351879535,
+        "high": 9.004157670375907
+       }
+      }
+     },
+     "B3": {
+      "touches_per_month": 1151.1666666666667,
+      "saved_per_month": 418.3333333333333,
+      "share_of_touches": 0.3633994498335022,
+      "hours": {
+       "equal": {
+        "low": 3.486111111111111,
+        "mid": 6.972222222222222,
+        "high": 13.944444444444445
+       },
+       "split": {
+        "low": 2.0787744437678004,
+        "mid": 4.157548887535601,
+        "high": 8.315097775071202
+       }
+      }
+     },
+     "B4": {
+      "touches_per_month": 1147.0,
+      "saved_per_month": 403.5,
+      "share_of_touches": 0.35178727114210984,
+      "hours": {
+       "equal": {
+        "low": 3.3625,
+        "mid": 6.725,
+        "high": 13.45
+       },
+       "split": {
+        "low": 2.005064911697946,
+        "mid": 4.010129823395892,
+        "high": 8.020259646791784
+       }
+      }
+     },
+     "B5": {
+      "touches_per_month": 1387.6666666666667,
+      "saved_per_month": 664.8333333333334,
+      "share_of_touches": 0.4791016094162863,
+      "hours": {
+       "equal": {
+        "low": 5.540277777777778,
+        "mid": 11.080555555555556,
+        "high": 22.16111111111111
+       },
+       "split": {
+        "low": 3.30367779131066,
+        "mid": 6.60735558262132,
+        "high": 13.21471116524264
+       }
+      }
+     },
+     "B6": {
+      "touches_per_month": 1211.6666666666667,
+      "saved_per_month": 465.3333333333333,
+      "share_of_touches": 0.3840440165061898,
+      "hours": {
+       "equal": {
+        "low": 3.8777777777777778,
+        "mid": 7.7555555555555555,
+        "high": 15.511111111111111
+       },
+       "split": {
+        "low": 2.312325994820597,
+        "mid": 4.624651989641194,
+        "high": 9.249303979282388
+       }
+      }
+     }
+    },
+    "hours_office": {
+     "equal": {
+      "low": 25.087499999999995,
+      "mid": 50.17499999999999,
+      "high": 100.34999999999998
+     },
+     "split": {
+      "low": 14.95972222222222,
+      "mid": 29.91944444444444,
+      "high": 59.83888888888888
+     }
+    },
+    "hours_mid_from_rule_to_journal_ASSUMPTION": {
+     "equal": 6.277777777777777,
+     "split": 3.1388888888888884
+    },
+    "assumption_note": "rule_to_journal gain assumes a bank workflow can post directly (not only to the journal)",
+    "mean_hours_mid": {
+     "equal": 8.362499999999999,
+     "split": 4.986574074074073
+    },
+    "mean_hours_mid_excl_rule_to_journal": {
+     "equal": 7.316203703703702,
+     "split": 4.463425925925925
+    },
+    "mean_share_of_touches": 0.40329098662618046
+   },
+   "expected": {
+    "approval_share": 0.5,
+    "n_patterns": 119,
+    "saved_per_month_office": 658.4999999999999,
+    "saved_by_handling": {
+     "suggestion_accepted": 456.0833333333332,
+     "rule_to_journal": 94.91666666666666,
+     "manual": 107.5
+    },
+    "per_bookkeeper": {
+     "B1": {
+      "touches_per_month": 1372.3333333333333,
+      "saved_per_month": 114.0,
+      "share_of_touches": 0.08307019674520283,
+      "hours": {
+       "equal": {
+        "low": 0.95,
+        "mid": 1.9,
+        "high": 3.8
+       },
+       "split": {
+        "low": 0.5525436598329537,
+        "mid": 1.1050873196659075,
+        "high": 2.210174639331815
+       }
+      }
+     },
+     "B2": {
+      "touches_per_month": 1195.0,
+      "saved_per_month": 110.58333333333333,
+      "share_of_touches": 0.09253835425383543,
+      "hours": {
+       "equal": {
+        "low": 0.9215277777777777,
+        "mid": 1.8430555555555554,
+        "high": 3.686111111111111
+       },
+       "split": {
+        "low": 0.5359835062853285,
+        "mid": 1.071967012570657,
+        "high": 2.143934025141314
+       }
+      }
+     },
+     "B3": {
+      "touches_per_month": 1151.1666666666667,
+      "saved_per_month": 89.16666666666666,
+      "share_of_touches": 0.07745765165773852,
+      "hours": {
+       "equal": {
+        "low": 0.7430555555555555,
+        "mid": 1.486111111111111,
+        "high": 2.972222222222222
+       },
+       "split": {
+        "low": 0.43217961697460555,
+        "mid": 0.8643592339492111,
+        "high": 1.7287184678984222
+       }
+      }
+     },
+     "B4": {
+      "touches_per_month": 1147.0,
+      "saved_per_month": 110.0,
+      "share_of_touches": 0.0959023539668701,
+      "hours": {
+       "equal": {
+        "low": 0.9166666666666666,
+        "mid": 1.8333333333333333,
+        "high": 3.6666666666666665
+       },
+       "split": {
+        "low": 0.5331561629967098,
+        "mid": 1.0663123259934195,
+        "high": 2.132624651986839
+       }
+      }
+     },
+     "B5": {
+      "touches_per_month": 1387.6666666666667,
+      "saved_per_month": 136.5,
+      "share_of_touches": 0.09836656257506605,
+      "hours": {
+       "equal": {
+        "low": 1.1375,
+        "mid": 2.275,
+        "high": 4.55
+       },
+       "split": {
+        "low": 0.6615983295368261,
+        "mid": 1.3231966590736521,
+        "high": 2.6463933181473043
+       }
+      }
+     },
+     "B6": {
+      "touches_per_month": 1211.6666666666667,
+      "saved_per_month": 98.25,
+      "share_of_touches": 0.0810866574965612,
+      "hours": {
+       "equal": {
+        "low": 0.81875,
+        "mid": 1.6375,
+        "high": 3.275
+       },
+       "split": {
+        "low": 0.476205391040243,
+        "mid": 0.952410782080486,
+        "high": 1.904821564160972
+       }
+      }
+     }
+    },
+    "hours_office": {
+     "equal": {
+      "low": 5.487499999999999,
+      "mid": 10.974999999999998,
+      "high": 21.949999999999996
+     },
+     "split": {
+      "low": 3.191666666666666,
+      "mid": 6.383333333333332,
+      "high": 12.766666666666664
+     }
+    },
+    "hours_mid_from_rule_to_journal_ASSUMPTION": {
+     "equal": 1.5819444444444444,
+     "split": 0.7909722222222222
+    },
+    "assumption_note": "rule_to_journal gain assumes a bank workflow can post directly (not only to the journal)",
+    "mean_hours_mid": {
+     "equal": 1.8291666666666664,
+     "split": 1.0638888888888887
+    },
+    "mean_hours_mid_excl_rule_to_journal": {
+     "equal": 1.565509259259259,
+     "split": 0.932060185185185
+    },
+    "mean_share_of_touches": 0.08821362388086358
+   },
+   "conservative": {
+    "approval_share": 0.3,
+    "n_patterns": 119,
+    "saved_per_month_office": 395.0999999999999,
+    "saved_by_handling": {
+     "suggestion_accepted": 273.6499999999999,
+     "rule_to_journal": 56.949999999999996,
+     "manual": 64.5
+    },
+    "per_bookkeeper": {
+     "B1": {
+      "touches_per_month": 1372.3333333333333,
+      "saved_per_month": 68.39999999999999,
+      "share_of_touches": 0.049842118047121686,
+      "hours": {
+       "equal": {
+        "low": 0.57,
+        "mid": 1.14,
+        "high": 2.28
+       },
+       "split": {
+        "low": 0.33152619589977217,
+        "mid": 0.6630523917995443,
+        "high": 1.3261047835990887
+       }
+      }
+     },
+     "B2": {
+      "touches_per_month": 1195.0,
+      "saved_per_month": 66.35,
+      "share_of_touches": 0.05552301255230125,
+      "hours": {
+       "equal": {
+        "low": 0.5529166666666666,
+        "mid": 1.1058333333333332,
+        "high": 2.2116666666666664
+       },
+       "split": {
+        "low": 0.3215901037711972,
+        "mid": 0.6431802075423944,
+        "high": 1.2863604150847887
+       }
+      }
+     },
+     "B3": {
+      "touches_per_month": 1151.1666666666667,
+      "saved_per_month": 53.49999999999999,
+      "share_of_touches": 0.04647459099464311,
+      "hours": {
+       "equal": {
+        "low": 0.44583333333333325,
+        "mid": 0.8916666666666665,
+        "high": 1.783333333333333
+       },
+       "split": {
+        "low": 0.2593077701847633,
+        "mid": 0.5186155403695266,
+        "high": 1.0372310807390532
+       }
+      }
+     },
+     "B4": {
+      "touches_per_month": 1147.0,
+      "saved_per_month": 66.0,
+      "share_of_touches": 0.05754141238012206,
+      "hours": {
+       "equal": {
+        "low": 0.55,
+        "mid": 1.1,
+        "high": 2.2
+       },
+       "split": {
+        "low": 0.31989369779802584,
+        "mid": 0.6397873955960517,
+        "high": 1.2795747911921034
+       }
+      }
+     },
+     "B5": {
+      "touches_per_month": 1387.6666666666667,
+      "saved_per_month": 81.89999999999999,
+      "share_of_touches": 0.059019937545039626,
+      "hours": {
+       "equal": {
+        "low": 0.6824999999999999,
+        "mid": 1.3649999999999998,
+        "high": 2.7299999999999995
+       },
+       "split": {
+        "low": 0.39695899772209564,
+        "mid": 0.7939179954441913,
+        "high": 1.5878359908883826
+       }
+      }
+     },
+     "B6": {
+      "touches_per_month": 1211.6666666666667,
+      "saved_per_month": 58.949999999999996,
+      "share_of_touches": 0.04865199449793672,
+      "hours": {
+       "equal": {
+        "low": 0.49124999999999996,
+        "mid": 0.9824999999999999,
+        "high": 1.9649999999999999
+       },
+       "split": {
+        "low": 0.2857232346241458,
+        "mid": 0.5714464692482916,
+        "high": 1.1428929384965831
+       }
+      }
+     }
+    },
+    "hours_office": {
+     "equal": {
+      "low": 3.292499999999999,
+      "mid": 6.584999999999998,
+      "high": 13.169999999999996
+     },
+     "split": {
+      "low": 1.9149999999999996,
+      "mid": 3.829999999999999,
+      "high": 7.659999999999998
+     }
+    },
+    "hours_mid_from_rule_to_journal_ASSUMPTION": {
+     "equal": 0.9491666666666666,
+     "split": 0.4745833333333333
+    },
+    "assumption_note": "rule_to_journal gain assumes a bank workflow can post directly (not only to the journal)",
+    "mean_hours_mid": {
+     "equal": 1.0974999999999997,
+     "split": 0.6383333333333332
+    },
+    "mean_hours_mid_excl_rule_to_journal": {
+     "equal": 0.9393055555555553,
+     "split": 0.5592361111111109
+    },
+    "mean_share_of_touches": 0.052928174328518145
+   },
+   "kill_check": {
+    "equal": {
+     "threshold_hours": 2.0,
+     "basis": "conservative scenario, mid minutes, per bookkeeper per month",
+     "min_hours": 0.8916666666666665,
+     "mean_hours": 1.0975,
+     "mean_hours_excl_rule_to_journal": 0.9393055555555553,
+     "below_threshold": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6"
+     ],
+     "verdict": "KILL"
+    },
+    "split": {
+     "threshold_hours": 2.0,
+     "basis": "conservative scenario, mid minutes, per bookkeeper per month",
+     "min_hours": 0.5186155403695266,
+     "mean_hours": 0.6383333333333333,
+     "mean_hours_excl_rule_to_journal": 0.5592361111111109,
+     "below_threshold": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6"
+     ],
+     "verdict": "KILL"
+    }
+   }
+  }
+ },
+ "grouping_eval": {
+  "unique_texts_in_scope": 189,
+  "ai_status": "cached",
+  "rule_based": {
+   "confusions": {
+    "merges": 1,
+    "merged_groups": [
+     {
+      "group": "GOOGLE IRELAND",
+      "vendors": [
+       "Google Ads",
+       "Google Workspace"
+      ]
+     }
+    ],
+    "postings_in_merged_groups_wrong_side": 161,
+    "splits": 36,
+    "extra_groups_from_splits": 78
+   },
+   "precision_postings": 0.9974,
+   "precision_unique_texts": 0.9944,
+   "coverage_postings": 0.9504,
+   "completeness": 0.3789,
+   "n_groups": 120,
+   "n_true_vendors": 43,
+   "example_errors": [
+    {
+     "text": "GOOGLE IRELAND ADS",
+     "predicted_group": "GOOGLE IRELAND",
+     "group_main_vendor": "Google Workspace",
+     "true_vendor": "Google Ads"
+    }
+   ]
+  },
+  "ai": {
+   "confusions": {
+    "merges": 0,
+    "merged_groups": [],
+    "postings_in_merged_groups_wrong_side": 0,
+    "splits": 4,
+    "extra_groups_from_splits": 4
+   },
+   "precision_postings": 1.0,
+   "precision_unique_texts": 1.0,
+   "coverage_postings": 0.9825,
+   "completeness": 0.8901,
+   "n_groups": 47,
+   "n_true_vendors": 43,
+   "example_errors": []
+  },
+  "selected_method": "ai"
+ }
+}

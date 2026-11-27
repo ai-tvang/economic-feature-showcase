@@ -1,0 +1,52 @@
+{
+ "unique_texts_in_scope": 189,
+ "ai_status": "cached",
+ "rule_based": {
+  "confusions": {
+   "merges": 1,
+   "merged_groups": [
+    {
+     "group": "GOOGLE IRELAND",
+     "vendors": [
+      "Google Ads",
+      "Google Workspace"
+     ]
+    }
+   ],
+   "postings_in_merged_groups_wrong_side": 161,
+   "splits": 36,
+   "extra_groups_from_splits": 78
+  },
+  "precision_postings": 0.9974,
+  "precision_unique_texts": 0.9944,
+  "coverage_postings": 0.9504,
+  "completeness": 0.3789,
+  "n_groups": 120,
+  "n_true_vendors": 43,
+  "example_errors": [
+   {
+    "text": "GOOGLE IRELAND ADS",
+    "predicted_group": "GOOGLE IRELAND",
+    "group_main_vendor": "Google Workspace",
+    "true_vendor": "Google Ads"
+   }
+  ]
+ },
+ "ai": {
+  "confusions": {
+   "merges": 0,
+   "merged_groups": [],
+   "postings_in_merged_groups_wrong_side": 0,
+   "splits": 4,
+   "extra_groups_from_splits": 4
+  },
+  "precision_postings": 1.0,
+  "precision_unique_texts": 1.0,
+  "coverage_postings": 0.9825,
+  "completeness": 0.8901,
+  "n_groups": 47,
+  "n_true_vendors": 43,
+  "example_errors": []
+ },
+ "selected_method": "ai"
+}

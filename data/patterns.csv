@@ -1,0 +1,44 @@
+pattern_id,name,type,clients,postings_12m,special_share,safe_touched,safe_hits,safe_touched_12m,clients_with_manual,hit_rate,saved_per_month,special_vat_appears
+PT06,Card settlement,card_settle,36,27753,0.0,11174.0,10854.0,22383.0,29,97.14,1809.0,False
+PT08,Clearhaus fees,shared_vendor,17,2895,0.0,1187.0,1153.0,2377.0,14,97.14,192.17,False
+PT22,Nets card fees,shared_vendor,16,2705,0.0,1095.0,1062.0,2188.0,13,96.99,177.0,False
+PT39,Teya card fees,shared_vendor,14,2347,0.0,1015.0,994.0,2017.0,12,97.93,165.67,False
+PT34,Stripe fees,shared_vendor,15,2492,0.0,992.0,961.0,1984.0,12,96.88,160.17,False
+PT17,Lemvigh-Mueller,shared_vendor,31,2243,0.0,982.0,949.0,1965.0,27,96.64,158.17,False
+PT03,Ahlsell,shared_vendor,25,1821,0.0,850.0,833.0,1695.0,24,98.0,138.83,False
+PT28,Rent (client-specific),rent,118,1416,0.0,592.0,574.0,1186.0,99,96.96,95.67,False
+PT26,PostNord,shared_vendor,46,1051,0.0,382.0,377.0,775.0,38,98.69,62.83,False
+PT31,Shell,shared_vendor,23,1794,56.8,382.0,370.0,775.0,23,96.86,61.67,True
+PT04,Andel Energi,shared_vendor,75,900,0.0,370.0,363.0,736.0,65,98.11,60.5,False
+PT35,Sydbank fees,shared_vendor,44,766,0.0,372.0,363.0,731.0,42,97.58,60.5,False
+PT15,Jyske Bank fees,shared_vendor,46,763,0.0,359.0,352.0,730.0,44,98.05,58.67,False
+PT10,Danske Bank fees,shared_vendor,46,774,0.0,349.0,339.0,707.0,42,97.13,56.5,False
+PT24,Nordea fees,shared_vendor,44,706,0.0,307.0,294.0,617.0,39,95.77,49.0,False
+PT25,OK,shared_vendor,24,1882,66.52,244.0,242.0,491.0,23,99.18,40.33,True
+PT40,Topdanmark,shared_vendor,46,552,0.0,244.0,239.0,491.0,43,97.95,39.83,False
+PT14,If Forsikring,shared_vendor,39,468,0.0,222.0,216.0,447.0,39,97.3,36.0,False
+PT09,Codan,shared_vendor,39,468,0.0,194.0,190.0,389.0,33,97.94,31.67,False
+PT19,Lyreco,shared_vendor,34,408,0.0,192.0,183.0,384.0,32,95.31,30.5,False
+PT41,Tryg,shared_vendor,32,384,0.0,177.0,170.0,354.0,30,96.05,28.33,False
+PT07,Circle K,shared_vendor,10,862,54.87,147.0,143.0,299.0,9,97.28,23.83,True
+PT27,Q8,shared_vendor,21,1541,67.29,139.0,137.0,280.0,18,98.56,22.83,True
+PT36,TDC Erhverv,shared_vendor,41,492,41.46,119.0,111.0,236.0,37,93.28,18.5,True
+PT38,Telia,shared_vendor,42,504,45.24,104.0,98.0,211.0,37,94.23,16.33,True
+PT16,LeasePlan,shared_vendor,17,204,0.0,90.0,88.0,180.0,15,97.78,14.67,False
+PT37,Telenor,shared_vendor,30,360,50.0,82.0,78.0,162.0,29,95.12,13.0,True
+PT29,Santander Leasing,shared_vendor,15,180,0.0,72.0,71.0,144.0,12,98.61,11.83,False
+PT01,3 Business,shared_vendor,31,372,70.97,54.0,52.0,108.0,31,96.3,8.67,True
+PT23,Nordania Leasing,shared_vendor,10,120,0.0,45.0,41.0,92.0,8,91.11,6.83,False
+PT02,Adobe,shared_vendor,48,576,100.0,0.0,0.0,0.0,48,,0.0,True
+PT11,Dropbox,shared_vendor,53,636,100.0,0.0,0.0,0.0,53,,0.0,True
+PT05,Canva,shared_vendor,54,648,100.0,0.0,0.0,0.0,54,,0.0,True
+PT13,Google Workspace,shared_vendor,48,576,100.0,0.0,0.0,0.0,48,,0.0,True
+PT18,LinkedIn Ads,shared_vendor,27,543,100.0,0.0,0.0,0.0,27,,0.0,True
+PT21,Microsoft 365,shared_vendor,52,624,100.0,0.0,0.0,0.0,52,,0.0,True
+PT20,Meta Ads,shared_vendor,24,444,100.0,0.0,0.0,0.0,24,,0.0,True
+PT12,Google Ads,shared_vendor,22,380,100.0,0.0,0.0,0.0,22,,0.0,True
+PT30,Scandic Hotels,shared_vendor,15,366,100.0,0.0,0.0,0.0,15,,0.0,True
+PT32,Shopify,shared_vendor,47,564,100.0,0.0,0.0,0.0,47,,0.0,True
+PT33,Slack,shared_vendor,44,528,100.0,0.0,0.0,0.0,44,,0.0,True
+PT42,Wolt,shared_vendor,19,463,100.0,0.0,0.0,0.0,19,,0.0,True
+PT43,Zoom,shared_vendor,56,672,100.0,0.0,0.0,0.0,56,,0.0,True
