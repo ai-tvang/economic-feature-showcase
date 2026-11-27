@@ -1,6 +1,6 @@
 # Workflow suggestions across clients
 
-**A product case I took from problem to working prototype on my own, building with AI at every step.** I made it for the second interview for Senior Product Manager (AI-Native Builder) at Visma e-conomic in November 2026.
+**A product case I took from problem to working prototype on my own, building with AI at every step.** I made it for Visma e-conomic in November 2026.
 
 [Deck (PDF)](deck/e-conomic-case-workflow-suggestions.pdf) · [Prototype](prototype/index.html) · [How I used AI](#how-i-used-ai) · [Reproduce it](#repo-layout-and-how-to-reproduce)
 
