@@ -1,10 +1,22 @@
-# Workflow suggestions across clients: a PM case for Visma e-conomic
+# Workflow suggestions across clients
 
-This is the case I built for the second interview for **Senior Product Manager (AI-Native Builder)** at Visma e-conomic in November 2026. The brief was *"Managing a client portfolio in an AI world"*. It came with a paradox, and I chose to work on that:
+**A product case I took from problem to working prototype on my own, building with AI at every step.** I made it for the second interview for Senior Product Manager (AI-Native Builder) at Visma e-conomic in November 2026.
+
+[Deck (PDF)](deck/e-conomic-case-workflow-suggestions.pdf) · [Prototype](prototype/index.html) · [How I used AI](#how-i-used-ai) · [Reproduce it](#repo-layout-and-how-to-reproduce)
+
+## What this shows
+
+- **Finding the right problem before building.** The brief came with a paradox: *67 % of entries are automated "to some degree", yet hours per client are unchanged.* I tested three explanations against a trial account, the product documentation and an interview with an accountant, and chose the one the evidence supported.
+- **Turning an idea into a testable bet.** I tied one metric to the brief's north star and planned three learning loops. Each loop has a kill criterion that I set before I had any data.
+- **Building with AI end to end.** I made a synthetic accounting office with about 100,000 postings, pattern detection with an out-of-sample backtest, an evaluation of AI grouping against rule-based grouping, a clickable prototype with a 266-check self-test, and the deck. All of it rebuilds from one command.
+- **Judgement over output.** I document where AI was confidently wrong and what I changed. My assumptions are conservative, even where that put the result right on my own kill line, and I didn't tune the data to pass.
+- **Learning a new domain fast.** The case deals with bookkeeping workflows and the details that decide whether an automation is safe: VAT on fuel, card payouts net of fees, deposits when a client moves.
+
+## Context
+
+The brief was *"Managing a client portfolio in an AI world"*:
 
 > 67 % of entries from bank transactions and documents are automated *to some degree*, yet hours per client are unchanged after three months. (from the case brief)
-
-The repo holds everything I made: the deck with speaker notes, a clickable prototype, and the scripts and synthetic data behind every number.
 
 **Everything in here is synthetic.** The accounting office "Nordkyst Regnskab", its 180 clients, 6 bookkeepers and every posting are generated with a fixed seed. Nothing is measured from a real office or from e-conomic's product. This is independent work for an interview. Visma e-conomic has not made, reviewed or endorsed it. The prototype's menu mirrors how e-conomic presents its Praksis module publicly, so that the demo would feel familiar to the panel.
 
@@ -117,4 +129,4 @@ The pipeline rebuilds `prototype/index.html` and `output/` byte for byte, apart 
 - **Deviations are built-in noise.** The generator puts about 3 % on a neighbouring account on purpose, so deviation numbers reflect the generator, not real bookkeepers.
 - **The user evidence is one interview,** with one office I have a personal connection to. Loop 2 exists to fix that.
 
-Thomas Christian Vang · November 2026
+**Thomas Christian Vang** · Product lead with a background in tax (Skatteguiden) and data (Ørsted) · November 2026
